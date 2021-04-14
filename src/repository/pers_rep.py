@@ -1,9 +1,9 @@
-from repository import *
+from src.repository.repository import *
 from src.objects.person import *
-# from pw_rep import *
+from src.repository.pw_rep import *
 
 
-class PersonRepository(object):
+class PersonRepository(Repository):
     def __init__(self):
         pass
 

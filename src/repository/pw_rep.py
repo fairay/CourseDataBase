@@ -3,6 +3,13 @@ from peewee import *
 import inject
 
 
+def request_to_objects(req, obj_class):
+    obj_arr = []
+    for obj_dict in req.dicts():
+        obj_arr.append(obj_class(obj_dict))
+    return obj_arr
+
+
 class BaseModel(Model):
     class Meta:
         database = inject.instance(AbstractDB)

@@ -2,13 +2,13 @@ class Repository(object):
     def __init__(self):
         pass
 
-    def create(self, object):
+    def create(self, obj):
         raise NotImplemented
 
-    def delete(self, object):
+    def delete(self, obj):
         raise NotImplemented
 
-    def update(self, object):
+    def update(self, obj):
         raise NotImplemented
 
     def get(self):
@@ -16,5 +16,4 @@ class Repository(object):
 
 
 class AbstractDB(object):
-    def __init__(self):
-        do_a = 'burrell roll'
+    pass
