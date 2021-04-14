@@ -1,6 +1,6 @@
-from repository import *
+from src.repository.repository import *
 from src.objects.person import *
-from src.repository.pw_rep import *
+from src.repository.pw_rep import AccountsModel
 
 
 class AccountsRepository(Repository):
@@ -13,8 +13,8 @@ class PWAccountsRep(AccountsRepository):
         pass
 
     def get(self):
-        res = AccountsModel.get()
+        res = AccountsModel.select()
 
         obj_arr = []
         for acc in res:
-            print(acc.Login)
+           print(acc)

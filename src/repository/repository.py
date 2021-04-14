@@ -17,4 +17,4 @@ class Repository(object):
 
 class AbstractDB(object):
     def __init__(self):
-        pass
+        do_a = 'burrell roll'
