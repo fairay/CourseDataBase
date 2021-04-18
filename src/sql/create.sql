@@ -18,5 +18,3 @@ CREATE TABLE IF NOT EXISTS Person(
 	PhoneNumber 	TEXT
 );
 
-
-

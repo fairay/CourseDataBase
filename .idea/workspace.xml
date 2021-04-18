@@ -3,9 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="dda305b5-902f-424d-b939-ffe6885a27cc" name="Default Changelist" comment="FIX: person update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/schemes/er.graphml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/schemes/er.graphml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/schemes/er_db.graphml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/schemes/er_db.graphml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/tech_task.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/tech_task.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/config_loader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/errors.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/errors.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sql/create.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/sql/create.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -1,3 +1,6 @@
+class ConfigMissingExc(BaseException): pass
+
+
 class RepositoryExc(BaseException): pass
 
 

@@ -1,4 +1,5 @@
 import json
+from src.errors import *
 
 
 class ConfigLoader(object):
@@ -8,11 +9,13 @@ class ConfigLoader(object):
     def __init__(self, f_name):
         self._file_name = f_name
 
-        f = open(self._file_name, 'r')
+        try:
+            f = open(self._file_name, 'r')
+        except FileNotFoundError as exc:
+            raise ConfigMissingExc()
         self._data = json.load(f)
         f.close()
 
-    # TODO: own missing file error
     def save(self):
         if self._file_name is None:
             raise FileNotFoundError
