@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dda305b5-902f-424d-b939-ffe6885a27cc" name="Default Changelist" comment="ADD: person repository">
+    <list default="true" id="dda305b5-902f-424d-b939-ffe6885a27cc" name="Default Changelist" comment="FIX: person update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/errors.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/errors.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/inject_module.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/inject_module.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/schemes/er.graphml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/schemes/er.graphml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/schemes/er_db.graphml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/schemes/er_db.graphml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/acc_rep.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/acc_rep.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/pw_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/pw_db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/pw_rep.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/pw_rep.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/repository.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +116,21 @@
       <option name="project" value="LOCAL" />
       <updated>1618756840879</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="FIX: auto rollback after failed query">
+      <created>1618760077641</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1618760077641</updated>
+    </task>
+    <task id="LOCAL-00005" summary="FIX: person update">
+      <created>1618760272655</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1618760272655</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -139,6 +149,8 @@
     <MESSAGE value="EDIT: successful connected to DB" />
     <MESSAGE value="ADD: object insertion" />
     <MESSAGE value="ADD: person repository" />
-    <option name="LAST_COMMIT_MESSAGE" value="ADD: person repository" />
+    <MESSAGE value="FIX: auto rollback after failed query" />
+    <MESSAGE value="FIX: person update" />
+    <option name="LAST_COMMIT_MESSAGE" value="FIX: person update" />
   </component>
 </project>

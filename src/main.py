@@ -10,7 +10,7 @@ from src.errors import *
 def _main():
     rep_acc = inject.instance(AccountsRepository)
 
-    old_acc = Account(login='katya_super10', perstype='test10', salt='asca12e01dqac2e', hashedpassword='2ccq0sc14qa2sdca')
+    old_acc = Account(login='petya_super10', perstype='test10', salt='asca12e01dqac2e', hashedpassword='2ccq0sc14qa2sdca')
     new_acc = old_acc.clone()
     new_acc.set_pers_type(None)
 
