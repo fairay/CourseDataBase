@@ -8,8 +8,8 @@ from src.repository.pw_db import DBFromConfig
 def inject_config0(binder):
     binder.bind(peewee.Database, peewee.PostgresqlDatabase)
     binder.bind_to_constructor(config_loader.ConfigLoader, lambda: config_loader.ConfigLoader('config.json'))
-    binder.bind_to_constructor(rep.AbstractDB, lambda: DBFromConfig(inject.instance(peewee.Database),
-                                                                    inject.instance(config_loader.ConfigLoader)))
+    binder.bind_to_constructor(rep.AbstractConnection, lambda: DBFromConfig(inject.instance(peewee.Database),
+                                                                            inject.instance(config_loader.ConfigLoader)))
 
 
 inject.configure(inject_config0)

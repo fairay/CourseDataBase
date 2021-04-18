@@ -1,4 +1,4 @@
-from src.repository.repository import AbstractDB
+from src.repository.repository import AbstractConnection
 from peewee import *
 import inject
 
@@ -12,7 +12,8 @@ def request_to_objects(req, obj_class):
 
 class BaseModel(Model):
     class Meta:
-        database = inject.instance(AbstractDB)
+        database: Database = inject.instance(AbstractConnection)
+
 
 
 class AccountsModel(BaseModel):

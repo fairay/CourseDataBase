@@ -1,13 +1,7 @@
-class ObjectCreateExc(BaseException):
-    def __init__(self):
-        pass
+class RepositoryExc(BaseException): pass
 
 
-class AlreadyExistsExc(BaseException):
-    def __init__(self):
-        pass
-
-
-class NullValExc(BaseException):
-    def __init__(self):
-        pass
+class ObjectCreateExc(RepositoryExc): pass
+class AlreadyExistsExc(RepositoryExc): pass
+class WrongUpdExc(RepositoryExc): pass
+class NullValExc(RepositoryExc): pass

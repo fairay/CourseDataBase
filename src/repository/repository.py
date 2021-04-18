@@ -12,5 +12,5 @@ class Repository(object):
         raise NotImplementedError
 
 
-class AbstractDB(object):
+class AbstractConnection(object):
     pass

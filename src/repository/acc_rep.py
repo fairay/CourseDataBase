@@ -22,8 +22,10 @@ class PWAccountsRep(AccountsRepository):
         query = AccountsModel.\
             update(**new_obj.to_dict()).\
             where(AccountsModel.login == old_obj.get_login())
-
-        query.execute()
+        try:
+            query.execute()
+        except IntegrityError as exc:
+            raise WrongUpdExc()
 
     def delete(self, obj: Account):
         query = AccountsModel.delete().where(AccountsModel.login == obj.get_login())
