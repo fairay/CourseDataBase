@@ -23,7 +23,10 @@ class PWPersonRep(PersonRepository):
             update(**new_obj.to_dict()). \
             where(PersonModel.personid == old_obj.set_id())
 
-        query.execute()
+        try:
+            query.execute()
+        except IntegrityError as exc:
+            raise WrongUpdExc()
 
     def delete(self, obj: Person):
         query = PersonModel.delete().where(PersonModel.personid == obj.set_id())
