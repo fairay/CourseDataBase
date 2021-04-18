@@ -1,23 +1,34 @@
 from src.repository.repository import *
 from src.objects.account import *
 from src.repository.pw_rep import *
+from src.errors import *
 
 
 class AccountsRepository(Repository):
-    def __init__(self):
-        pass
+    def create(self, obj: Account): raise NotImplementedError
+    def update(self, old_obj: Account, new_obj: Account): raise NotImplementedError
+    def delete(self, obj: Account): raise NotImplementedError
+    def get_all(self) -> [Account]: raise NotImplementedError
 
 
 class PWAccountsRep(AccountsRepository):
-    def __init__(self):
-        pass
+    def create(self, obj: Account):
+        try:
+            AccountsModel.create(**obj.to_dict())
+        except IntegrityError as exc:
+            raise AlreadyExistsExc()
 
-    def create(self, obj):
-        AccountsModel.create(login=obj.get_login(),
-                             perstype=obj.get_pers_type(),
-                             salt=obj.get_salt(),
-                             hashedpassword=obj.get_hashed_password())
+    def update(self, old_obj: Account, new_obj: Account):
+        query = AccountsModel.\
+            update(**new_obj.to_dict()).\
+            where(AccountsModel.login == old_obj.get_login())
 
-    def get(self):
+        query.execute()
+
+    def delete(self, obj: Account):
+        query = AccountsModel.delete().where(AccountsModel.login == obj.get_login())
+        query.execute()
+
+    def get_all(self) -> [Account]:
         res = AccountsModel.select()
         return request_to_objects(res, Account)

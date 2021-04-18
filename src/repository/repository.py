@@ -1,18 +1,15 @@
 class Repository(object):
-    def __init__(self):
-        pass
-
     def create(self, obj):
-        raise NotImplemented
+        raise NotImplementedError
 
     def delete(self, obj):
-        raise NotImplemented
+        raise NotImplementedError
 
-    def update(self, obj):
-        raise NotImplemented
+    def update(self, old_obj, new_obj):
+        raise NotImplementedError
 
-    def get(self):
-        raise NotImplemented
+    def get_all(self):
+        raise NotImplementedError
 
 
 class AbstractDB(object):

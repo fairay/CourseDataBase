@@ -2,7 +2,7 @@ from peewee import *
 import inject
 
 
-#class DBFromConfig(inject.instance(Database)):
+# class DBFromConfig(inject.instance(Database)):
 #    def __init__(self, config):
 def DBFromConfig(db_class, config):
         db_name = config.get_article('db_name')
