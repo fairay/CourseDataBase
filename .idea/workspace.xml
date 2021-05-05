@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dda305b5-902f-424d-b939-ffe6885a27cc" name="Default Changelist" comment="FIX: person update">
+      <change afterPath="$PROJECT_DIR$/cite/main/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/tech_task.docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/tech_task.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/config_loader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/errors.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/errors.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sql/create.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/sql/create.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aga.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/inject_module.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/inject_module.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +17,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="HTML File" />
         <option value="Python Script" />
       </list>
     </option>
@@ -34,10 +34,11 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager" selected="Python.main">
     <configuration name="inject_module" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">

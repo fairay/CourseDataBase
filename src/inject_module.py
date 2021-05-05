@@ -1,13 +1,14 @@
 import inject
 import peewee
-import config_loader
+from src import config_loader
 from src.repository import repository as rep
 from src.repository.pw_db import DBFromConfig
-
+import os
 
 def inject_config0(binder):
+    os.path.join(os.path.dirname(os.path.dirname(__file__)))
     binder.bind(peewee.Database, peewee.PostgresqlDatabase)
-    binder.bind_to_constructor(config_loader.ConfigLoader, lambda: config_loader.ConfigLoader('config.json'))
+    binder.bind_to_constructor(config_loader.ConfigLoader, lambda: config_loader.ConfigLoader('..\\src\\config.json'))
     binder.bind_to_constructor(rep.AbstractConnection, lambda: DBFromConfig(inject.instance(peewee.Database),
                                                                             inject.instance(config_loader.ConfigLoader)))
 
