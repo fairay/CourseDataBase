@@ -2,10 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 import sys
-sys.path.append("..") # Adds higher directory to python modules path.
-# import src as s
+sys.path.append("..")
 from src import *
 
+from model.acc_model import *
 
 # Create your views here.
 def home(request):
@@ -23,5 +23,7 @@ def home(request):
 def verify(request):
     if request.method == 'POST':
         print(request.POST)
+
+    print(AccountModel.login(request.POST['login'], request.POST['password']))
 
     return HttpResponse("Запрос верификации")

@@ -15,7 +15,6 @@ class BaseModel(Model):
         database: Database = inject.instance(AbstractConnection)
 
 
-
 class AccountsModel(BaseModel):
     login = TextField(column_name='login', primary_key=True)
     perstype = TextField(column_name='perstype', null=False)

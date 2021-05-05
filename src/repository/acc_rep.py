@@ -9,6 +9,7 @@ class AccountsRepository(Repository):
     def update(self, old_obj: Account, new_obj: Account): raise NotImplementedError
     def delete(self, obj: Account): raise NotImplementedError
     def get_all(self) -> [Account]: raise NotImplementedError
+    def get_by_login(self, login: str) -> Account: raise NotImplementedError
 
 
 class PWAccountsRep(AccountsRepository):
@@ -34,3 +35,7 @@ class PWAccountsRep(AccountsRepository):
     def get_all(self) -> [Account]:
         res = AccountsModel.select()
         return request_to_objects(res, Account)
+
+    def get_by_login(self, login: str) -> Account:
+        res = AccountsModel.select().where(AccountsModel.login == login)
+        return request_to_objects(res, Account)[0]
