@@ -12,8 +12,7 @@ def inject_config0(binder):
                                                                             inject.instance(config_loader.ConfigLoader)))
 
 print('!' * 30)
-inject.configure(inject_config0)
-
+inject.clear_and_configure(inject_config0)
 
 from src.repository.pers_rep import PersonRepository, PWPersonRep
 from src.repository.acc_rep import AccountsRepository, PWAccountsRep
