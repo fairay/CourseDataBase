@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 
 import sys
 sys.path.append("..")
@@ -25,4 +26,5 @@ def verify(request):
     if acc is not None:
         return HttpResponse("Авторизированно")
     else:
-        return HttpResponse("Доступ отклонён")
+        return HttpResponseRedirect(reverse('auth:login'))
+        #return HttpResponse("Доступ отклонён")

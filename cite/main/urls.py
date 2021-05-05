@@ -1,7 +1,8 @@
 from django.urls import include, path
 from . import views
 
+app_name = 'auth'
 urlpatterns = [
-    path('', views.home),
-    path('auth/', views.verify),
+    path('login/', views.home, name='login'),
+    path('verify/', views.verify, name='verify'),
 ]
