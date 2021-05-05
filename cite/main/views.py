@@ -2,10 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
-import sys
-sys.path.append("..")
-from src import *
-import model as bm  # cite.model
+from inject_config import *
+import model as bm
 
 
 # Create your views here.
@@ -27,4 +25,4 @@ def verify(request):
         return HttpResponse("Авторизированно")
     else:
         return HttpResponseRedirect(reverse('auth:login'))
-        #return HttpResponse("Доступ отклонён")
+        # return HttpResponse("Доступ отклонён")

@@ -1,21 +1,22 @@
 import inject
 import peewee
-from src import config_loader
-from src.repository import repository as rep
-from src.repository.pw_db import DBFromConfig
+import config_loader
+import repository.repository as rep
+from repository.pw_db import DBFromConfig
 
 
 def inject_config0(binder):
     binder.bind(peewee.Database, peewee.PostgresqlDatabase)
-    binder.bind_to_constructor(config_loader.ConfigLoader, lambda: config_loader.ConfigLoader('..\\src\\config.json'))
+    binder.bind_to_constructor(config_loader.ConfigLoader, lambda: config_loader.ConfigLoader('config.json'))
     binder.bind_to_constructor(rep.AbstractConnection, lambda: DBFromConfig(inject.instance(peewee.Database),
-                                                                            inject.instance(config_loader.ConfigLoader)))
+                                                                            inject.instance(
+                                                                                config_loader.ConfigLoader)))
 
 print('!' * 30)
 inject.clear_and_configure(inject_config0)
 
-from src.repository.pers_rep import PersonRepository, PWPersonRep
-from src.repository.acc_rep import AccountsRepository, PWAccountsRep
+from repository.pers_rep import PersonRepository, PWPersonRep
+from repository.acc_rep import AccountsRepository, PWAccountsRep
 
 
 def inject_config(binder):

@@ -1,10 +1,4 @@
-from inject_module import *
-from src.objects.account import *
-
-from src.repository.acc_rep import AccountsRepository
-from src.repository.pers_rep import PersonRepository
-from copy import *
-from src.errors import *
+from cite import *
 
 
 def _main():

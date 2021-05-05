@@ -1,8 +1,6 @@
 import hashlib, uuid
-import sys
-sys.path.append("..")
-from src import *
-from src.objects import *
+from inject_config import *
+from objects import *
 
 
 class AccountProc(object):

@@ -1,8 +1,8 @@
 import inject
 import peewee
-from src import config_loader
-from src.repository import repository as rep
-from src.repository.pw_db import DBFromConfig
+from cite import config_loader
+from cite import repository as rep
+from cite import DBFromConfig
 import os
 
 def inject_config0(binder):
@@ -10,14 +10,15 @@ def inject_config0(binder):
     binder.bind(peewee.Database, peewee.PostgresqlDatabase)
     binder.bind_to_constructor(config_loader.ConfigLoader, lambda: config_loader.ConfigLoader('..\\src\\config.json'))
     binder.bind_to_constructor(rep.AbstractConnection, lambda: DBFromConfig(inject.instance(peewee.Database),
-                                                                            inject.instance(config_loader.ConfigLoader)))
+                                                                            inject.instance(
+                                                                                config_loader.ConfigLoader)))
 
 
 inject.configure(inject_config0)
 
 
-from src.repository.pers_rep import PersonRepository, PWPersonRep
-from src.repository.acc_rep import AccountsRepository, PWAccountsRep
+from cite import PersonRepository, PWPersonRep
+from cite import AccountsRepository, PWAccountsRep
 
 
 def inject_config(binder):
