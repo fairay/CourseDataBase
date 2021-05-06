@@ -8,16 +8,19 @@ import model as bm
 import errors as exc
 
 
-def check_account(request: ReqClass, verifier: bm.BaseAccCheck) -> HttpResponseRedirect:
+def check_account(request: ReqClass, verifier: bm.BaseAccCheck) -> HttpResponseRedirect or None:
+    if 'user' not in request.session.keys():
+        return HttpResponseRedirect(reverse('auth:login'))
+
     try:
-        verifier.check(request.session)
+        verifier.check(request.session['user'])
     except exc.NotAuthorisedExc:
-        print('@@@')
         return HttpResponseRedirect(reverse('auth:login'))
     except exc.UnverifiedExc:
         return HttpResponseRedirect(reverse('auth:login'))
     except exc.NotAllowedExc:
         return HttpResponseRedirect(reverse('auth:login'))
+
     return None
 
 
@@ -32,9 +35,7 @@ def verify(request: ReqClass):
     acc = bm.AccountProc.login(request.POST['login'], request.POST['password'])
 
     if acc is not None:
-        request.session['login'] = acc.get_login()
-        request.session['perstype'] = acc.get_pers_type()
-
+        request.session['user'] = bm.AccountProc.get_cookie(acc)
         return HttpResponseRedirect(reverse('auth:profile'))
     else:
         # TODO: Access denied message at login page
@@ -46,7 +47,8 @@ def profile(request: ReqClass):
     if check_redirect is not None:
         return check_redirect
 
-    person = bm.PersonProc.profile_info(request.session['login'])
-    perstype = bm.AccountProc.type_name(request.session['perstype'])
+    person = bm.PersonProc.profile_info(request.session['user']['login'])
+    perstype = request.session['user']['perstype']
+    type_name = request.session['user']['type_name']
 
     return render(request, 'main/profile.html', locals())

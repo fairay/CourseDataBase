@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block navigate %}
+    <nav>
+        <a>Администратор</a>
+        <a href="{% url 'auth:profile'%}">Профиль</a>
+        <ul>
+            <li><a href="#">Сотрудники</a></li>
+            <li><a href="#">Заявки</a></li>
+
+            <li><a href="#">Заказы</a></li>
+            <li><a href="#">Проезды</a></li>
+            <li><a href="#">Дежурства</a></li>
+        </ul>
+    </nav>
+{% endblock %}

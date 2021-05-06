@@ -8,14 +8,23 @@ class AccountProc(object):
     _type_dict = {'admin': 'Администратор'}
 
     @staticmethod
-    def type_name(perstype: str):
+    def type_name(perstype: str) -> str:
         if perstype in AccountProc._type_dict.keys():
             return AccountProc._type_dict[perstype]
         else:
             return perstype
 
     @staticmethod
-    def login(login: str, password: str):
+    def get_cookie(obj: Account) -> dict:
+        obj_dict = {
+            'login': obj.get_login(),
+            'perstype': obj.get_pers_type(),
+            'type_name': AccountProc.type_name(obj.get_pers_type()),
+        }
+        return obj_dict
+
+    @staticmethod
+    def login(login: str, password: str) -> Account or None:
         acc_rep = inject.instance(AccountsRepository)
         acc = acc_rep.get_by_login(login)
 
@@ -59,7 +68,7 @@ class AccountProc(object):
 
 
 class BaseAccCheck(object):
-    def check(self, data: dir):
+    def check(self, data: dict):
         if 'login' not in data.keys():
             raise exc.NotAuthorisedExc()
         if 'perstype' not in data.keys():
