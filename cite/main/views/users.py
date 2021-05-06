@@ -30,9 +30,10 @@ def profile(request: ReqClass, login: str):
     return render(request, 'main/profile.html', locals())
 
 
-# def get_all(request: ReqClass):
-#     check_redirect = check_account(request, bm.AdminCheck())
-#     if check_redirect is not None:
-#         return check_redirect
+def get_all(request: ReqClass):
+    check_redirect = check_account(request, bm.AdminCheck())
+    if check_redirect is not None:
+        return check_redirect
 
-
+    person_arr = bm.PersonProc.all_profiles()
+    return render(request, 'users/all.html', locals())

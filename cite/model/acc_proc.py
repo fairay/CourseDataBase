@@ -5,7 +5,7 @@ import errors as exc
 
 
 class AccountProc(object):
-    _type_dict = {'admin': 'Администратор'}
+    _type_dict = {'admin': 'Администратор', 'guard': 'Охранник'}
 
     @staticmethod
     def type_name(perstype: str) -> str:
@@ -51,6 +51,11 @@ class AccountProc(object):
         acc_rep.create(new_acc)
 
     @staticmethod
+    def get(login: str):
+        acc_rep = inject.instance(AccountsRepository)
+        return acc_rep.get_by_login(login)
+
+    @staticmethod
     def _generate_salt():
         return uuid.uuid4().hex + uuid.uuid4().hex
 
@@ -78,7 +83,7 @@ class BaseAccCheck(object):
 class RoleCheck(BaseAccCheck):
     _allowed_roles = []
 
-    def check(self, data: dir):
+    def check(self, data: dict):
         super(RoleCheck, self).check(data)
         if data['perstype'][0] == '~':
             raise exc.UnverifiedExc()

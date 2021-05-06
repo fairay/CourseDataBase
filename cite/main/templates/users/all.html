@@ -1,32 +1,28 @@
-{% extends "base.html" %}
+{% extends "general.html" %}
 
-{% block title %} Мой профиль {% endblock %}
+{% block page_title %} Сотрудники {% endblock %}
 
 {% block content %}
-    <nav>
-        <a>{{perstype}}</a>
-        <a href="{% url 'auth:profile'%}">Профиль</a>
-        <ul>
-            <li><a href="#">Сотрудники</a></li>
-            <li><a href="#">Заявки</a></li>
 
-            <li><a href="#">Заказы</a></li>
-            <li><a href="#">Проезды</a></li>
-            <li><a href="#">Дежурства</a></li>
-        </ul>
-    </nav>
-
-    <h1> Профиль </h1>
-
-    <h3> Мои данные </h3>
+    <h1> Список всех сотрудников </h1>
 
     <div>
-        <label> Должность  </label>
         <table>
-            <tr>    <td>Имя</td>        <td>{{person.forename}}</td> </tr>
-            <tr>    <td>Фамилия</td>    <td>{{person.surname}}</td> </tr>
-            <tr>    <td>Должность</td>  <td>{{person.perstype}}</td> </tr>
-            <tr>    <td>Пол</td>        <td>{{person.gender}}</td> </tr>
+            <tr>
+                <td><b>Должность</b></td>
+                <td><b>Фамилия</b></td>
+                <td><b>Имя</b></td>
+                <td><b>Профиль</b></td>
+            </tr>
+
+            {% for person in person_arr %}
+            <tr>
+                <td>{{person.type_name}}</td>
+                <td>{{person.surname}}</td>
+                <td>{{person.forename}}</td>
+                <td> <a href="{% url 'users:profile' person.login %}">Профиль</a> </td>
+            </tr>
+            {% endfor %}
         </table>
     </div>
 {% endblock %}
