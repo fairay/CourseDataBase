@@ -9,6 +9,7 @@ class PersonRepository(Repository):
     def update(self, old_obj: Person, new_obj: Person): raise NotImplementedError
     def delete(self, obj: Person): raise NotImplementedError
     def get_all(self) -> [Person]: raise NotImplementedError
+    def get_by_login(self, login: str) -> Person: raise NotImplementedError
 
 
 class PWPersonRep(PersonRepository):
@@ -35,3 +36,8 @@ class PWPersonRep(PersonRepository):
     def get_all(self) -> [Person]:
         res = PersonModel.select()
         return request_to_objects(res, Person)
+
+    def get_by_login(self, login: str) -> Person:
+        res = PersonModel.select().where(PersonModel.login == login)
+        pers_arr = request_to_objects(res, Person)
+        return pers_arr[0] if len(pers_arr) else None

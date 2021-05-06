@@ -1,21 +1,14 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-<!--    <form method="post", action= "auth/">-->
+{% block title %} Авторизация {% endblock %}
+
+{% block content %}
     <form method="post", action="{% url 'auth:verify'%}">
         {% csrf_token %}
 
         <div>
             <label> Логин: </label>
-            <input type="text" name="login" required>
+            <input type="text" name="login" value="{{ login }}" required>
         </div>
 
         <div>
@@ -26,11 +19,6 @@
         <div>
             <button type="submit">Войти</button>
         </div>
-
     </form>
 
-    {% for user in user_list %}
-        <li>{{ user.login }}, {{ user.perstype }}</li>
-    {% endfor %}
-</body>
-</html>
+{% endblock %}

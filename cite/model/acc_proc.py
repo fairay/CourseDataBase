@@ -1,9 +1,19 @@
 import hashlib, uuid
 from inject_config import *
 from objects import *
+import errors as exc
 
 
 class AccountProc(object):
+    _type_dict = {'admin': 'Администратор'}
+
+    @staticmethod
+    def type_name(perstype: str):
+        if perstype in AccountProc._type_dict.keys():
+            return AccountProc._type_dict[perstype]
+        else:
+            return perstype
+
     @staticmethod
     def login(login: str, password: str):
         acc_rep = inject.instance(AccountsRepository)
@@ -46,3 +56,28 @@ class AccountProc(object):
         hashed_pw = AccountProc._hash_password(password, salt)
 
         return hashed_pw == acc.get_hashed_password()
+
+
+class BaseAccCheck(object):
+    def check(self, data: dir):
+        if 'login' not in data.keys():
+            raise exc.NotAuthorisedExc()
+        if 'perstype' not in data.keys():
+            raise exc.NotAuthorisedExc()
+
+
+class RoleCheck(BaseAccCheck):
+    _allowed_roles = []
+
+    def check(self, data: dir):
+        super(RoleCheck, self).check(data)
+        if data['perstype'][0] == '~':
+            raise exc.UnverifiedExc()
+        if data['perstype'] not in self._allowed_roles:
+            raise exc.NotAllowedExc()
+
+
+class AllRoleCheck(RoleCheck): _allowed_roles = ['admin', 'guard', 'driver']
+class AdminCheck(RoleCheck):  _allowed_roles = ['admin']
+class DriverCheck(RoleCheck): _allowed_roles = ['admin', 'driver']
+class GuardCheck(RoleCheck): _allowed_roles = ['admin', 'guard']
