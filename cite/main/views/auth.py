@@ -28,7 +28,7 @@ def login(request: ReqClass):
     if check_account(request, bm.AllRoleCheck()) is not None:
         return render(request, 'main/login.html', locals())
     else:
-        return HttpResponseRedirect(reverse('auth:profile'))
+        return HttpResponseRedirect(reverse('users:profile'))
 
 
 def verify(request: ReqClass):
@@ -36,19 +36,8 @@ def verify(request: ReqClass):
 
     if acc is not None:
         request.session['user'] = bm.AccountProc.get_cookie(acc)
-        return HttpResponseRedirect(reverse('auth:profile'))
+        return HttpResponseRedirect(reverse('users:profile'))
     else:
         # TODO: Access denied message at login page
         return HttpResponseRedirect(reverse('auth:login'))
 
-
-def profile(request: ReqClass):
-    check_redirect = check_account(request, bm.AllRoleCheck())
-    if check_redirect is not None:
-        return check_redirect
-
-    person = bm.PersonProc.profile_info(request.session['user']['login'])
-    perstype = request.session['user']['perstype']
-    type_name = request.session['user']['type_name']
-
-    return render(request, 'main/profile.html', locals())

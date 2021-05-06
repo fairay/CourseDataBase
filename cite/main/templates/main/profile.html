@@ -1,15 +1,18 @@
 {% extends "general.html" %}
 
-{% block page_title %} Заголовок {% endblock %}
+{% block page_title %} Профиль {% endblock %}
 
 {% block content %}
     <h1> Мой профиль </h1>
     <div>
         <table>
-            <tr>    <td>Имя</td>        <td>{{person.forename}}</td> </tr>
-            <tr>    <td>Фамилия</td>    <td>{{person.surname}}</td> </tr>
-            <tr>    <td>Должность</td>  <td>{{request.session.user.type_name}}</td> </tr>
-            <tr>    <td>Пол</td>        <td>{{person.gender}}</td> </tr>
+            <tr>    <td>Имя</td>            <td>{{person.forename}}</td> </tr>
+            <tr>    <td>Фамилия</td>        <td>{{person.surname}}</td> </tr>
+            <tr>    <td>Должность</td>      <td>{{request.session.user.type_name}}</td> </tr>
+            <tr>    <td>Логин</td>          <td>{{person.login}}</td> </tr>
+            <tr>    <td>Пол</td>            <td>{{person.gender}}</td> </tr>
+            <tr>    <td>Дата рождения</td>  <td>{{person.dob}}</td> </tr>
+            <tr>    <td>Телефон</td>        <td>{{person.phonenumber}}</td> </tr>
         </table>
     </div>
 {% endblock %}
