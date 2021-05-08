@@ -8,7 +8,7 @@ def my_profile(request: ReqClass):
         return check_redirect
 
     person = bm.PersonProc.profile_info(request.session['user']['login'])
-    return render(request, 'main/profile.html', locals())
+    return render(request, 'auth/profile.html', locals())
 
 
 def profile(request: ReqClass, login: str):
@@ -20,7 +20,7 @@ def profile(request: ReqClass, login: str):
         return HttpResponseRedirect(reverse('users:profile'))
 
     person = bm.PersonProc.profile_info(login)
-    return render(request, 'main/profile.html', locals())
+    return render(request, 'auth/profile.html', locals())
 
 
 def get_all(request: ReqClass):

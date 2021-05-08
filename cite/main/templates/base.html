@@ -3,12 +3,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+{% block head_block %}
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block head_title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static '\css\base.css' %}"/>
+{% endblock %}
 </head>
 <body>
     <header>
@@ -26,9 +28,13 @@
         {% endif %}
 
         {% if request.session.user %}
-        <div class="block-top-auth">
-            <p><a href="{% url 'auth:logout'%}">Выйти</a></p>
-        </div>
+            <div class="block-top-auth">
+                <p><a href="{% url 'auth:logout'%}">Выйти</a></p>
+            </div>
+        {% else %}
+            <div class="block-top-auth">
+                <p><a href="{% url 'auth:login'%}">Войти</a></p>
+            </div>
         {% endif %}
 
         <div class="top-title">

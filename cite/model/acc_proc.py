@@ -5,7 +5,11 @@ import errors as exc
 
 
 class AccountProc(object):
-    _type_dict = {'admin': 'Администратор', 'guard': 'Охранник'}
+    _type_dict = {'admin': 'Администратор', 'guard': 'Охранник', 'driver': 'Водитель'}
+
+    @staticmethod
+    def get_type_names() -> dict:
+        return AccountProc._type_dict
 
     @staticmethod
     def type_name(perstype: str) -> str:

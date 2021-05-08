@@ -1,10 +1,11 @@
 from .common import *
+import requests
 
 
 def login(request: ReqClass):
     msg = extract_msg(request)
     if check_account(request, bm.AllRoleCheck(), False) is not None:
-        return render(request, 'main/login.html', locals())
+        return render(request, 'auth/login.html', locals())
     else:
         return HttpResponseRedirect(reverse('users:profile'))
 
@@ -26,3 +27,18 @@ def verify(request: ReqClass):
         request.session['warning_msg'] = 'Авторизационные данные неверны, попробуйте снова'
         return HttpResponseRedirect(reverse('auth:login'))
 
+
+def signup(request: ReqClass):
+    if request.method == 'POST':
+        pre_data = request.POST
+
+    if check_account(request, bm.AllRoleCheck(), False) is None:
+        request.session['info_msg'] = 'Для прохождения регистрации выйдете из аккаунта'
+        return HttpResponseRedirect(reverse('users:profile'))
+
+    pers_types = bm.AccountProc.get_type_names()
+    return render(request, 'auth/signup.html', locals())
+
+
+def register(request: ReqClass):
+    pass

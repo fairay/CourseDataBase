@@ -1,4 +1,10 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block head_block %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static '\css\unlogin.css' %}"/>
+{% endblock %}
 
 {% block head_title %} Авторизация {% endblock %}
 {% block top_title %} Авторизация {% endblock %}
@@ -21,5 +27,7 @@
             <button type="submit">Войти</button>
         </div>
     </form>
+
+    <p><a href="{% url 'auth:signup' %}"> Зарегестрироваться </a></p>
 
 {% endblock %}

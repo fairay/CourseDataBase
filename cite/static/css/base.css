@@ -1,3 +1,9 @@
+/*  #0B0C10 dark gray
+    #1f2833 
+    #C5c6c7 gray
+    #66fcf1 
+    #45A29e light
+ */
 :root {
     --header-h: 80px
 }
@@ -5,13 +11,13 @@
 html, body {
     margin: 0;
     padding: 0;
-    background-color: gray;
+    background-color: #45A29e;
     height: calc(100% - 8%);
 }
 
 .wrapper {
-    margin-right: auto;
-    margin-left:  auto;
+    margin-right: 4%;
+    margin-left:  4%;
 
     max-width: 95%;
     min-height: 90%;
@@ -20,13 +26,13 @@ html, body {
 
     padding-right: 10px;
     padding-left:  10px;
-    background-color: white;
+    background-color: #dfdfdf;
 }
 
 header {
     width: 100%;
     height: var(--header-h);
-    background-color: black;
+    background-color: #0B0C10;
     margin-top: -0px;
 }
 
@@ -60,7 +66,7 @@ header {
     width: 100%;
     height: 60px;
     float: left;
-    background-color: #6B6B6B;
+    background-color: #1f2833;
 }
 .top-menu ul {
     margin-top: 0px;
@@ -72,6 +78,13 @@ header {
     font-family:  "Exo2-Medium", sans-serif;
     font-size: 17px;
     height: 60px;
+}
+.top-menu ul li p {
+    height: 40px;
+    display: block;
+    width: 160px;
+    text-decoration: none;
+    color: white;
 }
 .top-menu ul li a {
     height: 40px;
@@ -92,7 +105,7 @@ header {
     -moz-transition:all 0.5s ease;
     background: #00ADE4;
 
-    background: #B5B5B5;
+    background: #66fcf1;
     color: black;
 }
 
