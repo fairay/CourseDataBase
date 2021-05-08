@@ -15,7 +15,9 @@ class PersonRepository(Repository):
 class PWPersonRep(PersonRepository):
     def create(self, obj: Person):
         try:
-            PersonModel.create(**obj.to_dict())
+            pers_dict = obj.to_dict()
+            del pers_dict['personid']
+            PersonModel.create(**pers_dict)
         except IntegrityError as exc:
             raise AlreadyExistsExc()
 

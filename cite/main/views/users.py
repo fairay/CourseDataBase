@@ -3,7 +3,7 @@ from .common import *
 
 def my_profile(request: ReqClass):
     msg = extract_msg(request)
-    check_redirect = check_account(request, bm.AllRoleCheck())
+    check_redirect = check_account(request, bm.BaseAccCheck())
     if check_redirect is not None:
         return check_redirect
 
@@ -28,5 +28,5 @@ def get_all(request: ReqClass):
     if check_redirect is not None:
         return check_redirect
 
-    person_arr = bm.PersonProc.all_profiles()
+    person_arr = bm.PersonProc.all_profiles(bm.AccountProc.verified)
     return render(request, 'users/all.html', locals())

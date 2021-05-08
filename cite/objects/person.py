@@ -1,4 +1,5 @@
 from .base_object import *
+import datetime as dt
 
 
 class Person(BaseObj):
@@ -14,13 +15,15 @@ class Person(BaseObj):
         if init_dict is None:
             return
 
-        self._id = init_dict['personid']
         self._login = init_dict['login']
         self._surname = init_dict['surname']
         self._forename = init_dict['forename']
+        self._phone = init_dict['phonenumber']
         self._dob = init_dict['dob']
         self._gender = init_dict['gender']
-        self._phone = init_dict['phonenumber']
+
+        if "personid" in init_dict:
+            self._id = init_dict['personid']
 
     def to_dict(self) -> dict:
         return {'personid': self._id, 'login': self._login, 'surname': self._surname,

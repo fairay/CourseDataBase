@@ -8,18 +8,15 @@ class PersonProc(object):
     _gender_dict = {'м': 'Мужской', 'ж': 'Женский'}
 
     @staticmethod
-    def _profile_info(person: Person):
-        pers_dict = person.to_dict()
-        pers_dict['gender'] = PersonProc._gender_dict[person.get_gender()]
-        pers_dict['dob'] = str(pers_dict['dob'])
+    def register(obj: Person):
+        rep_ = inject.instance(PersonRepository)
 
-        acc = AccountProc.get(person.get_login())
-        pers_dict['type_name'] = AccountProc.type_name(acc.get_pers_type())
+        try:
+            rep_.create(obj)
+        except exc.AlreadyExistsExc:
+            obj = None
 
-        if pers_dict['phonenumber'] is None:
-            pers_dict['phonenumber'] = '-'
-
-        return pers_dict
+        return obj
 
     @staticmethod
     def profile_info(login: str):
@@ -28,7 +25,26 @@ class PersonProc(object):
         return PersonProc._profile_info(person)
 
     @staticmethod
-    def all_profiles():
-        rep = inject.instance(PersonRepository)
-        all_persons = rep.get_all()
-        return [PersonProc._profile_info(obj) for obj in all_persons]
+    def all_profiles(cmp=None):
+        rep_ = inject.instance(PersonRepository)
+        profiles = []
+        for obj in rep_.get_all():
+            prof = PersonProc._profile_info(obj)
+            if cmp is None or cmp(prof['pers_type']):
+                profiles.append(prof)
+        return profiles
+
+    @staticmethod
+    def _profile_info(person: Person):
+        pers_dict = person.to_dict()
+        pers_dict['gender'] = PersonProc._gender_dict[person.get_gender()]
+        pers_dict['dob'] = str(pers_dict['dob'])
+
+        acc = AccountProc.get(person.get_login())
+        pers_dict['pers_type'] = acc.get_pers_type()
+        pers_dict['type_name'] = AccountProc.type_name(acc.get_pers_type())
+
+        if pers_dict['phonenumber'] is None:
+            pers_dict['phonenumber'] = '-'
+
+        return pers_dict

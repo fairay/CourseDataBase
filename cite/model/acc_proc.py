@@ -8,6 +8,11 @@ class AccountProc(object):
     _type_dict = {'admin': 'Администратор', 'guard': 'Охранник', 'driver': 'Водитель'}
 
     @staticmethod
+    def verified(perstype: str) -> bool: return perstype[0] != '~'
+    @staticmethod
+    def unverified(perstype: str) -> bool: return perstype[0] == '~'
+
+    @staticmethod
     def get_type_names() -> dict:
         return AccountProc._type_dict
 
@@ -15,6 +20,10 @@ class AccountProc(object):
     def type_name(perstype: str) -> str:
         if perstype in AccountProc._type_dict.keys():
             return AccountProc._type_dict[perstype]
+        if AccountProc.unverified(perstype):
+            perstype = perstype[1:]
+            if perstype in AccountProc._type_dict.keys():
+                return AccountProc._type_dict[perstype] + " (неподтверждённый аккаунт)"
         else:
             return perstype
 
@@ -45,14 +54,24 @@ class AccountProc(object):
         old_acc = acc_rep.get_by_login(login)
 
         if old_acc is not None:
-            return  # TODO : raise already exists
+            return None  # TODO : raise already exists
 
         perstype = '~' + perstype
         salt = AccountProc._generate_salt()
         hashedpassword = AccountProc._hash_password(password, salt)
 
-        new_acc = Account(locals())
-        acc_rep.create(new_acc)
+        new_acc = Account(**locals())
+        try:
+            acc_rep.create(new_acc)
+        except exc.AlreadyExistsExc:
+            new_acc = None
+
+        return new_acc
+
+    @staticmethod
+    def unregister(obj: Account):
+        rep_ = inject.instance(AccountsRepository)
+        rep_.delete(obj)
 
     @staticmethod
     def get(login: str):
