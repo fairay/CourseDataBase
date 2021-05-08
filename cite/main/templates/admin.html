@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block navigate %}
-    <nav>
-        <a>Администратор</a>
-        <a href="{% url 'users:profile'%}">Профиль</a>
+    <nav class="top-menu">
         <ul>
+            <li>Администратор</li>
+            <li><a href="{% url 'users:profile'%}">Профиль</a></li>
             <li><a href="{% url 'users:all'%}">Сотрудники</a></li>
             <li><a href="#">Заявки</a></li>
 

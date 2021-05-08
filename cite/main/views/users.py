@@ -1,15 +1,8 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
-from django.core.handlers.wsgi import WSGIRequest as ReqClass
-
-from inject_config import *
-import model as bm
-import errors as exc
-from .auth import check_account
+from .common import *
 
 
 def my_profile(request: ReqClass):
+    msg = extract_msg(request)
     check_redirect = check_account(request, bm.AllRoleCheck())
     if check_redirect is not None:
         return check_redirect

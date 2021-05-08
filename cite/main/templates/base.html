@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,10 +7,34 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% block page_title %}{% endblock %}</title>
+    <title>{% block head_title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static '\css\base.css' %}"/>
 </head>
 <body>
+    <header>
+        <div class="logo">
+            <p>LOGO</p>
+        </div>
+        {% if msg.warning %}
+            <div class="tipmsg" msg="{{msg.warning}}">
+                <p>❗</p>
+            </div>
+        {% elif msg.info %}
+            <div class="tipmsg" msg="{{msg.info}}">
+                <p>🛈</p>
+            </div>
+        {% endif %}
+        <div class="block-top-auth">
+            <p><a href="#">Вход</a></p>
+        </div>
+        <div class="top-title">
+            <h1> {% block top_title %}{% endblock %} </h1>
+        </div>
+    </header>
     <div id="navigation"> {% block navigate %}{% endblock %} </div>
-    <div id="content">{% block content %}{% endblock %}</div>
+
+    <div class="wrapper">
+        <div id="content">{% block content %}{% endblock %}</div>
+    </div>
 </body>
 </html>
