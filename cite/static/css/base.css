@@ -37,7 +37,7 @@ header {
 }
 
 .logo {
-    width: 200px;
+    width: 100px;
     float: left;
     height: 80px;
 }
@@ -55,6 +55,9 @@ header {
 }
 .top-title h1 {
     margin: auto;
+    position: absolute;
+    left: 200px;
+    right: 170px;
     padding-top: 20px;
     text-align: center;
     font-family:  "Exo2-Medium", sans-serif;
@@ -140,13 +143,15 @@ header {
 
 .tipmsg {
     float: left;
-    height: inherit;
+    height: auto;
+    padding-top: calc(var(--header-h)/4);
     display: inline-block;
     position: relative;
 }
 .tipmsg p {
-    font-size: 18px;
-    color: white
+    font-size: 32px;
+    color: white;
+    margin: auto;
 }
 .tipmsg:hover::after {
     content: attr(msg);
