@@ -33,3 +33,8 @@ class Account(BaseObj):
     def set_salt(self, val): self._salt = val
     def set_hashed_password(self, val): self._hashed_password = val
     def set_pers_type(self, val): self._pers_type = val
+
+    login = property(get_login, set_login)
+    salt = property(get_salt, set_salt)
+    hashed_password = property(get_hashed_password, set_hashed_password)
+    pers_type = property(get_pers_type, set_pers_type)

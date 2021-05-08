@@ -1,16 +1,17 @@
 {% extends "general.html" %}
 
-{% block head_title %} Список всех сотрудников {% endblock %}
-{% block top_title %} Сотрудники {% endblock %}
+{% block head_title %} Список всех неподтверверждённых аккаунтов {% endblock %}
+{% block top_title %} Неподтверверждённые сотрудники {% endblock %}
 
 {% block content %}
     <div>
         <table>
             <tr>
-                <td><b>Должность</b></td>
-                <td><b>Имя</b></td>
+                <td><b>Предполагаемая должность</b></td>
                 <td><b>Фамилия</b></td>
+                <td><b>Имя</b></td>
                 <td><b>Профиль</b></td>
+                <td><b>Подтвердить</b></td>
             </tr>
 
             {% for person in person_arr %}
@@ -19,6 +20,7 @@
                 <td>{{person.surname}}</td>
                 <td>{{person.forename}}</td>
                 <td> <a href="{% url 'users:profile' person.login %}">Профиль</a> </td>
+                <td> <a href="{% url 'users:unverified' person.login %}"> ✔ </a></td>
             </tr>
             {% endfor %}
         </table>

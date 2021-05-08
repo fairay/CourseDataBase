@@ -46,4 +46,10 @@ class Person(BaseObj):
     def set_gender(self, val):  self._gender = val
     def set_phone(self, val):  self._phone = val
 
-
+    id = property(get_id, set_id)
+    login = property(get_login, set_login)
+    surname = property(get_surname, set_surname)
+    forename = property(get_forename, set_forename)
+    dob = property(get_dob, set_dob)
+    gender = property(get_gender, set_gender)
+    phone = property(get_phone, set_phone)

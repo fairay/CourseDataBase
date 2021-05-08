@@ -25,13 +25,17 @@ class PersonProc(object):
         return PersonProc._profile_info(person)
 
     @staticmethod
-    def all_profiles(cmp=None):
+    def all_profiles(cmp=None, hide_unver=False):
         rep_ = inject.instance(PersonRepository)
         profiles = []
         for obj in rep_.get_all():
             prof = PersonProc._profile_info(obj)
+            if hide_unver:
+                prof['type_name'] = prof['type_name'].split('(')[0]
+
             if cmp is None or cmp(prof['pers_type']):
                 profiles.append(prof)
+
         return profiles
 
     @staticmethod

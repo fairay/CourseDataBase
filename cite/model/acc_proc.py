@@ -74,6 +74,21 @@ class AccountProc(object):
         rep_.delete(obj)
 
     @staticmethod
+    def approve(login: str):
+        rep_ = inject.instance(AccountsRepository)
+
+        acc = rep_.get_by_login(login)
+        if acc is None:
+            raise exc.NonExistentExc()
+
+        if not AccountProc.unverified(acc.pers_type):
+            raise exc.VerifiedExc()
+
+        new_acc = acc.clone()
+        new_acc.pers_type = acc.pers_type[1:]
+        rep_.update(acc, new_acc)
+
+    @staticmethod
     def get(login: str):
         acc_rep = inject.instance(AccountsRepository)
         return acc_rep.get_by_login(login)

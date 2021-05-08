@@ -12,3 +12,5 @@ class AccountExc(BaseException): pass
 class NotAuthorisedExc(AccountExc): pass
 class NotAllowedExc(AccountExc): pass
 class UnverifiedExc(AccountExc): pass
+class VerifiedExc(AccountExc): pass
+class NonExistentExc(AccountExc): pass
