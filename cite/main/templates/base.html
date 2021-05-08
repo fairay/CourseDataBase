@@ -24,9 +24,13 @@
                 <p>🛈</p>
             </div>
         {% endif %}
+
+        {% if request.session.user %}
         <div class="block-top-auth">
-            <p><a href="#">Вход</a></p>
+            <p><a href="{% url 'auth:logout'%}">Выйти</a></p>
         </div>
+        {% endif %}
+
         <div class="top-title">
             <h1> {% block top_title %}{% endblock %} </h1>
         </div>

@@ -5,6 +5,6 @@ app_name = 'auth'
 urlpatterns = [
     path('login/', auth.login, name='login'),
     path('verify/', auth.verify, name='verify'),
-    # path('logout/', pass, name='logout'),
+    path('logout/', auth.logout, name='logout'),
     # path('signup/', pass, name='signup'),
 ]

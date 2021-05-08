@@ -9,6 +9,12 @@ def login(request: ReqClass):
         return HttpResponseRedirect(reverse('users:profile'))
 
 
+def logout(request: ReqClass):
+    if 'user' in request.session:
+        del request.session['user']
+    return HttpResponseRedirect(reverse('auth:login'))
+
+
 def verify(request: ReqClass):
     acc = bm.AccountProc.login(request.POST['login'], request.POST['password'])
 
@@ -17,6 +23,6 @@ def verify(request: ReqClass):
         request.session['info_msg'] = 'Добро пожаловать!'
         return HttpResponseRedirect(reverse('users:profile'))
     else:
-        # TODO: Access denied message at login page
+        request.session['warning_msg'] = 'Авторизационные данные неверны, попробуйте снова'
         return HttpResponseRedirect(reverse('auth:login'))
 
