@@ -1,3 +1,5 @@
+@import "base.css";
+
 .wrapper {
     height: calc(100%);
 }

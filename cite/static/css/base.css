@@ -4,6 +4,8 @@
     #66fcf1 
     #45A29e light
  */
+ @import url("top_menu.css");
+ 
 :root {
     --header-h: 80px
 }
@@ -73,6 +75,7 @@ header {
     color: white;
 }
 
+/*
 .top-menu {
     width: 100%;
     height: 60px;
@@ -92,10 +95,10 @@ header {
 
     background-color: #1f2833;
 
-    /* flex-grow: 1;
+    flex-grow: 1;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; */
+    justify-content: space-between; 
 }
 .top-menu > li {
     border-left: 2px ridge  #66fcf1;
@@ -179,7 +182,7 @@ header {
     background: #66fcf1;
     color: black;
 }
-
+*/
 
 .block-top-auth {
     width: 100px;

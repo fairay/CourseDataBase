@@ -5,6 +5,7 @@
 
 {% block content %}
     <div>
+        {% if person_arr %}
         <table>
             <tr>
                 <td><b>Предполагаемая должность</b></td>
@@ -24,5 +25,8 @@
             </tr>
             {% endfor %}
         </table>
+        {% else %}
+        <h1> Неподтверверждённых аккаунтов сотрудников нет </h1>
+        {% endif %}
     </div>
 {% endblock %}
