@@ -1,17 +1,22 @@
 {% extends "base.html" %}
 
 {% block navigate %}
-    <nav class="top-menu">
-        <ul>
+    <nav>
+        <ul class="top-menu">
             <li><p>Администратор</p></li>
             <li><a href="{% url 'users:profile'%}">Профиль</a></li>
-            <li><a href="{% url 'users:all'%}">Сотрудники</a></li>
-            <li><a href="{% url 'users:unverified'%}">Заявки</a></li>
+            <li>
+                <a href="{% url 'users:all'%}" class="submenu-link">Сотрудники</a>
+                <ul class="top-submenu">
+                    <li><a href="{% url 'users:all'%}"> Все сотрудники </a></li>
+                    <li><a href="{% url 'users:unverified'%}"> Заявки </a></li>
+                </ul>
+            </li>
 
             <li><a href="#">Заказы</a></li>
             <li><a href="#">Проезды</a></li>
             <li><a href="#">Дежурства</a></li>
-            <li></li>
+            <!-- {{ request.path }} -->
         </ul>
     </nav>
 {% endblock %}

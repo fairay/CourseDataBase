@@ -30,9 +30,9 @@ class AccountProc(object):
     @staticmethod
     def get_cookie(obj: Account) -> dict:
         obj_dict = {
-            'login': obj.get_login(),
-            'perstype': obj.get_pers_type(),
-            'type_name': AccountProc.type_name(obj.get_pers_type()),
+            'login': obj.login,
+            'perstype': obj.pers_type,
+            'type_name': AccountProc.type_name(obj.pers_type),
         }
         return obj_dict
 

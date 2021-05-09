@@ -12,6 +12,7 @@ class Person(BaseObj):
     _phone = None
 
     def __init__(self, **init_dict):
+        super(Person, self).__init__()
         if init_dict is None:
             return
 

@@ -24,7 +24,7 @@ class PWPersonRep(PersonRepository):
     def update(self, old_obj: Person, new_obj: Person):
         query = PersonModel. \
             update(**new_obj.to_dict()). \
-            where(PersonModel.personid == old_obj.set_id())
+            where(PersonModel.personid == old_obj.id)
 
         try:
             query.execute()
@@ -32,7 +32,7 @@ class PWPersonRep(PersonRepository):
             raise WrongUpdExc()
 
     def delete(self, obj: Person):
-        query = PersonModel.delete().where(PersonModel.personid == obj.set_id())
+        query = PersonModel.delete().where(PersonModel.personid == obj.id)
         query.execute()
 
     def get_all(self) -> [Person]:

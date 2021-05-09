@@ -22,14 +22,14 @@ class PWAccountsRep(AccountsRepository):
     def update(self, old_obj: Account, new_obj: Account):
         query = AccountsModel.\
             update(**new_obj.to_dict()).\
-            where(AccountsModel.login == old_obj.get_login())
+            where(AccountsModel.login == old_obj.login)
         try:
             query.execute()
         except IntegrityError as exc:
             raise WrongUpdExc()
 
     def delete(self, obj: Account):
-        query = AccountsModel.delete().where(AccountsModel.login == obj.get_login())
+        query = AccountsModel.delete().where(AccountsModel.login == obj.login)
         query.execute()
 
     def get_all(self) -> [Account]:

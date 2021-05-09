@@ -8,6 +8,7 @@ class Account(BaseObj):
     _pers_type = None
 
     def __init__(self, **init_dict):
+        super(Account, self).__init__()
         if init_dict is None:
             return
 

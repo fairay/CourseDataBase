@@ -20,9 +20,9 @@ class PersonProc(object):
 
     @staticmethod
     def profile_info(login: str):
-        rep = inject.instance(PersonRepository)
-        person = rep.get_by_login(login)
-        return PersonProc._profile_info(person)
+        rep_ = inject.instance(PersonRepository)
+        person_ = rep_.get_by_login(login)
+        return PersonProc._profile_info(person_)
 
     @staticmethod
     def all_profiles(cmp=None, hide_unver=False):
@@ -39,12 +39,12 @@ class PersonProc(object):
         return profiles
 
     @staticmethod
-    def _profile_info(person: Person):
-        pers_dict = person.to_dict()
-        pers_dict['gender'] = PersonProc._gender_dict[person.get_gender()]
+    def _profile_info(person_: Person):
+        pers_dict = person_.to_dict()
+        pers_dict['gender'] = PersonProc._gender_dict[person_.gender]
         pers_dict['dob'] = str(pers_dict['dob'])
 
-        acc = AccountProc.get(person.get_login())
+        acc = AccountProc.get(person_.login)
         pers_dict['pers_type'] = acc.get_pers_type()
         pers_dict['type_name'] = AccountProc.type_name(acc.get_pers_type())
 
