@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block navigate %}
+    <nav>
+        <ul class="top-menu">
+            <li><p>Охранник</p></li>
+            <li><a href="{% url 'users:profile'%}">Профиль</a></li>
+            <li>
+                <a href="#" class="submenu-link">Записи проезда</a>
+                <ul class="top-submenu">
+                    <li><a href="#"> Текущие </a></li>
+                    <li><a href="#"> Добавить </a></li>
+                    <li><a href="#"> История </a></li>
+                </ul>
+            </li>
+
+            <li><a href="#">Дежурства</a></li>
+            <!-- {{ request.path }} -->
+        </ul>
+    </nav>
+{% endblock %}

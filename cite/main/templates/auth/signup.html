@@ -15,23 +15,34 @@
     <form method="post", action="{% url 'auth:register'%}">
         {% csrf_token %}
         <p><table>
-            <tr title="Формат: прописные латинские буквы, цифры, _">
+            <tr>
                 <td> Логин </td>
-                <td> <input type="text" name="login" value="{{ pre_data.login }}" pattern="[a-z0-9_]{1-64}" required> </td>
+                <td> <input type="text" name="login" value="{{ pre_data.login }}"
+                     pattern="[a-z0-9_]*" title="Прописные латинские буквы, цифры, _" required> </td>
             </tr>
 
-            <tr title="Формат: латинские буквы, цифры, _!#$%&">
+            <tr>
                 <td> Пароль </td>
-                <td> <input type="password" name="password" value="{{ pre_data.password }}" pattern="[A-Za-z0-9_!#$%&]{1-64}" required> </td>
+                <td> <input type="password" name="password" value="{{ pre_data.password }}" 
+                    pattern="[A-Za-z0-9_!#$%&]*" title="Латинские буквы, цифры, _!#$%&" required> </td>
             </tr>
 
             <tr>
                 <td> Должность </td>
                 <td> <select name="perstype" required>
-                    <option disabled value="" selected>Выберите должность</option>
+                    {% if pre_data.perstype %}
+                        <option disabled value="">Выберите должность</option>
+                    {% else %}
+                        <option disabled value="" selected>Выберите должность</option>
+                    {% endif %}
+                    
 
                     {% for key, value in pers_types.items %}
-                        <option value="{{key}}"> {{value}} </option>
+                        {% if pre_data.perstype == key %}
+                            <option selected value="{{key}}"> {{value}} </option>
+                        {% else %}
+                            <option value="{{key}}"> {{value}} </option>
+                        {% endif %}
                     {% endfor %}
                 </select></td>
             </tr>
@@ -40,28 +51,30 @@
         <p><table>
             <tr>
                 <td> Имя </td>
-                <td> <input type="text" name="forename" value="{{ pre_data.forename }}" pattern="[А-Яа-яA-Za-z ]{1-64}" required> </td>
+                <td> <input type="text" name="forename" value="{{ pre_data.forename }}"
+                    pattern="[А-Яа-яA-Za-z ]{1,64}" title="Имя содержит только буквы и пробелы" required> </td>
             </tr>
 
             <tr>
                 <td> Фамилия </td>
-                <td> <input type="text" name="surname" value="{{ pre_data.surname }}" pattern="[А-Яа-яA-Za-z ]{1-64}" required> </td>
+                <td> <input type="text" name="surname" value="{{ pre_data.surname }}"
+                    pattern="[А-Яа-яA-Za-z ]{1,64}" title="Фамилия содержит только буквы и пробелы" required> </td>
             </tr>
 
             <tr>
-                <td> Пол </td>
+                <td> Пол "{{pre_data.gender}}" </td>
                 <td>
                     <div class="form_gender_btn">
-                        {% if "{{ pre_data.gender }}" is "м" %}
-                        <input id="gender-1" type="radio" name="gender" value="м" checked>
+                        {% if pre_data.gender == "м" %}
+                            <input id="gender-1" type="radio" name="gender" value="м" checked>
                         {% else %}
-                        <input id="gender-1" type="radio" name="gender" value="м">
+                            <input id="gender-1" type="radio" name="gender" value="м">
                         {% endif %}
                         <label for="gender-1">Мужской</label>
                     </div>
                     
                     <div class="form_gender_btn">
-                        {% if "{{ pre_data.gender }}" is "ж" %}
+                        {% if pre_data.gender == "ж" %}
                         <input id="gender-2" type="radio" name="gender" value="ж" checked>
                         {% else %}
                         <input id="gender-2" type="radio" name="gender" value="ж">
@@ -73,7 +86,13 @@
 
             <tr>
                 <td> Дата рождения </td>
-                <td> <input type="date" name="dob" value="{{ pre_data.dob }}" required> </td>
+                <td> 
+                    {% if pre_data.dob %}
+                        <input type="date" name="dob" value="{{ pre_data.dob }}" required>
+                    {% else %}
+                        <input type="date" name="dob" value="2000-01-01" required>
+                    {% endif %}
+                </td>
             </tr>
 
             <tr>
