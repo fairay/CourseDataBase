@@ -45,6 +45,11 @@ header {
     background-color: #0B0C10;
     margin-top: -0px;
 }
+ 
+input:invalid {
+    border: 1px solid red;
+}
+
 
 
 .logo {

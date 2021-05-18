@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block navigate %}
-    <nav class="top-menu">
-        <ul>
+    <nav>
+        <ul class="top-menu">
             <li><p>Администратор</p></li>
-            <li><a href="#">Функционал недоступен</a></li>
-            <li><a href="#">Дождитесь подтверждения</a></li>
+            <li><a href="{% url 'auth:upd_type'%}">Функционал недоступен</a></li>
+            <li><a href="{% url 'auth:upd_type'%}">Дождитесь подтверждения</a></li>
         </ul>
     </nav>
 {% endblock %}

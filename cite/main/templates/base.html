@@ -19,11 +19,11 @@
         </div>
         {% if msg.warning %}
             <div class="tipmsg" msg="{{msg.warning}}">
-                <p>❗</p>
+                <img src="{% static "icons/warning2.png" %}" width="50" height="50" />
             </div>
         {% elif msg.info %}
             <div class="tipmsg" msg="{{msg.info}}">
-                <p>🛈</p>
+                <img src="{% static "icons/info.png" %}" width="50" height="50" />
             </div>
         {% endif %}
 
@@ -49,4 +49,7 @@
 </body>
 </html>
 
-<script> </script>
+<script>
+{% block script_block %}
+{% endblock %}
+</script>

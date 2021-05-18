@@ -8,6 +8,8 @@ def my_profile(request: ReqClass):
         return check_redirect
 
     person = bm.PersonProc.profile_info(request.session['user']['login'])
+    if person is None:
+        msg['warning'] = 'Ошибка: профиль не найден'
     return render(request, 'auth/profile.html', locals())
 
 

@@ -8,4 +8,5 @@ urlpatterns = [
     path('logout/', auth.logout, name='logout'),
     path('signup/', auth.signup, name='signup'),
     path('register/', auth.register, name='register'),
+    path('upd_type/', auth.upd_type, name='upd_type')
 ]

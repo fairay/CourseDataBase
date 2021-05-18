@@ -12,5 +12,9 @@ class Repository(object):
         raise NotImplementedError
 
 
-class AbstractConnection(object):
-    pass
+class AbstractConnection(object): pass
+class TestConnection(AbstractConnection): pass
+class AdminConnection(AbstractConnection): pass
+class GuardConnection(AbstractConnection): pass
+class DriverConnection(AbstractConnection): pass
+class UnverifConnection(AbstractConnection): pass

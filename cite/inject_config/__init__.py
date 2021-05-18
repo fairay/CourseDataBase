@@ -1,5 +1,6 @@
 import inject
 import peewee
+from playhouse.postgres_ext import *
 import config_loader
 import repository.repository as rep
 from repository.pw_db import DBFromConfig
@@ -8,9 +9,25 @@ from repository.pw_db import DBFromConfig
 def inject_config0(binder):
     binder.bind(peewee.Database, peewee.PostgresqlDatabase)
     binder.bind_to_constructor(config_loader.ConfigLoader, lambda: config_loader.ConfigLoader('config.json'))
-    binder.bind_to_constructor(rep.AbstractConnection, lambda: DBFromConfig(inject.instance(peewee.Database),
-                                                                            inject.instance(
-                                                                                config_loader.ConfigLoader)))
+
+    binder.bind_to_constructor(rep.AbstractConnection,
+        lambda: DBFromConfig(inject.instance(peewee.Database),
+                             inject.instance(config_loader.ConfigLoader).get_article('admin_connect')))
+    binder.bind_to_constructor(rep.TestConnection,
+        lambda: PostgresqlExtDatabase('peewee_unittest', user='admin'))
+    binder.bind_to_constructor(rep.AdminConnection,
+        lambda: DBFromConfig(inject.instance(peewee.Database),
+                             inject.instance(config_loader.ConfigLoader).get_article('admin_connect')))
+    binder.bind_to_constructor(rep.GuardConnection,
+        lambda: DBFromConfig(inject.instance(peewee.Database),
+                             inject.instance(config_loader.ConfigLoader).get_article('guard_connect')))
+    binder.bind_to_constructor(rep.DriverConnection,
+        lambda: DBFromConfig(inject.instance(peewee.Database),
+                             inject.instance(config_loader.ConfigLoader).get_article('driver_connect')))
+    binder.bind_to_constructor(rep.UnverifConnection,
+        lambda: DBFromConfig(inject.instance(peewee.Database),
+                             inject.instance(config_loader.ConfigLoader).get_article('unverif_connect')))
+
 
 print('!' * 30)
 inject.clear_and_configure(inject_config0)
@@ -24,6 +41,7 @@ def inject_config(binder):
 
     binder.bind_to_constructor(PersonRepository, lambda: PWPersonRep())
     binder.bind_to_constructor(AccountsRepository, lambda: PWAccountsRep())
+
 
 print('#' * 30)
 inject.clear_and_configure(inject_config)

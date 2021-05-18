@@ -28,13 +28,19 @@ class AccountProc(object):
             return perstype
 
     @staticmethod
-    def get_cookie(obj: Account) -> dict:
+    def _get_cookie(obj: Account) -> dict:
         obj_dict = {
             'login': obj.login,
             'perstype': obj.pers_type,
             'type_name': AccountProc.type_name(obj.pers_type),
         }
         return obj_dict
+
+    @staticmethod
+    def get_cookie(login: str):
+        acc_rep = inject.instance(AccountsRepository)
+        acc = acc_rep.get_by_login(login)
+        return AccountProc._get_cookie(acc)
 
     @staticmethod
     def login(login: str, password: str) -> Account or None:

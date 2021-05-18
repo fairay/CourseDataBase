@@ -1,4 +1,3 @@
-DROP TABLE Person CASCADE;
 DROP TABLE Accounts CASCADE;
 
 CREATE TABLE IF NOT EXISTS Accounts(
@@ -8,9 +7,9 @@ CREATE TABLE IF NOT EXISTS Accounts(
 	HashedPassword	TEXT			NOT NULL
 );
 
+DROP TABLE Person CASCADE;
 CREATE TABLE IF NOT EXISTS Person(
-	PersonID 		SERIAL			PRIMARY KEY,
-	Login			TEXT			REFERENCES Accounts(Login) NOT NULL,
+	Login			TEXT			REFERENCES Accounts(Login) NOT NULL PRIMARY KEY,
 	Surname 		VARCHAR(40) 	NOT NULL,
 	Forename 		VARCHAR(40)		NOT NULL,
 	DOB				DATE			NOT NULL,
@@ -43,7 +42,7 @@ CREATE TABLE IF NOT EXISTS Checkpoints (
 
 CREATE TABLE IF NOT EXISTS PassRecords (
 	RecordID 		SERIAL			PRIMARY KEY,
-	PlateNumber		TEXT			REFERENCES Truck(PlateNumber) NOT NULL,
+	PlateNumber		TEXT			REFERENCES Trucks(PlateNumber) NOT NULL,
 	CheckpointID	INT				REFERENCES Checkpoints(CheckpointID) NOT NULL,
 	PassTime		TIMESTAMP		NOT NULL,
 	Direction		VARCHAR(3)		NOT NULL
@@ -64,7 +63,7 @@ CREATE TABLE IF NOT EXISTS GuardDutys (
 
 CREATE TABLE IF NOT EXISTS DriverDutys (
 	DutyID 			SERIAL			PRIMARY KEY,
-	PlateNumber		TEXT			REFERENCES Truck(PlateNumber) NOT NULL,
+	PlateNumber		TEXT			REFERENCES Trucks(PlateNumber) NOT NULL,
 	Login			TEXT			REFERENCES Person(Login) NOT NULL,
 	BeginDate		DATE			NOT NULL,
 	EndDate			DATE,

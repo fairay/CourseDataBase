@@ -26,8 +26,8 @@ class AccountsModel(BaseModel):
 
 
 class PersonModel(BaseModel):
-    personid = AutoField(column_name='personid', primary_key=True)
-    login = ForeignKeyField(AccountsModel, column_name='login', null=False)
+    # personid = AutoField(column_name='personid', primary_key=True)
+    login = ForeignKeyField(AccountsModel, column_name='login', primary_key=True)
     surname = CharField(column_name='surname', max_length=40, null=False)
     forename = CharField(column_name='forename', max_length=40, null=False)
     dob = DateField(column_name='dob', null=False)

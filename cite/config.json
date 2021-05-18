@@ -1,1 +1,6 @@
-{"db_user": "admin", "db_password": "admin", "db_host": "localhost", "db_name": "transport_system"}
+{
+  "admin_connect": {"user": "admin", "password": "admin", "host": "localhost", "name": "transport_system"},
+  "guard_connect": {"user": "guard", "password": "guard", "host": "localhost", "name": "transport_system"},
+  "driver_connect": {"user": "driver", "password": "driver", "host": "localhost", "name": "transport_system"},
+  "unverif_connect": {"user": "unverif", "password": "unverif", "host": "localhost", "name": "transport_system"}
+}

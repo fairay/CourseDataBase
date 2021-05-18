@@ -40,6 +40,9 @@ class PersonProc(object):
 
     @staticmethod
     def _profile_info(person_: Person):
+        if person_ is None:
+            return None
+
         pers_dict = person_.to_dict()
         pers_dict['gender'] = PersonProc._gender_dict[person_.gender]
         pers_dict['dob'] = str(pers_dict['dob'])
