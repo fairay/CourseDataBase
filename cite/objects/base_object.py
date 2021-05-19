@@ -25,5 +25,8 @@ class BaseObj(object):
     def to_dict(self) -> dict:
         return {}
 
+    def __eq__(self, other):
+        return self.to_dict() == other.to_dict()
+
     def clone(self):
         return deepcopy(self)

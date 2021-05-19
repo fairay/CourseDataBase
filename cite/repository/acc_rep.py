@@ -14,15 +14,18 @@ class AccountsRepository(Repository):
 
 class PWAccountsRep(AccountsRepository):
     _model = None
+    _con = None
 
     # TODO: remove inject.instance(AbstractConnection)
-    def __init__(self, con=inject.instance(AbstractConnection)):
+    def __init__(self, con):
         super().__init__(con)
+        self._con = con
         self._model = AccountsModel(con)
 
     def create(self, obj: Account):
         try:
-            self._model.create(**obj.to_dict())
+            self._model.insert(**obj.to_dict()).execute()
+            # self._model.create(self._con, **obj.to_dict())
         except IntegrityError as exc:
             raise AlreadyExistsExc()
 

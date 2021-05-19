@@ -11,16 +11,9 @@ def request_to_objects(req, obj_class):
 
 
 class BaseModel(Model):
-    class Meta:
-        database: Database = inject.instance(AbstractConnection)
-
-    def __init__(self, con: Database = inject.instance(AbstractConnection), *args, **kwargs):
+    def __init__(self, con: Database, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        class Meta:
-            database: Database = con
-
-        # self.Meta.database = con
+        self._meta.database = con
 
 
 class AccountsModel(BaseModel):
