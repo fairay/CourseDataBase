@@ -31,4 +31,3 @@ class UnverifConnection(AbstractConnection):
 con_dict = {}
 for cl in AbstractConnection.__subclasses__():
     con_dict[str(cl())] = cl
-print(con_dict)

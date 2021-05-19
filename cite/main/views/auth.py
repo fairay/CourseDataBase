@@ -17,10 +17,11 @@ def logout(request: ReqClass):
 
 
 def authorize_user(request: ReqClass, login_: str, password_: str):
-    acc = bm.AccountProc.login(login_, password_)
+    proc = bm.AccountProc('admin')
+    acc = proc.login(login_, password_)
 
     if acc is not None:
-        request.session['user'] = bm.AccountProc.get_cookie(acc.login)
+        request.session['user'] = proc.get_cookie(acc.login)
         request.session['info_msg'] = 'Добро пожаловать!'
         return HttpResponseRedirect(reverse('users:profile'))
     else:
@@ -65,7 +66,8 @@ def upd_type(request: ReqClass):
     if check_redirect is not None:
         return check_redirect
 
-    request.session['user'] = bm.AccountProc.get_cookie(request.session['user']['login'])
+    proc = bm.AccountProc(request.session['user']['perstype'])
+    request.session['user'] = proc.get_cookie(request.session['user']['login'])
     return HttpResponseRedirect(reverse('users:profile'))
 
 
@@ -78,7 +80,10 @@ def register(request: ReqClass):
     for key in pre_data.keys():
         pre_data[key] = pre_data[key][0]
 
-    acc = bm.AccountProc.register(pre_data['login'], pre_data['password'], pre_data['perstype'])
+    acc_proc = bm.AccountProc('admin')
+    pers_proc = bm.PersonProc('admin')
+
+    acc = acc_proc.register(pre_data['login'], pre_data['password'], pre_data['perstype'])
     if acc is None:
         request.session['warning_msg'] = 'Аккаунт с данным именем уже зарегестрирован, попробуйте другой логин'
         pre_data['login'] = ''
@@ -87,9 +92,9 @@ def register(request: ReqClass):
 
     pre_data['phonenumber'] = '+7' + pre_data['phonenumber']
     pers = bm.Person(**pre_data)
-    pers = bm.PersonProc.register(pers)
+    pers = pers_proc.register(pers)
     if pers is None:
-        bm.AccountProc.unregister(acc)
+        acc_proc.unregister(acc)
         request.session['warning_msg'] = 'Ошибка регистрации личных данных'
         request.session['bad_signup'] = pre_data
         return HttpResponseRedirect(reverse('auth:signup'))

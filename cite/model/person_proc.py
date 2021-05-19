@@ -21,13 +21,13 @@ class PersonProc(BaseProc):
     def profile_info(self, login: str):
         rep_ = inject.instance(PersonRepository)(self._con)
         person_ = rep_.get_by_login(login)
-        return PersonProc._profile_info(person_)
+        return self._profile_info(person_)
 
     def all_profiles(self, cmp=None, hide_unver=False):
         rep_ = inject.instance(PersonRepository)(self._con)
         profiles = []
         for obj in rep_.get_all():
-            prof = PersonProc._profile_info(obj)
+            prof = self._profile_info(obj)
             if hide_unver:
                 prof['type_name'] = prof['type_name'].split('(')[0]
 
@@ -36,8 +36,7 @@ class PersonProc(BaseProc):
 
         return profiles
 
-    @staticmethod
-    def _profile_info(person_: Person):
+    def _profile_info(self, person_: Person):
         if person_ is None:
             return None
 
@@ -45,7 +44,8 @@ class PersonProc(BaseProc):
         pers_dict['gender'] = PersonProc._gender_dict[person_.gender]
         pers_dict['dob'] = str(pers_dict['dob'])
 
-        acc = AccountProc.get(person_.login)
+        proc = AccountProc(con=self._con)
+        acc = proc.get(person_.login)
         pers_dict['pers_type'] = acc.get_pers_type()
         pers_dict['type_name'] = AccountProc.type_name(acc.get_pers_type())
 

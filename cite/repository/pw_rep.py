@@ -14,7 +14,9 @@ class BaseModel(Model):
     class Meta:
         database: Database = inject.instance(AbstractConnection)
 
-    def __init__(self, con: Database):
+    def __init__(self, con: Database = inject.instance(AbstractConnection), *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
         class Meta:
             database: Database = con
 

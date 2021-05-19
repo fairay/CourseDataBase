@@ -7,8 +7,12 @@ class BaseProc(object):
     _role = None
     _con = None
 
-    def __init__(self, role: str = 'admin'):
+    def __init__(self, role: str = 'admin', con=None):
         self._role = role
+        if con is not None:
+            self._con = con
+            return
+
         cl = None
         if role[0]:
             cl = rep.con_dict['~']

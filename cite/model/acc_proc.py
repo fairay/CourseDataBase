@@ -37,15 +37,13 @@ class AccountProc(BaseProc):
         }
         return obj_dict
 
-    @staticmethod
-    def get_cookie(login: str):
-        acc_rep = inject.instance(AccountsRepository)
+    def get_cookie(self, login: str):
+        acc_rep = inject.instance(AccountsRepository)(self._con)
         acc = acc_rep.get_by_login(login)
         return AccountProc._get_cookie(acc)
 
-    @staticmethod
-    def login(login: str, password: str) -> Account or None:
-        acc_rep = inject.instance(AccountsRepository)
+    def login(self, login: str, password: str) -> Account or None:
+        acc_rep = inject.instance(AccountsRepository)(self._con)
         acc = acc_rep.get_by_login(login)
 
         if acc is None:
@@ -55,9 +53,8 @@ class AccountProc(BaseProc):
         else:
             return None  # TODO: raise wrong login/password
 
-    @staticmethod
-    def register(login: str, password: str, perstype: str):
-        acc_rep = inject.instance(AccountsRepository)
+    def register(self, login: str, password: str, perstype: str):
+        acc_rep = inject.instance(AccountsRepository)(self._con)
         old_acc = acc_rep.get_by_login(login)
 
         if old_acc is not None:
@@ -67,7 +64,10 @@ class AccountProc(BaseProc):
         salt = AccountProc._generate_salt()
         hashedpassword = AccountProc._hash_password(password, salt)
 
-        new_acc = Account(**locals())
+        acc_dict = locals()
+        del acc_dict['self']
+        new_acc = Account(**acc_dict)
+        print(new_acc.to_dict())
         try:
             acc_rep.create(new_acc)
         except exc.AlreadyExistsExc:
@@ -75,14 +75,12 @@ class AccountProc(BaseProc):
 
         return new_acc
 
-    @staticmethod
-    def unregister(obj: Account):
-        rep_ = inject.instance(AccountsRepository)
+    def unregister(self, obj: Account):
+        rep_ = inject.instance(AccountsRepository)(self._con)
         rep_.delete(obj)
 
-    @staticmethod
-    def approve(login: str):
-        rep_ = inject.instance(AccountsRepository)
+    def approve(self, login: str):
+        rep_ = inject.instance(AccountsRepository)(self._con)
 
         acc = rep_.get_by_login(login)
         if acc is None:
@@ -95,9 +93,8 @@ class AccountProc(BaseProc):
         new_acc.pers_type = acc.pers_type[1:]
         rep_.update(acc, new_acc)
 
-    @staticmethod
-    def get(login: str):
-        acc_rep = inject.instance(AccountsRepository)
+    def get(self, login: str):
+        acc_rep = inject.instance(AccountsRepository)(self._con)
         return acc_rep.get_by_login(login)
 
     @staticmethod
