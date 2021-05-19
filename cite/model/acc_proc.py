@@ -1,10 +1,11 @@
 import hashlib, uuid
+from .base_proc import BaseProc
 from inject_config import *
 from objects import *
 import errors as exc
 
 
-class AccountProc(object):
+class AccountProc(BaseProc):
     _type_dict = {'admin': 'Администратор', 'guard': 'Охранник', 'driver': 'Водитель'}
 
     @staticmethod

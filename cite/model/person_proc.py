@@ -1,15 +1,15 @@
 from inject_config import *
+from .base_proc import BaseProc
 from .acc_proc import AccountProc
 from objects import *
 import errors as exc
 
 
-class PersonProc(object):
+class PersonProc(BaseProc):
     _gender_dict = {'м': 'Мужской', 'ж': 'Женский'}
 
-    @staticmethod
-    def register(obj: Person):
-        rep_ = inject.instance(PersonRepository)
+    def register(self, obj: Person):
+        rep_ = inject.instance(PersonRepository)(self._con)
 
         try:
             rep_.create(obj)
@@ -18,15 +18,13 @@ class PersonProc(object):
 
         return obj
 
-    @staticmethod
-    def profile_info(login: str):
-        rep_ = inject.instance(PersonRepository)
+    def profile_info(self, login: str):
+        rep_ = inject.instance(PersonRepository)(self._con)
         person_ = rep_.get_by_login(login)
         return PersonProc._profile_info(person_)
 
-    @staticmethod
-    def all_profiles(cmp=None, hide_unver=False):
-        rep_ = inject.instance(PersonRepository)
+    def all_profiles(self, cmp=None, hide_unver=False):
+        rep_ = inject.instance(PersonRepository)(self._con)
         profiles = []
         for obj in rep_.get_all():
             prof = PersonProc._profile_info(obj)

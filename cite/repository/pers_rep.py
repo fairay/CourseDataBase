@@ -13,36 +13,38 @@ class PersonRepository(Repository):
 
 
 class PWPersonRep(PersonRepository):
-    # def __init__(self, conn):
-    #     _model = PersonModel()
+    _model = None
+
+    # TODO: remove inject.instance(AbstractConnection)
+    def __init__(self, con=inject.instance(AbstractConnection)):
+        super().__init__(con)
+        self._model = PersonModel(con)
 
     def create(self, obj: Person):
         try:
             pers_dict = obj.to_dict()
-            # del pers_dict['personid']
-            PersonModel.create(**pers_dict)
+            self._model.create(**pers_dict)
         except IntegrityError as exc:
             raise AlreadyExistsExc()
 
     def update(self, old_obj: Person, new_obj: Person):
-        query = PersonModel. \
+        query = self._model. \
             update(**new_obj.to_dict()). \
             where(PersonModel.login == old_obj.login)
-
         try:
             query.execute()
         except IntegrityError as exc:
             raise WrongUpdExc()
 
     def delete(self, obj: Person):
-        query = PersonModel.delete().where(PersonModel.login == obj.login)
+        query = self._model.delete().where(PersonModel.login == obj.login)
         query.execute()
 
     def get_all(self) -> [Person]:
-        res = PersonModel.select()
+        res = self._model.select()
         return request_to_objects(res, Person)
 
     def get_by_login(self, login: str) -> Person:
-        res = PersonModel.select().where(PersonModel.login == login)
+        res = self._model.select().where(PersonModel.login == login)
         pers_arr = request_to_objects(res, Person)
         return pers_arr[0] if len(pers_arr) else None

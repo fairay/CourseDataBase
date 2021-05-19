@@ -39,8 +39,9 @@ from repository.acc_rep import AccountsRepository, PWAccountsRep
 def inject_config(binder):
     inject_config0(binder)
 
-    binder.bind_to_constructor(PersonRepository, lambda: PWPersonRep())
-    binder.bind_to_constructor(AccountsRepository, lambda: PWAccountsRep())
+    binder.bind(PersonRepository, PWPersonRep)
+    # TODO: remove inject.instance(AbstractConnection)
+    binder.bind_to_constructor(AccountsRepository, lambda: PWAccountsRep(inject.instance(rep.AbstractConnection)))
 
 
 print('#' * 30)

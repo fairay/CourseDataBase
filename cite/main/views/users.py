@@ -7,7 +7,8 @@ def my_profile(request: ReqClass):
     if check_redirect is not None:
         return check_redirect
 
-    person = bm.PersonProc.profile_info(request.session['user']['login'])
+    proc = bm.PersonProc(request.session['user']['perstype'])
+    person = proc.profile_info(request.session['user']['login'])
     if person is None:
         msg['warning'] = 'Ошибка: профиль не найден'
     return render(request, 'auth/profile.html', locals())
@@ -21,7 +22,8 @@ def profile(request: ReqClass, login: str):
     if login == request.session['user']['login']:
         return HttpResponseRedirect(reverse('users:profile'))
 
-    person = bm.PersonProc.profile_info(login)
+    proc = bm.PersonProc(request.session['user']['perstype'])
+    person = proc.profile_info(login)
     return render(request, 'auth/profile.html', locals())
 
 
@@ -30,7 +32,8 @@ def get_all(request: ReqClass):
     if check_redirect is not None:
         return check_redirect
 
-    person_arr = bm.PersonProc.all_profiles(bm.AccountProc.verified)
+    proc = bm.PersonProc(request.session['user']['perstype'])
+    person_arr = proc.all_profiles(bm.AccountProc.verified)
     return render(request, 'users/all.html', locals())
 
 
@@ -60,5 +63,6 @@ def get_unverified(request: ReqClass):
     if check_redirect is not None:
         return check_redirect
 
-    person_arr = bm.PersonProc.all_profiles(bm.AccountProc.unverified, True)
+    proc = bm.PersonProc(request.session['user']['perstype'])
+    person_arr = proc.all_profiles(bm.AccountProc.unverified, True)
     return render(request, 'users/unverified.html', locals())

@@ -14,6 +14,12 @@ class BaseModel(Model):
     class Meta:
         database: Database = inject.instance(AbstractConnection)
 
+    def __init__(self, con: Database):
+        class Meta:
+            database: Database = con
+
+        # self.Meta.database = con
+
 
 class AccountsModel(BaseModel):
     login = TextField(column_name='login', primary_key=True)
@@ -26,7 +32,6 @@ class AccountsModel(BaseModel):
 
 
 class PersonModel(BaseModel):
-    # personid = AutoField(column_name='personid', primary_key=True)
     login = ForeignKeyField(AccountsModel, column_name='login', primary_key=True)
     surname = CharField(column_name='surname', max_length=40, null=False)
     forename = CharField(column_name='forename', max_length=40, null=False)
