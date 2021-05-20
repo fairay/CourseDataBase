@@ -22,6 +22,9 @@ class BaseObj(object):
             desc_str += "%25s\t" % val
         return desc_str
 
+    def __repr__(self):
+        return type(self).__name__ + str(self.to_dict())
+
     def to_dict(self) -> dict:
         return {}
 

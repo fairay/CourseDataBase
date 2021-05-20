@@ -16,7 +16,6 @@ class PWAccountsRep(AccountsRepository):
     _model = None
     _con = None
 
-    # TODO: remove inject.instance(AbstractConnection)
     def __init__(self, con):
         super().__init__(con)
         self._con = con
@@ -30,6 +29,9 @@ class PWAccountsRep(AccountsRepository):
             raise AlreadyExistsExc()
 
     def update(self, old_obj: Account, new_obj: Account):
+        if self.get_by_login(old_obj.login) is None:
+            raise NotExistsExc()
+
         query = self._model.\
             update(**new_obj.to_dict()).\
             where(AccountsModel.login == old_obj.login)
@@ -39,6 +41,9 @@ class PWAccountsRep(AccountsRepository):
             raise WrongUpdExc()
 
     def delete(self, obj: Account):
+        if self.get_by_login(obj.login) is None:
+            raise NotExistsExc()
+
         query = self._model.delete().where(AccountsModel.login == obj.login)
         query.execute()
 
