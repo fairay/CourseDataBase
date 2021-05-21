@@ -36,3 +36,13 @@ class PersonModel(BaseModel):
 
     class Meta:
         table_name = 'person'
+
+
+class CheckpointsModel(BaseModel):
+    checkpointid = AutoField(column_name='checkpointid', primary_key=True)
+    address = TextField(column_name='address', null=False)
+    phonenumber = CharField(column_name='phonenumber', max_length=40, null=False)
+
+    class Meta:
+        table_name = 'checkpoints'
+

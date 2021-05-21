@@ -2,6 +2,7 @@ import unittest as ut
 from inject_config import *
 from repository.acc_rep import *
 from repository.pers_rep import *
+from repository.check_rep import *
 import errors as exc
 
 
@@ -166,6 +167,29 @@ class PersonRepTest(BaseRepTest, ut.TestCase):
     def test_get_login_nonexist(self):
         get_obj = self._rep.get_by_login(self._obj_nonexist.login)
         self.assertEqual(get_obj, None)
+
+
+class CheckpointsRepTest(BaseRepTest, ut.TestCase):
+    _con = SqliteDatabase(':memory:')
+    _rep = PWCheckpointsRep(_con)
+
+    _obj_upd = Checkpoint(checkpointid=0, address='ул. Лупин-Пупина', phonenumber='+7 (900) 001-02-03')
+
+    _obj_nonexist = Checkpoint(checkpointid=900, address=' ', phonenumber=' ')
+    _obj_arr = [
+        Checkpoint(checkpointid=0, address='ул. Пупин-Лупина', phonenumber='+7 (900) 001-02-03'),
+        Checkpoint(checkpointid=1, address='ул. Кукушкина, 10к2', phonenumber='8 900 229 69 13'),
+        Checkpoint(checkpointid=2, address='ул. Пушкина, 10к2', phonenumber='8 921 292 62 13')
+    ]
+
+    @staticmethod
+    def _sorted_arr(arr: [Checkpoint]) -> [Checkpoint]:
+        return sorted(arr, key=lambda x: x.id)
+
+    def setUp(self) -> None:
+        self._con.connect()
+        self._con.create_tables([CheckpointsModel])
+        super(CheckpointsRepTest, self).setUp()
 
 
 if __name__ == '__main__':
