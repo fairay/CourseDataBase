@@ -21,13 +21,16 @@ class PWPersonRep(PersonRepository):
         self._model = PersonModel(con)
 
     def create(self, obj: Person):
+        query = self._model.insert(**obj.to_dict())
         try:
-            pers_dict = obj.to_dict()
-            self._model.create(**pers_dict)
+            query.execute()
         except IntegrityError as exc:
             raise AlreadyExistsExc()
 
     def update(self, old_obj: Person, new_obj: Person):
+        if self.get_by_login(old_obj.login) is None:
+            raise NotExistsExc()
+
         query = self._model. \
             update(**new_obj.to_dict()). \
             where(PersonModel.login == old_obj.login)
@@ -37,6 +40,9 @@ class PWPersonRep(PersonRepository):
             raise WrongUpdExc()
 
     def delete(self, obj: Person):
+        if self.get_by_login(obj.login) is None:
+            raise NotExistsExc()
+
         query = self._model.delete().where(PersonModel.login == obj.login)
         query.execute()
 

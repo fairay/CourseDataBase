@@ -1,15 +1,17 @@
 import unittest as ut
 from inject_config import *
 from repository.acc_rep import *
+from repository.pers_rep import *
 import errors as exc
 
 
 class BaseRepTest(object):
     _con = SqliteDatabase(':memory:')
+    _rep: Repository = None
+
     _obj_arr: [BaseObj] = []
     _obj_upd: BaseObj = None
     _obj_nonexist: BaseObj = None
-    _rep: Repository = None
 
     def setUp(self) -> None:
         for obj in self._obj_arr:
@@ -105,6 +107,7 @@ class BaseRepTest(object):
 class AccountRepTest(BaseRepTest, ut.TestCase):
     _con = SqliteDatabase(':memory:')
     _rep = PWAccountsRep(_con)
+
     _obj_upd = Account(login='aboba', perstype='guard', salt='000000', hashedpassword='000000')
     _obj_nonexist = Account(login=' ', perstype=' ', salt=' ', hashedpassword=' ')
     _obj_arr = [
@@ -122,6 +125,47 @@ class AccountRepTest(BaseRepTest, ut.TestCase):
         self._con.connect()
         self._con.create_tables([AccountsModel])
         super(AccountRepTest, self).setUp()
+
+    def test_get_login(self):
+        get_obj = self._rep.get_by_login(self._obj_arr[0].login)
+        self.assertEqual(get_obj, self._obj_arr[0])
+
+    def test_get_login_nonexist(self):
+        get_obj = self._rep.get_by_login(self._obj_nonexist.login)
+        self.assertEqual(get_obj, None)
+
+
+class PersonRepTest(BaseRepTest, ut.TestCase):
+    _con = SqliteDatabase(':memory:')
+    _rep = PWPersonRep(_con)
+
+    _default_data = {"gender": 'м', 'dob': '12.12.1990', 'phonenumber': '+7-916-019-21-22'}
+    _obj_upd = Person(login='aboba', forename='Ксения', surname='Иванова', **_default_data)
+
+    _obj_nonexist = Person(login=' ', forename=' ', surname=' ', **_default_data)
+    _obj_arr = [
+        Person(login='aboba', forename='Ксения', surname='Петрова', **_default_data),
+        Person(login='abiba', forename='Валерий', surname='Петров', **_default_data),
+        Person(login='biba', forename='Пётр', surname='Иванов', **_default_data),
+        Person(login='boba', forename='Павел', surname='Виктор', **_default_data),
+    ]
+
+    @staticmethod
+    def _sorted_arr(arr: [Person]) -> [Person]:
+        return sorted(arr, key=lambda x: x.login)
+
+    def setUp(self) -> None:
+        self._con.connect()
+        self._con.create_tables([PersonModel])
+        super(PersonRepTest, self).setUp()
+
+    def test_get_login(self):
+        get_obj = self._rep.get_by_login(self._obj_arr[0].login)
+        self.assertEqual(get_obj, self._obj_arr[0])
+
+    def test_get_login_nonexist(self):
+        get_obj = self._rep.get_by_login(self._obj_nonexist.login)
+        self.assertEqual(get_obj, None)
 
 
 if __name__ == '__main__':
