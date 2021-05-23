@@ -46,3 +46,11 @@ class CheckpointsModel(BaseModel):
     class Meta:
         table_name = 'checkpoints'
 
+
+class TrucksModel(BaseModel):
+    platenumber = TextField(column_name='platenumber', primary_key=True)
+    category = CharField(column_name='category', max_length=40, null=False)
+    model = CharField(column_name='model', max_length=40, null=False)
+
+    class Meta:
+        table_name = 'trucks'
