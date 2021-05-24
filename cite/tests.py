@@ -10,6 +10,7 @@ from repository.truck_rep import *
 from repository.delivery_rep import *
 from repository.record_rep import *
 from repository.guard_rep import *
+from repository.driver_rep import *
 
 
 class BaseRepTest(object):
@@ -351,6 +352,52 @@ class GuardDutyRepTest(BaseRepTest, ut.TestCase):
         self._con.connect()
         self._con.create_tables([GuardDutysModel])
         super(GuardDutyRepTest, self).setUp()
+
+    def test_get_id(self):
+        get_obj = self._rep.get_by_id(self._obj_arr[0].id)
+        self.assertEqual(get_obj, self._obj_arr[0])
+
+    def test_get_id_nonexist(self):
+        get_obj = self._rep.get_by_id(self._obj_nonexist.id)
+        self.assertEqual(get_obj, None)
+
+
+class DriverDutyRepTest(BaseRepTest, ut.TestCase):
+    _con = SqliteDatabase(':memory:')
+    _rep = PWDriverDutyRep(_con)
+
+    _obj_upd = DriverDuty(dutyid=0, platenumber='П000СО666RUS', login='driver',
+                          begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
+                          begintime=time(9, 0, 0), endtime=time(18, 30, 0),
+                          dow='01234')
+
+    _obj_nonexist = DriverDuty(dutyid=100, platenumber='', login='',
+                               begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
+                               begintime=time(9, 0, 0), endtime=time(18, 30, 0),
+                               dow='')
+    _obj_arr = [
+        DriverDuty(dutyid=0, platenumber='П000СО666RUS', login='driver',
+                   begindate=date(2021, 5, 1),
+                   begintime=time(9, 0, 0), endtime=time(18, 30, 0),
+                   dow='01234'),
+        DriverDuty(dutyid=1, platenumber='В000ОР199RUS', login='sanyok1997',
+                   begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
+                   begintime=time(9, 0, 0), endtime=time(18, 30, 0),
+                   dow='01'),
+        DriverDuty(dutyid=2, platenumber='С777ОР100RUS', login='chocksa1999',
+                   begindate=date(2021, 1, 1), enddate=date(2022, 1, 1),
+                   begintime=time(9, 0, 0), endtime=time(15, 0, 0),
+                   dow='0246'),
+    ]
+
+    @staticmethod
+    def _sorted_arr(arr: [GuardDuty]) -> [GuardDuty]:
+        return sorted(arr, key=lambda x: x.id)
+
+    def setUp(self) -> None:
+        self._con.connect()
+        self._con.create_tables([DriverDutysModel])
+        super(DriverDutyRepTest, self).setUp()
 
     def test_get_id(self):
         get_obj = self._rep.get_by_id(self._obj_arr[0].id)

@@ -93,3 +93,17 @@ class GuardDutysModel(BaseModel):
 
     class Meta:
         table_name = 'guarddutys'
+
+
+class DriverDutysModel(BaseModel):
+    dutyid = AutoField(column_name='dutyid', primary_key=True)
+    platenumber = ForeignKeyField(TrucksModel, column_name='platenumber', null=False)
+    login = ForeignKeyField(AccountsModel, column_name='login', null=False)
+    begindate = DateField(column_name='begindate', null=False)
+    enddate = DateField(column_name='enddate', null=True)
+    begintime = TimeField(column_name='begintime', null=False)
+    endtime = TimeField(column_name='endtime', null=False)
+    dow = CharField(column_name='dow', max_length=7, null=False)
+
+    class Meta:
+        table_name = 'driverdutys'
