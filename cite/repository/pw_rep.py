@@ -67,3 +67,15 @@ class DeliveryModel(BaseModel):
 
     class Meta:
         table_name = 'delivery'
+
+
+class PassRecordsModel(BaseModel):
+    recordid = AutoField(column_name='recordid', primary_key=True)
+    platenumber = ForeignKeyField(TrucksModel, column_name='platenumber', null=False)
+    checkpointid = ForeignKeyField(CheckpointsModel, column_name='checkpointid', null=False)
+    passtime = TimestampField(column_name='passtime', null=False)
+    direction = CharField(column_name='direction', max_length=3, null=False,
+                          constraints=[Check("(direction='in' OR direction='out')")])
+
+    class Meta:
+        table_name = 'passrecords'
