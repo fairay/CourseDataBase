@@ -54,3 +54,16 @@ class TrucksModel(BaseModel):
 
     class Meta:
         table_name = 'trucks'
+
+
+class DeliveryModel(BaseModel):
+    orderid = AutoField(column_name='orderid', primary_key=True)
+    login = ForeignKeyField(AccountsModel, column_name='login', null=True)
+    address = TextField(column_name='address', null=False)
+    phonenumber = CharField(column_name='phonenumber', max_length=40, null=False)
+    creationtime = TimestampField(column_name='creationtime', null=False)
+    completiontime = TimestampField(column_name='completiontime', null=True)
+    status = CharField(column_name='status', max_length=20, null=False)
+
+    class Meta:
+        table_name = 'delivery'
