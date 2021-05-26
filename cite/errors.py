@@ -16,3 +16,8 @@ class UnverifiedExc(AccountExc): pass
 class VerifiedExc(AccountExc): pass
 class NonExistentExc(AccountExc): pass
 class UnknownRoleExc(AccountExc): pass
+
+
+class TruckExc(BaseException): pass
+class TruckLackExc(TruckExc): pass
+class TruckWrongExc(TruckExc): pass

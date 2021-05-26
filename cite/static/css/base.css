@@ -5,6 +5,7 @@
     #45A29e light
  */
  @import url("top_menu.css");
+ @import url("pop_up.css");
  
 :root {
     --header-h: 80px
@@ -29,6 +30,7 @@ html, body {
     padding-right: 0px;
     padding-left:  1px;
     margin-left: 5%;
+    margin-right: 5%;
     background-color: #dfdfdf;
 }
 
@@ -45,7 +47,10 @@ header {
     background-color: #0B0C10;
     margin-top: -0px;
 }
- 
+
+input {
+    border: 1px solid black;
+}
 input:invalid {
     border: 1px solid red;
 }

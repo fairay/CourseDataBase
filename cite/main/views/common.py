@@ -41,3 +41,10 @@ def extract_msg(request: ReqClass) -> dict:
         del request.session['info_msg']
 
     return msg
+
+
+def extract_post(request: ReqClass) -> dict:
+    data = dict(request.POST)
+    for key in data.keys():
+        data[key] = data[key][0]
+    return data

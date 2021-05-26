@@ -13,11 +13,13 @@ class PersonRepository(Repository):
 
 
 class PWPersonRep(PersonRepository):
+    _con = None
     _model = None
 
     # TODO: remove inject.instance(AbstractConnection)
-    def __init__(self, con=inject.instance(AbstractConnection)):
+    def __init__(self, con):
         super().__init__(con)
+        self._con = con
         self._model = PersonModel(con)
 
     def create(self, obj: Person):

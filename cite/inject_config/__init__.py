@@ -34,7 +34,7 @@ inject.clear_and_configure(inject_config0)
 
 from repository.pers_rep import PersonRepository, PWPersonRep
 from repository.acc_rep import AccountsRepository, PWAccountsRep
-
+from repository.truck_rep import TrucksRepository, PWTrucksRep
 
 def inject_config(binder):
     inject_config0(binder)
@@ -42,6 +42,7 @@ def inject_config(binder):
     binder.bind(PersonRepository, PWPersonRep)
     # TODO: remove inject.instance(AbstractConnection)
     binder.bind(AccountsRepository, PWAccountsRep)
+    binder.bind(TrucksRepository, PWTrucksRep)
 
 
 print('#' * 30)

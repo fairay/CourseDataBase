@@ -1,0 +1,61 @@
+{% extends "general.html" %}
+
+{% block head_title %} Машины {% endblock %}
+{% block top_title %} Машины {% endblock %}
+
+{% block content %}
+    <div>
+        {% if truck_arr %}
+        <table>
+            <tr>
+                <td><b>Гос. номер</b></td>
+                <td><b>Тип</b></td>
+                <td><b>Модель</b></td>
+            </tr>
+
+            {% for truck in truck_arr %}
+            <tr>
+                <td>{{truck.platenumber}}</td>
+                <td>{{truck.category}}</td>
+                <td>{{truck.model}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <h1> Нет зарегистрированных машин </h1>
+        {% endif %}
+    </div>
+
+    <button class="pop-up-show" id="pop-up-btn" onclick="showPopUp()">Добавить машину</button>
+    <div class="pop-up-div" id="pop-up-div">
+        <form class="pop-up-form" method="post" action="{% url 'other:add_truck'%}">
+            {% csrf_token %}
+            
+            <label for="platenumber"><b>Государственный номер</b></label>
+            <div class="pop-up-2inp">
+                <input type="text" placeholder="A0123ВЕ" name="number" pattern="[АВЕКМНОРСТХ]\d{3}[АВЕКМНОРСТХ]{2}" required>
+                <input type="text" placeholder="777" name="region" maxlength="3" pattern="\d{3}" required>
+                <b>RUS</b>
+            </div>
+
+            <label for="category"><b>Марка</b></label>
+            <input type="text" placeholder="Марка" name="category" required>
+
+            <label for="model"><b>Модель</b></label>
+            <input type="text" placeholder="Модель" name="model" required>
+
+            <button type="submit" class="btn">Добавить</button>
+            <button type="button" class="pop-up-hide" id="pop-up-btn" onclick="hidePopUp()">Закрыть</button>
+        </form>
+    </div>
+    <script>
+        function showPopUp() {
+            document.getElementById("pop-up-div").style.display = "block";
+        }
+
+        function hidePopUp() {
+            document.getElementById("pop-up-div").style.display = "none";
+        }
+    </script>
+{% endblock %}
+

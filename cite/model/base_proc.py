@@ -14,7 +14,7 @@ class BaseProc(object):
             return
 
         cl = None
-        if role[0]:
+        if role[0] == '~':
             cl = rep.con_dict['~']
         elif role in rep.con_dict.keys():
             cl = rep.con_dict[role]
