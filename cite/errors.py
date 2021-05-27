@@ -21,3 +21,8 @@ class UnknownRoleExc(AccountExc): pass
 class TruckExc(BaseException): pass
 class TruckLackExc(TruckExc): pass
 class TruckWrongExc(TruckExc): pass
+
+
+class CheckpointExc(BaseException): pass
+class CheckpointLackExc(CheckpointExc): pass
+class CheckpointWrongExc(CheckpointExc): pass

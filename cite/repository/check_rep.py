@@ -23,7 +23,9 @@ class PWCheckpointsRep(CheckpointsRepository):
 
     def create(self, obj: Checkpoint):
         try:
-            self._model.insert(**obj.to_dict()).execute()
+            d = obj.to_dict()
+            del d['checkpointid']
+            self._model.insert(**d).execute()
         except IntegrityError as exc:
             raise AlreadyExistsExc()
 

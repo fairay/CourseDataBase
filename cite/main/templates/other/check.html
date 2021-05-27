@@ -1,0 +1,55 @@
+{% extends "general.html" %}
+
+{% block head_title %} КПП {% endblock %}
+{% block top_title %} КПП {% endblock %}
+
+{% block content %}
+    <div>
+        {% if check_arr %}
+        <table>
+            <tr>
+                <td><b>Номер</b></td>
+                <td><b>Адрес</b></td>
+                <td><b>Контакты</b></td>
+            </tr>
+
+            {% for check in check_arr %}
+            <tr>
+                <td>{{check.checkpointid}}</td>
+                <td>{{check.address}}</td>
+                <td>{{check.phonenumber}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <h1> Нет зарегистрированных КПП </h1>
+        {% endif %}
+    </div>
+
+    <button class="pop-up-show" id="pop-up-btn" onclick="showPopUp()">Добавить КПП</button>
+    <div class="pop-up-div" id="pop-up-div">
+        <form class="pop-up-form" method="post" action="{% url 'other:add_checkpoint'%}">
+            {% csrf_token %}
+            
+            <label for="address"><b>Адрес</b></label>
+            <input type="text" placeholder="ул. Пушкина, 9" name="address" required>
+
+            <label for="model"><b>Телефон</b></label>
+            +7 <input type="text" placeholder="Телефон" name="phonenumber"
+                placeholder="000 123 4567" pattern="[(-]?[0-9]{3}[ )-]?[0-9]{3}[ -]?[0-9]{2}[ -]?[0-9]{2}" required>
+
+            <button type="submit" class="btn">Добавить</button>
+            <button type="button" class="pop-up-hide" id="pop-up-btn" onclick="hidePopUp()">Закрыть</button>
+        </form>
+    </div>
+    <script>
+        function showPopUp() {
+            document.getElementById("pop-up-div").style.display = "block";
+        }
+
+        function hidePopUp() {
+            document.getElementById("pop-up-div").style.display = "none";
+        }
+    </script>
+{% endblock %}
+
