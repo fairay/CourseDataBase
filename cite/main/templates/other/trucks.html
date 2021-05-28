@@ -6,15 +6,15 @@
 {% block content %}
     <div>
         {% if truck_arr %}
-        <table>
+        <table class="list-table"> 
             <tr>
-                <td><b>Гос. номер</b></td>
+                <td><b>Государственный номер</b></td>
                 <td><b>Тип</b></td>
                 <td><b>Модель</b></td>
             </tr>
 
             {% for truck in truck_arr %}
-            <tr>
+            <tr class="href-row" onclick="window.location='#';">
                 <td>{{truck.platenumber}}</td>
                 <td>{{truck.category}}</td>
                 <td>{{truck.model}}</td>

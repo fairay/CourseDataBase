@@ -1,0 +1,23 @@
+{% extends "general.html" %}
+
+{% block head_title %} Заказ №{{order.orderid}} {% endblock %}
+{% block top_title %} Заказ №{{order.orderid}} {% endblock %}
+
+{% block content %}
+<div>
+    <table>
+        <tr>    <td>Статус</td>         <td>{{order.rus_status}}</td> </tr>
+        <tr>    <td>Адрес</td>          <td>{{order.address}}</td> </tr>
+        <tr>    <td>Контакты</td>       <td>{{order.phonenumber}}</td> </tr>
+        <tr>    <td>Время создания</td> <td>{{order.creationtime}}</td> </tr>
+
+        {% if order.completiontime %}
+        <tr>    <td>Время доставки</td> <td>{{order.completiontime}}</td> </tr>
+        {% endif %}
+
+        {% if order.driver %}
+        <tr>    <td>Курьер</td>         <td>{{order.driver.surname}} {{order.driver.forename}}</td></tr>
+        {% endif %}
+    </table>
+</div>
+{% endblock %}

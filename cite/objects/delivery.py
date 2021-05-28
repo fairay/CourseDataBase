@@ -7,6 +7,7 @@ class Delivery(BaseObj):
     _creation_t = None
     _address: str = None
     _phone: str = None
+    _descr: str = None
 
     _login: str = None
     _completion_t = None
@@ -21,6 +22,7 @@ class Delivery(BaseObj):
         self._address = init_dict['address']
         self._phone = init_dict['phonenumber']
         self._creation_t = init_dict['creationtime']
+        self._descr = init_dict['description']
 
         if 'login' in init_dict.keys():
             self._login = init_dict['login']
@@ -33,6 +35,7 @@ class Delivery(BaseObj):
                 'address': self._address,
                 'phonenumber': self._phone,
                 'creationtime': self._creation_t,
+                'description': self._descr,
 
                 'login': self._login,
                 'completiontime': self._completion_t,
@@ -45,6 +48,7 @@ class Delivery(BaseObj):
     def get_phone(self): return self._phone
     def get_login(self): return self.login
     def get_completion_t(self): return self._completion_t
+    def get_descr(self): return self._descr
 
     def set_id(self, val: int): self._id = val
     def set_status(self, val: str): self._status = val
@@ -53,6 +57,7 @@ class Delivery(BaseObj):
     def set_phone(self, val: str): self._phone = val
     def set_login(self, val: str): self._login = val
     def set_completion_t(self, val): self._completion_t = val
+    def set_descr(self, val: str): self._descr = val
 
     id = property(get_id, set_id)
     status = property(get_status, set_status)
@@ -61,3 +66,4 @@ class Delivery(BaseObj):
     phone = property(get_phone, set_phone)
     login = property(get_login, set_login)
     completion_t = property(get_completion_t, set_completion_t)
+    descr = property(get_descr, set_descr)

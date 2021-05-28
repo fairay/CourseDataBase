@@ -4,6 +4,7 @@ import errors as exc
 
 import re
 
+
 class BaseProc(object):
     _role = None
     _con = None

@@ -17,14 +17,16 @@ CREATE TABLE IF NOT EXISTS Person(
 	PhoneNumber 	TEXT
 );
 
-CREATE TABLE IF NOT EXISTS Dilivery (
+DROP TABLE Delivery CASCADE;
+CREATE TABLE IF NOT EXISTS Delivery (
 	OrderID 		SERIAL			PRIMARY KEY,
 	Login			TEXT			REFERENCES Person(Login),
 	Address 		TEXT 			NOT NULL,
 	PhoneNumber 	VARCHAR(40)		NOT NULL,
 	CreationTime	TIMESTAMP		NOT NULL,
 	CompletionTime	TIMESTAMP,
-	Status			VARCHAR(20)		NOT NULL
+	Status			VARCHAR(20)		NOT NULL,
+	Description 	TEXT			NOT NULL
 );
 
 

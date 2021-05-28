@@ -22,8 +22,13 @@ class PWDeliveryRep(DeliveryRepository):
         self._model = DeliveryModel(con)
 
     def create(self, obj: Delivery):
+        if obj.id is not None and self.get_by_id(obj.id) is not None:
+            raise AlreadyExistsExc()
+
         try:
-            self._model.insert(**obj.to_dict()).execute()
+            d = obj.to_dict()
+            del d['orderid']
+            self._model.insert(**d).execute()
         except IntegrityError as exc:
             raise AlreadyExistsExc()
 

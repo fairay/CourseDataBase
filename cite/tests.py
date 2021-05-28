@@ -180,13 +180,13 @@ class CheckpointsRepTest(BaseRepTest, ut.TestCase):
     _con = SqliteDatabase(':memory:')
     _rep = PWCheckpointsRep(_con)
 
-    _obj_upd = Checkpoint(checkpointid=0, address='ул. Лупин-Пупина', phonenumber='+7 (900) 001-02-03')
+    _obj_upd = Checkpoint(checkpointid=1, address='ул. Лупин-Пупина', phonenumber='+7 (900) 001-02-03')
 
     _obj_nonexist = Checkpoint(checkpointid=900, address=' ', phonenumber=' ')
     _obj_arr = [
-        Checkpoint(checkpointid=0, address='ул. Пупин-Лупина', phonenumber='+7 (900) 001-02-03'),
-        Checkpoint(checkpointid=1, address='ул. Кукушкина, 10к2', phonenumber='8 900 229 69 13'),
-        Checkpoint(checkpointid=2, address='ул. Пушкина, 10к2', phonenumber='8 921 292 62 13')
+        Checkpoint(checkpointid=1, address='ул. Пупин-Лупина', phonenumber='+7 (900) 001-02-03'),
+        Checkpoint(checkpointid=2, address='ул. Кукушкина, 10к2', phonenumber='8 900 229 69 13'),
+        Checkpoint(checkpointid=3, address='ул. Пушкина, 10к2', phonenumber='8 921 292 62 13')
     ]
 
     @staticmethod
@@ -242,19 +242,24 @@ class DeliveryRepTest(BaseRepTest, ut.TestCase):
     _con = SqliteDatabase(':memory:')
     _rep = PWDeliveryRep(_con)
 
-    _obj_upd = Delivery(orderid=0, status='delivered', address='ул. Пушкина', phonenumber='89019123456',
+    _obj_upd = Delivery(orderid=1, status='delivered', address='ул. Пушкина', phonenumber='89019123456',
                         creationtime=datetime(2021, 5, 20, 12, 31, 51), login='driver',
-                        completiontime=datetime(2021, 5, 21, 8, 30, 2))
+                        completiontime=datetime(2021, 5, 21, 8, 30, 2),
+                        description='Вези свинину')
 
     _obj_nonexist = Delivery(orderid=100, status=' ', address=' ', phonenumber=' ',
-                             creationtime=datetime(2021, 1, 1))
+                             creationtime=datetime(2021, 1, 1),
+                             description=' ')
     _obj_arr = [
-        Delivery(orderid=0, status='delivered', address='ул. Пушкина', phonenumber='89019123456',
-                 creationtime=datetime(2021, 5, 20, 12, 31, 51), login='driver'),
-        Delivery(orderid=1, status='not_assigned', address='ул. Пушкина', phonenumber='89019123456',
-                 creationtime=datetime(2021, 5, 21, 7, 21, 1)),
-        Delivery(orderid=2, status='in_transit', address='ул. Кукушкина', phonenumber='+79821201921',
-                 creationtime=datetime(2021, 5, 20, 23, 5, 15)),
+        Delivery(orderid=1, status='delivered', address='ул. Пушкина', phonenumber='89019123456',
+                 creationtime=datetime(2021, 5, 20, 12, 31, 51), login='driver',
+                 description='Вези барана'),
+        Delivery(orderid=2, status='not_assigned', address='ул. Пушкина', phonenumber='89019123456',
+                 creationtime=datetime(2021, 5, 21, 7, 21, 1),
+                 description='Хочу шоколад'),
+        Delivery(orderid=3, status='in_transit', address='ул. Кукушкина', phonenumber='+79821201921',
+                 creationtime=datetime(2021, 5, 20, 23, 5, 15),
+                 description='Вези инжир'),
     ]
 
     @staticmethod

@@ -14,7 +14,7 @@ def inject_config0(binder):
         lambda: DBFromConfig(inject.instance(peewee.Database),
                              inject.instance(config_loader.ConfigLoader).get_article('admin_connect')))
     binder.bind_to_constructor(rep.TestConnection,
-        lambda: PostgresqlExtDatabase('peewee_unittest', user='admin'))
+        lambda: peewee.SqliteDatabase(':memory:'))
     binder.bind_to_constructor(rep.AdminConnection,
         lambda: DBFromConfig(inject.instance(peewee.Database),
                              inject.instance(config_loader.ConfigLoader).get_article('admin_connect')))
@@ -36,6 +36,10 @@ from repository.pers_rep import PersonRepository, PWPersonRep
 from repository.acc_rep import AccountsRepository, PWAccountsRep
 from repository.truck_rep import TrucksRepository, PWTrucksRep
 from repository.check_rep import CheckpointsRepository, PWCheckpointsRep
+from repository.delivery_rep import DeliveryRepository, PWDeliveryRep
+from repository.driver_rep import DriverDutyRepository, PWDriverDutyRep
+from repository.guard_rep import GuardDutyRepository, PWGuardDutyRep
+
 
 def inject_config(binder):
     inject_config0(binder)
@@ -45,6 +49,9 @@ def inject_config(binder):
     binder.bind(AccountsRepository, PWAccountsRep)
     binder.bind(TrucksRepository, PWTrucksRep)
     binder.bind(CheckpointsRepository, PWCheckpointsRep)
+    binder.bind(DeliveryRepository, PWDeliveryRep)
+    binder.bind(DriverDutyRepository, PWDriverDutyRep)
+    binder.bind(GuardDutyRepository, PWGuardDutyRep)
 
 
 print('#' * 30)

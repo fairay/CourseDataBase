@@ -28,13 +28,33 @@
     padding: 10px;
     background-color: #1f2833;
     padding-top: 15px;
+
+    /* font-family: century gothic; */
 }
 
 .pop-up-form input {
     width: 95%;
     padding: 7px;
     margin: 5px 10px 15px 0;
+
+    /* background-color: inherit;
+    color: whitesmoke;
+    font-family: inherit; */
 }
+
+.pop-up-form textarea {
+    width: 95%;
+    padding: 7px;
+    margin: 5px 10px 15px 0;
+    resize: vertical;
+    max-height: 200px;
+    min-height: 40px;
+
+    /* background-color: inherit;
+    color: whitesmoke;
+    font-family: inherit; */
+}
+
 
 .pop-up-form button {
     width: 100%;
@@ -52,4 +72,11 @@
 
 .pop-up-form b {
     color: whitesmoke;
+}
+
+.pop-up-phone {
+    width: 105%;
+}
+.pop-up-phone input {
+    width: 84%;
 }

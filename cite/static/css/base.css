@@ -23,8 +23,7 @@ html, body {
     margin-left:  4%;
 
     max-width: 95%;
-    min-height: 90%;
-    height: calc(100% - var(--header-h));
+    min-height: calc(100% - 51px);
     overflow: hidden;
 
     padding-right: 0px;
@@ -55,7 +54,50 @@ input:invalid {
     border: 1px solid red;
 }
 
+.list-table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+.list-table th {
+    text-align: left;
+    padding: 10px;
+}  
+.list-table td {
+    text-align: left;
+    padding: 10px;
+    /* border-radius: 25px; */
+}  
+.list-table tr {
+    border: 2px solid #ffffff00;
+    border-style: inset;
+}
+.list-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+    background-color: #aedfdcc9;
+    background-color: #dbecec;
+}
+.list-table tr:first-child {
+    background-color: #1f2833;
+    color: whitesmoke;
+}
+.list-table tr:last-child {
+    border-bottom: 1px solid #0B0C10;
+}
 
+.href-row:first-child:hover {
+    border: 2px solid transparent;
+}
+.href-row:hover {
+    border: 2px solid #45A29e;
+}
+
+
+.list-table a {
+    display: block;
+    padding: 16px;
+}
 
 .logo {
     width: 100px;

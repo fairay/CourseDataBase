@@ -18,6 +18,11 @@ class NonExistentExc(AccountExc): pass
 class UnknownRoleExc(AccountExc): pass
 
 
+class CreateObjExc(BaseException): pass
+class LackArgExc(CreateObjExc): pass
+class WrongFormatExc(CreateObjExc): pass
+
+
 class TruckExc(BaseException): pass
 class TruckLackExc(TruckExc): pass
 class TruckWrongExc(TruckExc): pass
@@ -26,3 +31,7 @@ class TruckWrongExc(TruckExc): pass
 class CheckpointExc(BaseException): pass
 class CheckpointLackExc(CheckpointExc): pass
 class CheckpointWrongExc(CheckpointExc): pass
+
+
+class DeliveryExc(BaseException): pass
+class DeliveryWrongExc(DeliveryExc): pass

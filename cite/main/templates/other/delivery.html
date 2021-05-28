@@ -1,34 +1,38 @@
 {% extends "general.html" %}
 
-{% block head_title %} КПП {% endblock %}
-{% block top_title %} КПП {% endblock %}
+{% block head_title %} Заказы {% endblock %}
+{% block top_title %} Заказы {% endblock %}
 
 {% block content %}
     <div>
-        {% if check_arr %}
+        {% if del_arr %}
         <table class="list-table"> 
             <tr>
                 <td><b>Номер</b></td>
+                <td><b>Статус</b></td>
                 <td><b>Адрес</b></td>
                 <td><b>Контакты</b></td>
+                <td><b>Время создания</b></td>
             </tr>
 
-            {% for check in check_arr %}
-            <tr>
-                <td>{{check.checkpointid}}</td>
-                <td>{{check.address}}</td>
-                <td>{{check.phonenumber}}</td>
+            {% for obj in del_arr %}
+            <tr class="href-row" onclick="window.location='{% url 'other:delivery_page' obj.orderid %}';">
+                <td>{{obj.orderid}}</td>
+                <td>{{obj.rus_status}}</td>
+                <td>{{obj.address}}</td>
+                <td>{{obj.phonenumber}}</td>
+                <td>{{obj.creationtime}}</td>
             </tr>
             {% endfor %}
         </table>
         {% else %}
-        <h1> Нет зарегистрированных КПП </h1>
+        <h1> История заказов пуста </h1>
         {% endif %}
     </div>
 
-    <button class="pop-up-show" id="pop-up-btn" onclick="showPopUp()">Добавить КПП</button>
+    <button class="pop-up-show" id="pop-up-btn" onclick="showPopUp()">Создать заказ</button>
     <div class="pop-up-div" id="pop-up-div">
-        <form class="pop-up-form" method="post" action="{% url 'other:add_checkpoint'%}">
+        <form class="pop-up-form" method="post" action="{% url 'other:add_delivery'%}">
             {% csrf_token %}
             
             <label for="address"><b>Адрес</b></label>
@@ -40,6 +44,9 @@
                 <input type="text" name="phonenumber" placeholder="000 123 4567" 
                     pattern="[(-]?[0-9]{3}[ )-]?[0-9]{3}[ -]?[0-9]{2}[ -]?[0-9]{2}" required>
             </div>
+
+            <label for="description"><b>Описание</b></label>
+            <textarea name="description" placeholder="Опишите заказ" rows="3" required></textarea>
 
             <button type="submit" class="btn">Добавить</button>
             <button type="button" class="pop-up-hide" id="pop-up-btn" onclick="hidePopUp()">Закрыть</button>

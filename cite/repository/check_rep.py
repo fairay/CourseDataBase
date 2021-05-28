@@ -22,6 +22,9 @@ class PWCheckpointsRep(CheckpointsRepository):
         self._model = CheckpointsModel(con)
 
     def create(self, obj: Checkpoint):
+        if obj.id is not None and self.get_by_id(obj.id) is not None:
+            raise AlreadyExistsExc()
+
         try:
             d = obj.to_dict()
             del d['checkpointid']
