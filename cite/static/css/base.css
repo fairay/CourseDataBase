@@ -292,3 +292,10 @@ input:invalid {
     padding: 5px 10px;
     border: 2px solid #333;
 }
+
+.dow-checkbox {
+    transform: scale(2);
+    width: auto;
+    margin-left: 6px;
+    margin-right: 0px;
+}

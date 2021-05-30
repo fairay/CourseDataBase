@@ -80,3 +80,55 @@
 .pop-up-phone input {
     width: 84%;
 }
+
+.pop-up-check {
+    margin-top: -10px;
+    width: 100%;
+}
+.pop-up-check input {
+    width: 20px;
+}
+.pop-up-check label {
+    display: inline-block;
+}
+
+.pop-up-date {
+    width: 101%;
+}
+.pop-up-date input {
+    margin-right: 0px;
+    width: 42%;
+}
+
+.pop-up-time {
+    width: 101%;
+}
+.pop-up-time input {
+    margin-right: 0px;
+    width: 42%;
+}
+
+.pop-up-rowdow {
+    width: 100%;
+    display: flex;
+}
+
+.pop-up-dow {
+    width: auto;
+    margin-top: 3px;
+    margin-right: 26px;
+    margin-left: 0px;
+}
+.pop-up-dow input {
+    transform: scale(2);
+    width: auto;
+    margin-left: 6px;
+    margin-right: 0px;
+}
+.pop-up-dow input:checked {
+    background-color: red;
+}
+.pop-up-dow label {
+    font-size: 13px;
+    text-anchor:middle;
+}

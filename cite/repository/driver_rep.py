@@ -23,7 +23,9 @@ class PWDriverDutyRep(DriverDutyRepository):
 
     def create(self, obj: DriverDuty):
         try:
-            self._model.insert(**obj.to_dict()).execute()
+            d = obj.to_dict()
+            del d['dutyid']
+            self._model.insert(**d).execute()
         except IntegrityError as exc:
             raise AlreadyExistsExc()
 

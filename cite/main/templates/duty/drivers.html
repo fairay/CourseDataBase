@@ -1,0 +1,121 @@
+{% extends "general.html" %}
+
+{% block head_title %} Дежурства водителей {% endblock %}
+{% block top_title %} Дежурства водителей {% endblock %}
+
+{% block content %}
+    <div>
+        {% if duty_arr %}
+        <table class="list-table"> 
+            <tr>
+                <td><b>Машина</b></td>
+                <td><b>Водитель</b></td>
+                <td><b>Период</b></td>
+                <td><b>Время</b></td>
+                <td><b>Дни работы</b></td>
+            </tr>
+
+            {% for obj in duty_arr %}
+            <tr>
+                <td>{{obj.platenumber}}</td>
+                <td>{{obj.login}}</td>
+                <td>
+                    {% if obj.enddate %}
+                        с {{obj.begindate}} по {{obj.enddate}}
+                    {% else %}
+                        с {{obj.begindate}}
+                    {% endif %}
+                </td>
+                <td>{{obj.begintime}} - {{obj.endtime}}</td>
+                <td>
+                    {% for dow, is_set in obj.dow_view.items %}
+                        {% if is_set %}
+                            <input class="dow-checkbox" type="checkbox" checked title="{{dow}}" disabled>
+                        {% else %}
+                            <input class="dow-checkbox" type="checkbox"  title="{{dow}}" disabled>
+                            <!-- <input type="text" value="{{dow}}" disabled> -->
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <h1> Деружства водителей не назначены </h1>
+        {% endif %}
+    </div>
+
+    <button class="pop-up-show" id="pop-up-btn" onclick="showPopUp()">Назначить дежурство</button>
+    <div class="pop-up-div" id="pop-up-div">
+        <form class="pop-up-form" method="post" action="{% url 'duty:add_driver'%}">
+            {% csrf_token %}
+
+            <label for="platenumber"><b>Номер машины</b></label>
+            <input type="text" placeholder="A0123ВЕ777" name="platenumber"
+            pattern="[АВЕКМНОРСТХ]\d{3}[АВЕКМНОРСТХ]{2}\d{3}" required>
+            
+            <label for="login"><b>Водитель</b></label>
+            <input type="text" placeholder="Логин" name="login" required>
+            
+            <label for="date"><b>Период дежурства</b></label>
+            <div class="pop-up-date">
+                <input type="date" id="begindate" name="begindate" value="2000-01-01" required>
+                <b> - </b>
+                <input type="date" id="enddate" name="enddate" value="2000-01-01" required>
+            </div>
+            
+            <div class="pop-up-check">
+                <input type="checkbox" name="no_end">
+                <b>Бессрочно</b>
+            </div>
+
+            <label for="time"><b>Время дежурства</b></label>
+            <div class="pop-up-time">
+                <input type="time" id="begintime" name="begintime" value="09:00" required>
+                <b> - </b>
+                <input type="time" id="endtime" name="endtime" value="18:00" required>
+            </div>
+
+            <label for="dow"><b>Рабочие дни</b></label>
+            <div class="pop-up-rowdow">
+                {% for dow in dow_names %}
+                <div class="pop-up-dow">
+                    <label><b>{{dow}}</b></label>
+                    <input type="checkbox" name="dow" value="{{dow}}" id="{{dow}}">
+                </div>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="btn">Добавить</button>
+            <button type="button" class="pop-up-hide" id="pop-up-btn" onclick="hidePopUp()">Закрыть</button>
+        </form>
+    </div>
+    <script>
+        function extractDate(today) {
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+            var yyyy = today.getFullYear();
+            return yyyy + '-' + mm + '-' + dd;
+        }
+        
+        window.onload = function () {
+            var today = new Date();
+            date_ = extractDate(today);
+            document.getElementById("begindate").setAttribute('value', date_);
+
+            var tomorrow = new Date();
+            tomorrow.setDate(today.getDate() + 31);
+            date_ = extractDate(tomorrow);
+            document.getElementById("enddate").setAttribute('value', date_);
+        };
+
+        function showPopUp() {
+            document.getElementById("pop-up-div").style.display = "block";
+        }
+
+        function hidePopUp() {
+            document.getElementById("pop-up-div").style.display = "none";
+        }
+    </script>
+{% endblock %}
+

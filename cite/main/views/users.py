@@ -43,8 +43,9 @@ def approve_user(request: ReqClass, login: str):
         return check_redirect
 
     msg = 'Ошибка операции подтверждения: '
+    proc = bm.AccountProc(request.session['user']['perstype'])
     try:
-        bm.AccountProc.approve(login)
+        proc.approve(login)
     except exc.NonExistentExc:
         request.session['warning_msg'] = msg + 'аккаунт не зарегистрирован'
     except exc.VerifiedExc:

@@ -97,6 +97,13 @@ class AccountProc(BaseProc):
         acc_rep = inject.instance(AccountsRepository)(self._con)
         return acc_rep.get_by_login(login)
 
+    def check_role(self, login: str, role='admin') -> bool:
+        acc_rep: AccountsRepository = inject.instance(AccountsRepository)(self._con)
+        acc = acc_rep.get_by_login(login)
+        if acc is None:
+            return False
+        return acc.pers_type == role
+
     @staticmethod
     def _generate_salt():
         return uuid.uuid4().hex + uuid.uuid4().hex

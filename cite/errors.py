@@ -18,9 +18,19 @@ class NonExistentExc(AccountExc): pass
 class UnknownRoleExc(AccountExc): pass
 
 
-class CreateObjExc(BaseException): pass
+class CreateObjExc(BaseException):
+    _msg = ''
+
+    def __init__(self, msg = ''):
+        self._msg = msg
+
+    def __str__(self):
+        return self._msg
+
+
 class LackArgExc(CreateObjExc): pass
 class WrongFormatExc(CreateObjExc): pass
+class NoneExistExc(CreateObjExc): pass
 
 
 class TruckExc(BaseException): pass

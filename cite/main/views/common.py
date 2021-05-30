@@ -43,8 +43,12 @@ def extract_msg(request: ReqClass) -> dict:
     return msg
 
 
-def extract_post(request: ReqClass) -> dict:
+def extract_post(request: ReqClass, listargs=[]) -> dict:
     data = dict(request.POST)
     for key in data.keys():
         data[key] = data[key][0]
+
+    for lst in listargs:
+        data[lst] = request.POST.getlist(lst)
+
     return data

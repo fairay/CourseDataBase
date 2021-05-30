@@ -59,7 +59,7 @@ class DeliveryProc(BaseProc):
         obj = rep_.get_by_id(orderid)
         if obj is None:
             return None
-        return self._to_view(obj)
+        return self._to_view(obj, extended=True)
 
     def _to_view(self, obj: Delivery, extended=False) -> dict:
         d = obj.to_dict()

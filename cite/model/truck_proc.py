@@ -26,6 +26,10 @@ class TruckProc(BaseProc):
 
         return trucks
 
+    def get(self, platenumber: str):
+        rep_ = inject.instance(TrucksRepository)(self._con)
+        return rep_.get_by_number(platenumber)
+
     def add(self, obj: Truck):
         rep_ = inject.instance(TrucksRepository)(self._con)
 
