@@ -32,11 +32,37 @@ class DriverDutyProc(BaseProc):
         if TruckProc(con=self._con).get(init_dict['platenumber']) is None:
             raise exc.NoneExistExc('машина не существует')
 
+        init_dict['begindate'] = datetime.strptime(init_dict['begindate'], '%Y-%m-%d')
+        init_dict['enddate'] = datetime.strptime(init_dict['enddate'], '%Y-%m-%d')
+
         if 'no_end' in init_dict.keys():
             init_dict['enddate'] = None
+        elif init_dict['begindate'] > init_dict['enddate']:
+            raise exc.WrongFormatExc('дата начала смены больше даты окончания')
 
         init_dict['dutyid'] = None
-        return DriverDuty(**init_dict)
+        duty = DriverDuty(**init_dict)
+
+        if not self.is_driver_free(duty):
+            raise exc.WrongFormatExc('водитель занят в данный период')
+        if not self.is_truck_free(duty):
+            raise exc.WrongFormatExc('машина занята в данный период')
+        return duty
+
+    def is_driver_free(self, obj: DriverDuty) -> bool:
+        rep_: DriverDutyRepository = inject.instance(DriverDutyRepository)(self._con)
+        for other in rep_.get_by_time(obj.bdate, obj.edate, login=obj.login):
+            if self._is_collide(obj, other):
+                return False
+        return True
+
+    def is_truck_free(self, obj: DriverDuty) -> bool:
+        rep_: DriverDutyRepository = inject.instance(DriverDutyRepository)(self._con)
+        for other in rep_.get_by_time(obj.bdate, obj.edate, platenumber=obj.number):
+            print("Truck:", other)
+            if self._is_collide(obj, other):
+                return False
+        return True
 
     def get_all(self):
         rep_ = inject.instance(DriverDutyRepository)(self._con)
@@ -90,3 +116,12 @@ class DriverDutyProc(BaseProc):
                 ans_str = ans_str + str(i)
 
         return ans_str
+
+    @staticmethod
+    def _is_collide(obj1: DriverDuty, obj2: DriverDuty):
+        dow_inter = set(obj2.dow).intersection(obj1.dow)
+        if not len(dow_inter):
+            return False
+
+        return (obj2.btime <= obj1.btime <= obj2.etime or
+                obj1.btime <= obj2.btime <= obj1.etime)

@@ -9,6 +9,7 @@ class DriverDutyRepository(Repository):
     def update(self, old_obj: DriverDuty, new_obj: DriverDuty): raise NotImplementedError
     def delete(self, obj: DriverDuty): raise NotImplementedError
     def get_all(self) -> [DriverDuty]: raise NotImplementedError
+    def get_by_time(self, begin_date, end_date=None, login=None, platenumber=None) -> [DriverDuty]: raise NotImplementedError
     def get_by_id(self, id_: int) -> DriverDuty: raise NotImplementedError
 
 
@@ -50,6 +51,24 @@ class PWDriverDutyRep(DriverDutyRepository):
 
     def get_all(self) -> [DriverDuty]:
         res = self._model.select()
+        return request_to_objects(res, DriverDuty)
+
+    def get_by_time(self, begin_date, end_date=None, login=None, platenumber=None) -> [DriverDuty]:
+        if end_date is None:
+            where_exp = DriverDutysModel.enddate.is_null() | (DriverDutysModel.enddate >= begin_date)
+        else:
+            where_exp = DriverDutysModel.enddate.is_null() & (DriverDutysModel.begindate <= end_date)
+            where_exp |= ~DriverDutysModel.enddate.is_null() & (
+                    DriverDutysModel.begindate.between(begin_date, end_date) |
+                    DriverDutysModel.enddate.between(begin_date, end_date)
+            )
+
+        if login is not None:
+            where_exp &= DriverDutysModel.login == login
+        if platenumber is not None:
+            where_exp &= DriverDutysModel.platenumber == platenumber
+
+        res = self._model.select().where(where_exp)
         return request_to_objects(res, DriverDuty)
 
     def get_by_id(self, check_id: int) -> DriverDuty:

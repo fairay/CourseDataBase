@@ -78,18 +78,34 @@ input:invalid {
     background-color: #aedfdcc9;
     background-color: #dbecec;
 }
+
+.list-table td {
+    border-left: 2px solid #dbecec;
+}
+.list-table td:last-child {
+    border-right: 2px solid #dbecec;
+}
+
 .list-table tr:first-child {
     background-color: #1f2833;
     color: whitesmoke;
 }
+.list-table tr:first-child td {
+    border-left: 2px solid #66fcf1;
+}
+.list-table tr:first-child td:last-child {
+    border-right: 2px solid #66fcf1;
+}
 .list-table tr:last-child {
-    border-bottom: 1px solid #0B0C10;
+    border-bottom: 2px solid #dbecec;
 }
 
 .href-row:first-child:hover {
     border: 2px solid transparent;
 }
-.href-row:hover {
+.href-row:hover td {
+    background-color: #45a29d88;
+
     border: 2px solid #45A29e;
 }
 

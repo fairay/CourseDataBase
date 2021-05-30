@@ -36,7 +36,7 @@ class PersonProc(BaseProc):
 
         return profiles
 
-    def _profile_info(self, person_: Person):
+    def _profile_info(self, person_: Person) -> dict:
         if person_ is None:
             return None
 
