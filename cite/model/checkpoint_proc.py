@@ -19,6 +19,10 @@ class CheckpointProc(BaseProc):
 
         return Checkpoint(**init_dict)
 
+    def get(self, id_: int):
+        rep_ = inject.instance(CheckpointsRepository)(self._con)
+        return rep_.get_by_id(id_)
+
     def get_all(self):
         rep_ = inject.instance(CheckpointsRepository)(self._con)
         checkpoints = []

@@ -10,6 +10,7 @@ class GuardDutyRepository(Repository):
     def delete(self, obj: GuardDuty): raise NotImplementedError
     def get_all(self) -> [GuardDuty]: raise NotImplementedError
     def get_by_id(self, id_: int) -> GuardDuty: raise NotImplementedError
+    def get_by_time(self, begin_date, end_date=None, login=None, check_id=None) -> [GuardDuty]: raise NotImplementedError
 
 
 class PWGuardDutyRep(GuardDutyRepository):
@@ -23,7 +24,9 @@ class PWGuardDutyRep(GuardDutyRepository):
 
     def create(self, obj: GuardDuty):
         try:
-            self._model.insert(**obj.to_dict()).execute()
+            d = obj.to_dict()
+            del d['dutyid']
+            self._model.insert(**d).execute()
         except IntegrityError as exc:
             raise AlreadyExistsExc()
 
@@ -54,3 +57,21 @@ class PWGuardDutyRep(GuardDutyRepository):
         res = self._model.select().where(GuardDutysModel.dutyid == check_id)
         acc_arr = request_to_objects(res, GuardDuty)
         return acc_arr[0] if len(acc_arr) else None
+
+    def get_by_time(self, begin_date, end_date=None, login=None, check_id=None) -> [GuardDuty]:
+        if end_date is None:
+            where_exp = GuardDutysModel.enddate.is_null() | (GuardDutysModel.enddate >= begin_date)
+        else:
+            where_exp = GuardDutysModel.enddate.is_null() & (GuardDutysModel.begindate <= end_date)
+            where_exp |= ~GuardDutysModel.enddate.is_null() & (
+                    GuardDutysModel.begindate.between(begin_date, end_date) |
+                    GuardDutysModel.enddate.between(begin_date, end_date)
+            )
+
+        if login is not None:
+            where_exp &= GuardDutysModel.login == login
+        if check_id is not None:
+            where_exp &= GuardDutysModel.checkpointid == check_id
+
+        res = self._model.select().where(where_exp)
+        return request_to_objects(res, GuardDuty)
