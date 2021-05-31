@@ -8,7 +8,7 @@ import errors as exc
 class PersonProc(BaseProc):
     _gender_dict = {'м': 'Мужской', 'ж': 'Женский'}
 
-    def register(self, obj: Person):
+    def add(self, obj: Person):
         rep_ = inject.instance(PersonRepository)(self._con)
 
         try:
@@ -21,13 +21,13 @@ class PersonProc(BaseProc):
     def profile_info(self, login: str):
         rep_ = inject.instance(PersonRepository)(self._con)
         person_ = rep_.get_by_login(login)
-        return self._profile_info(person_)
+        return self._to_view(person_)
 
     def all_profiles(self, cmp=None, hide_unver=False):
         rep_ = inject.instance(PersonRepository)(self._con)
         profiles = []
         for obj in rep_.get_all():
-            prof = self._profile_info(obj)
+            prof = self._to_view(obj)
             if hide_unver:
                 prof['type_name'] = prof['type_name'].split('(')[0]
 
@@ -36,7 +36,7 @@ class PersonProc(BaseProc):
 
         return profiles
 
-    def _profile_info(self, person_: Person) -> dict:
+    def _to_view(self, person_: Person) -> dict:
         if person_ is None:
             return None
 

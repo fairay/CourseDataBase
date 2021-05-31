@@ -114,8 +114,8 @@ class AccountProc(BaseProc):
         return hashlib.sha256(salt_pw).hexdigest()
 
     @staticmethod
-    def _check_password(acc, password: str):
-        salt = acc.get_salt()
+    def _check_password(acc: Account, password: str):
+        salt = acc.salt
         hashed_pw = AccountProc._hash_password(password, salt)
 
         return hashed_pw == acc.get_hashed_password()

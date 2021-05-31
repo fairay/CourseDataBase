@@ -37,20 +37,6 @@ class BaseDutyProc(BaseProc):
 
         return init_dict
 
-        if not AccountProc(con=self._con).check_role(init_dict['login'], 'driver'):
-            raise exc.WrongFormatExc('аккаунт не пренадлежит водителю')
-        if TruckProc(con=self._con).get(init_dict['platenumber']) is None:
-            raise exc.NoneExistExc('машина не существует')
-
-        init_dict['dutyid'] = None
-        duty = DriverDuty(**init_dict)
-
-        if not self.is_driver_free(duty):
-            raise exc.WrongFormatExc('водитель занят в данный период')
-        if not self.is_truck_free(duty):
-            raise exc.WrongFormatExc('машина занята в данный период')
-        return duty
-
     def _dow_view(self, dow_str: str, short=False) -> dict:
         if short:
             title_arr = self.dow_short_names

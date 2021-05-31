@@ -6,7 +6,7 @@ import re
 
 
 class BaseProc(object):
-    _role = None
+    _role: str = None
     _con = None
 
     def __init__(self, role: str = 'admin', con=None):

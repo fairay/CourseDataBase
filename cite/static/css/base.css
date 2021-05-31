@@ -19,12 +19,6 @@ html, body {
     height: calc(100% - 8%);
 }
 
-.w220 {
-    width: 220px;
-}
-.w200 {
-    width: 200px;
-}
 
 .wrapper {
     margin-right: 4%;
@@ -127,6 +121,7 @@ input:invalid {
     width: 100px;
     float: left;
     height: 80px;
+    margin-right: 10px;
 }
 .logo p {
     margin-left: 20px;
@@ -322,4 +317,17 @@ input:invalid {
     width: auto;
     margin-left: 6px;
     margin-right: 0px;
+}
+
+
+/* Extra rules */
+.w220 {
+    width: 220px;
+}
+.w200 {
+    width: 200px;
+}
+.no-pad {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
 }

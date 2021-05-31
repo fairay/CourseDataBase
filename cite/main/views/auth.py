@@ -92,7 +92,7 @@ def register(request: ReqClass):
 
     pre_data['phonenumber'] = '+7' + pre_data['phonenumber']
     pers = bm.Person(**pre_data)
-    pers = pers_proc.register(pers)
+    pers = pers_proc.add(pers)
     if pers is None:
         acc_proc.unregister(acc)
         request.session['warning_msg'] = 'Ошибка регистрации личных данных'
