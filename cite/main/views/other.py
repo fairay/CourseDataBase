@@ -112,3 +112,14 @@ def delivery_page(request: ReqClass, orderid: int):
     proc = bm.DeliveryProc(request.session['user']['perstype'])
     order = proc.delivery_info(orderid)
     return render(request, 'other/delivery_page.html', locals())
+
+
+def pass_record(request: ReqClass):
+    msg = extract_msg(request)
+    check_redirect = check_account(request, bm.DriverCheck())
+    if check_redirect is not None:
+        return check_redirect
+
+    proc = bm.PassRecordProc(request.session['user']['perstype'])
+    del_arr = proc.get_all()
+    return render(request, 'other/delivery.html', locals())

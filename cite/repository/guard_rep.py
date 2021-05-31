@@ -23,6 +23,9 @@ class PWGuardDutyRep(GuardDutyRepository):
         self._model = GuardDutysModel(con)
 
     def create(self, obj: GuardDuty):
+        if obj.id is not None and self.get_by_id(obj.id) is not None:
+            raise AlreadyExistsExc()
+
         try:
             d = obj.to_dict()
             del d['dutyid']

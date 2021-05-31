@@ -3,14 +3,19 @@ from inject_config import *
 import errors as exc
 from datetime import *
 
-from repository.acc_rep import *
-from repository.pers_rep import *
-from repository.check_rep import *
-from repository.truck_rep import *
-from repository.delivery_rep import *
-from repository.record_rep import *
-from repository.guard_rep import *
-from repository.driver_rep import *
+from repository import *
+from objects import *
+from repository.pw_rep import *
+
+# TODO: delete
+# from repository.acc_rep import *
+# from repository.pers_rep import *
+# from repository.check_rep import *
+# from repository.truck_rep import *
+# from repository.delivery_rep import *
+# from repository.record_rep import *
+# from repository.guard_rep import *
+# from repository.driver_rep import *
 
 
 class BaseRepTest(object):
@@ -284,7 +289,7 @@ class RecordsRepTest(BaseRepTest, ut.TestCase):
     _con = SqliteDatabase(':memory:')
     _rep = PWPassRecordsRep(_con)
 
-    _obj_upd = PassRecord(recordid=0, platenumber='П000СО666', checkpointid=0,
+    _obj_upd = PassRecord(recordid=1, platenumber='П000СО666', checkpointid=0,
                           passtime=datetime(2021, 5, 20, 12, 31, 51),
                           direction='in')
 
@@ -292,13 +297,13 @@ class RecordsRepTest(BaseRepTest, ut.TestCase):
                                passtime=datetime(2121, 5, 20, 12, 31, 51),
                                direction=' ')
     _obj_arr = [
-        PassRecord(recordid=0, platenumber='П000СО666', checkpointid=0,
+        PassRecord(recordid=1, platenumber='П000СО666', checkpointid=0,
                    passtime=datetime(2021, 5, 20, 12, 31, 51),
                    direction='out'),
-        PassRecord(recordid=1, platenumber='В000ОР199', checkpointid=2,
+        PassRecord(recordid=2, platenumber='В000ОР199', checkpointid=2,
                    passtime=datetime(2021, 5, 20, 13, 11, 21),
                    direction='in'),
-        PassRecord(recordid=2, platenumber='С777ОР100', checkpointid=0,
+        PassRecord(recordid=3, platenumber='С777ОР100', checkpointid=0,
                    passtime=datetime(2021, 5, 21, 9, 0, 0),
                    direction='in'),
     ]
@@ -325,7 +330,7 @@ class GuardDutyRepTest(BaseRepTest, ut.TestCase):
     _con = SqliteDatabase(':memory:')
     _rep = PWGuardDutyRep(_con)
 
-    _obj_upd = GuardDuty(dutyid=0, checkpointid=0, login='guard',
+    _obj_upd = GuardDuty(dutyid=1, checkpointid=0, login='guard',
                          begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
                          begintime=time(9, 0, 0), endtime=time(18, 30, 0),
                          dow='01234')
@@ -335,15 +340,15 @@ class GuardDutyRepTest(BaseRepTest, ut.TestCase):
                               begintime=time(9, 0, 0), endtime=time(18, 30, 0),
                               dow='')
     _obj_arr = [
-        GuardDuty(dutyid=0, checkpointid=0, login='guard',
+        GuardDuty(dutyid=1, checkpointid=0, login='guard',
                   begindate=date(2021, 5, 1),
                   begintime=time(9, 0, 0), endtime=time(18, 30, 0),
                   dow='01234'),
-        GuardDuty(dutyid=1, checkpointid=2, login='vasyok1997',
+        GuardDuty(dutyid=2, checkpointid=2, login='vasyok1997',
                   begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
                   begintime=time(9, 0, 0), endtime=time(18, 30, 0),
                   dow='01'),
-        GuardDuty(dutyid=2, checkpointid=1, login='chicksa1999',
+        GuardDuty(dutyid=3, checkpointid=1, login='chicksa1999',
                   begindate=date(2021, 1, 1), enddate=date(2022, 1, 1),
                   begintime=time(9, 0, 0), endtime=time(15, 0, 0),
                   dow='0246'),
@@ -371,7 +376,7 @@ class DriverDutyRepTest(BaseRepTest, ut.TestCase):
     _con = SqliteDatabase(':memory:')
     _rep = PWDriverDutyRep(_con)
 
-    _obj_upd = DriverDuty(dutyid=0, platenumber='П000СО666', login='driver',
+    _obj_upd = DriverDuty(dutyid=1, platenumber='П000СО666', login='driver',
                           begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
                           begintime=time(9, 0, 0), endtime=time(18, 30, 0),
                           dow='01234')
@@ -381,15 +386,15 @@ class DriverDutyRepTest(BaseRepTest, ut.TestCase):
                                begintime=time(9, 0, 0), endtime=time(18, 30, 0),
                                dow='')
     _obj_arr = [
-        DriverDuty(dutyid=0, platenumber='П000СО666', login='driver',
+        DriverDuty(dutyid=1, platenumber='П000СО666', login='driver',
                    begindate=date(2021, 5, 1),
                    begintime=time(9, 0, 0), endtime=time(18, 30, 0),
                    dow='01234'),
-        DriverDuty(dutyid=1, platenumber='В000ОР199', login='sanyok1997',
+        DriverDuty(dutyid=2, platenumber='В000ОР199', login='sanyok1997',
                    begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
                    begintime=time(9, 0, 0), endtime=time(18, 30, 0),
                    dow='01'),
-        DriverDuty(dutyid=2, platenumber='С777ОР100', login='chocksa1999',
+        DriverDuty(dutyid=3, platenumber='С777ОР100', login='chocksa1999',
                    begindate=date(2021, 1, 1), enddate=date(2022, 1, 1),
                    begintime=time(9, 0, 0), endtime=time(15, 0, 0),
                    dow='0246'),

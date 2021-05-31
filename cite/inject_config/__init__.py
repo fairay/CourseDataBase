@@ -5,8 +5,19 @@ import config_loader
 import repository.repository as rep
 from repository.pw_db import DBFromConfig
 
+from repository import *
+# TODO: delete
+# from repository.pers_rep import PersonRepository, PWPersonRep
+# from repository.acc_rep import AccountsRepository, PWAccountsRep
+# from repository.truck_rep import TrucksRepository, PWTrucksRep
+# from repository.check_rep import CheckpointsRepository, PWCheckpointsRep
+# from repository.delivery_rep import DeliveryRepository, PWDeliveryRep
+# from repository.driver_rep import DriverDutyRepository, PWDriverDutyRep
+# from repository.guard_rep import GuardDutyRepository, PWGuardDutyRep
+# from repository.record_rep import PassRecordsRepository, PWPassRecordsRep
 
-def inject_config0(binder):
+
+def inject_config_db(binder):
     binder.bind(peewee.Database, peewee.PostgresqlDatabase)
     binder.bind_to_constructor(config_loader.ConfigLoader, lambda: config_loader.ConfigLoader('config.json'))
 
@@ -29,30 +40,22 @@ def inject_config0(binder):
                              inject.instance(config_loader.ConfigLoader).get_article('unverif_connect')))
 
 
-print('!' * 30)
-inject.clear_and_configure(inject_config0)
-
-from repository.pers_rep import PersonRepository, PWPersonRep
-from repository.acc_rep import AccountsRepository, PWAccountsRep
-from repository.truck_rep import TrucksRepository, PWTrucksRep
-from repository.check_rep import CheckpointsRepository, PWCheckpointsRep
-from repository.delivery_rep import DeliveryRepository, PWDeliveryRep
-from repository.driver_rep import DriverDutyRepository, PWDriverDutyRep
-from repository.guard_rep import GuardDutyRepository, PWGuardDutyRep
-
-
-def inject_config(binder):
-    inject_config0(binder)
-
+def inject_config_rep(binder):
     binder.bind(PersonRepository, PWPersonRep)
-    # TODO: remove inject.instance(AbstractConnection)
     binder.bind(AccountsRepository, PWAccountsRep)
     binder.bind(TrucksRepository, PWTrucksRep)
     binder.bind(CheckpointsRepository, PWCheckpointsRep)
     binder.bind(DeliveryRepository, PWDeliveryRep)
     binder.bind(DriverDutyRepository, PWDriverDutyRep)
     binder.bind(GuardDutyRepository, PWGuardDutyRep)
+    binder.bind(PassRecordsRepository, PWPassRecordsRep)
+
+
+def inject_config(binder):
+    inject_config_db(binder)
+    inject_config_rep(binder)
 
 
 print('#' * 30)
 inject.clear_and_configure(inject_config)
+print('!' * 30)

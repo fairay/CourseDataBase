@@ -23,6 +23,9 @@ class PWDriverDutyRep(DriverDutyRepository):
         self._model = DriverDutysModel(con)
 
     def create(self, obj: DriverDuty):
+        if obj.id is not None and self.get_by_id(obj.id) is not None:
+            raise AlreadyExistsExc()
+
         try:
             d = obj.to_dict()
             del d['dutyid']
