@@ -10,4 +10,6 @@ urlpatterns = [
     path('delivery/', other.delivery, name='delivery'),
     path('delivery/<int:orderid>', other.delivery_page, name='delivery_page'),
     path('add_delivery/', other.add_delivery, name='add_delivery'),
+    path('pass_record/', other.pass_record, name='pass_record'),
+    path('pass_record/add', other.add_pass_record, name='add_pass_record'),
 ]

@@ -15,7 +15,7 @@
 <body>
     <header>
         <div class="logo">
-            <p>LOGO</p>
+            <img src="{% static "icons/logo.svg" %}" width="90" height="90" />
         </div>
         {% if msg.warning %}
             <div class="tipmsg" msg="{{msg.warning}}">

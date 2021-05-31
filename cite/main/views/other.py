@@ -121,5 +121,30 @@ def pass_record(request: ReqClass):
         return check_redirect
 
     proc = bm.PassRecordProc(request.session['user']['perstype'])
-    del_arr = proc.get_all()
-    return render(request, 'other/delivery.html', locals())
+    pass_arr = proc.get_all()
+    return render(request, 'other/pass_records.html', locals())
+
+
+def add_pass_record(request: ReqClass):
+    msg = extract_msg(request)
+    check_redirect = check_account(request, bm.AdminCheck())
+    if check_redirect is not None:
+        return check_redirect
+
+    proc = bm.PassRecordProc(request.session['user']['perstype'])
+    pre_data = extract_post(request)
+
+    try:
+        record = proc.create(**pre_data)
+    except exc.CreateObjExc as ex:
+        request.session['warning_msg'] = 'Некорректные параметры записи проезда'
+        return HttpResponseRedirect(reverse('other:pass_record'))
+
+    print(record)
+
+    record = proc.add(record)
+    if record is None:
+        request.session['warning_msg'] = 'Объект не был добавлен: Ошибка в работе базы данных'
+        return HttpResponseRedirect(reverse('other:pass_record'))
+
+    return HttpResponseRedirect(reverse('other:pass_record'))

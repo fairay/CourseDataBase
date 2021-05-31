@@ -6,6 +6,7 @@
  */
  @import url("top_menu.css");
  @import url("pop_up.css");
+ @import url("switch.css");
  
 :root {
     --header-h: 80px
@@ -16,6 +17,13 @@ html, body {
     padding: 0;
     background-color: #45A29e;
     height: calc(100% - 8%);
+}
+
+.w220 {
+    width: 220px;
+}
+.w200 {
+    width: 200px;
 }
 
 .wrapper {
