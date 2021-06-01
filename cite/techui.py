@@ -45,5 +45,36 @@ def dutyguards():
 cli.add_command(dutyguards)
 
 
+@click.command()
+def trucks():
+    click.echo(CmdEntityView.get_trucks())
+cli.add_command(trucks)
+
+
+@click.command()
+def checkpoints():
+    click.echo(CmdEntityView.get_checkpoints())
+cli.add_command(checkpoints)
+
+
+@click.command()
+def delivery():
+    click.echo(CmdEntityView.get_delivery())
+cli.add_command(delivery)
+
+
+@click.command()
+def passrecords():
+    click.echo(CmdEntityView.get_pass_records())
+cli.add_command(passrecords)
+
+
+@click.command()
+@click.argument('id')
+def deliverypage(id: int):
+    click.echo(CmdEntityView.delivery_page(id))
+cli.add_command(deliverypage)
+
+
 if __name__ == '__main__':
     cli()

@@ -11,14 +11,14 @@ class CmdDutyView(CmdBaseView):
         proc = bm.DriverDutyProc('admin')
         duty_arr = proc.get_all()
         duty_arr = cls._tranfrom_dow(proc.dow_long_names, duty_arr)
-        return cls._table_str(duty_arr)
+        return 'Дежурства водителей:\n' + cls._table_str(duty_arr)
 
     @classmethod
     def get_guards(cls):
         proc = bm.GuardDutyProc('admin')
         duty_arr = proc.get_all()
         duty_arr = cls._tranfrom_dow(proc.dow_long_names, duty_arr)
-        return cls._table_str(duty_arr)
+        return 'Дежурства охранников:\n' + cls._table_str(duty_arr)
 
     @classmethod
     def _tranfrom_dow(cls, dow_names: [str], d_arr: [dict]):

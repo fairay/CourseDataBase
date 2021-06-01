@@ -7,16 +7,6 @@ from repository import *
 from objects import *
 from repository.pw_rep import *
 
-# TODO: delete
-# from repository.acc_rep import *
-# from repository.pers_rep import *
-# from repository.check_rep import *
-# from repository.truck_rep import *
-# from repository.delivery_rep import *
-# from repository.record_rep import *
-# from repository.guard_rep import *
-# from repository.driver_rep import *
-
 
 class BaseRepTest(object):
     _con = SqliteDatabase(':memory:')
