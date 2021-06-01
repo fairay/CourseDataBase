@@ -90,8 +90,7 @@ def register(request: ReqClass):
         request.session['bad_signup'] = pre_data
         return HttpResponseRedirect(reverse('auth:signup'))
 
-    pre_data['phonenumber'] = '+7' + pre_data['phonenumber']
-    pers = bm.Person(**pre_data)
+    pers = pers_proc.create(pre_data)
     pers = pers_proc.add(pers)
     if pers is None:
         acc_proc.unregister(acc)

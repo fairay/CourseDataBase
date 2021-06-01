@@ -8,6 +8,10 @@ import errors as exc
 class PersonProc(BaseProc):
     _gender_dict = {'м': 'Мужской', 'ж': 'Женский'}
 
+    def create(self, **init_dict) -> Person:
+        init_dict['phonenumber'] = self.transform_phone(init_dict['phonenumber'])
+        return Person(**init_dict)
+
     def add(self, obj: Person):
         rep_ = inject.instance(PersonRepository)(self._con)
 

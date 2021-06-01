@@ -6,15 +6,6 @@ import repository.repository as rep
 from repository.pw_db import DBFromConfig
 
 from repository import *
-# TODO: delete
-# from repository.pers_rep import PersonRepository, PWPersonRep
-# from repository.acc_rep import AccountsRepository, PWAccountsRep
-# from repository.truck_rep import TrucksRepository, PWTrucksRep
-# from repository.check_rep import CheckpointsRepository, PWCheckpointsRep
-# from repository.delivery_rep import DeliveryRepository, PWDeliveryRep
-# from repository.driver_rep import DriverDutyRepository, PWDriverDutyRep
-# from repository.guard_rep import GuardDutyRepository, PWGuardDutyRep
-# from repository.record_rep import PassRecordsRepository, PWPassRecordsRep
 
 
 def inject_config_db(binder):
@@ -56,6 +47,4 @@ def inject_config(binder):
     inject_config_rep(binder)
 
 
-print('#' * 30)
 inject.clear_and_configure(inject_config)
-print('!' * 30)
