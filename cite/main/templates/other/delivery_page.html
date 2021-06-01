@@ -16,8 +16,39 @@
         {% endif %}
 
         {% if order.driver %}
-        <tr>    <td>Курьер</td>         <td>{{order.driver.surname}} {{order.driver.forename}}</td></tr>
+        <tr>    <td>Курьер</td>         <td>{{order.driver.surname}} {{order.driver.forename}} ({{order.driver.login}})</td></tr>
         {% endif %}
+
+        <tr>    <td>Описание</td>       <td>{{order.description}}</td> </tr>
     </table>
 </div>
+
+{% if order.status == "not_assigned" %}
+    <button class="pop-up-show" id="pop-up-btn" onclick="showPopUp()">Назначить заказ</button>
+    <div class="pop-up-div" id="pop-up-div">
+        <form class="pop-up-form" method="post" action="{% url 'other:assign_delivery'%}">
+            {% csrf_token %}
+            
+            <input type="text" name="orderid" value="{{order.orderid}}" style="display:none;">
+
+            <label for="login"><b>Водитель</b></label>
+            <input type="text" placeholder="Логин" name="login" required>
+            
+            <button type="submit" class="btn">Назначить</button>
+            <button type="button" class="pop-up-hide" id="pop-up-btn" onclick="hidePopUp()">Закрыть</button>
+        </form>
+    </div>
+    <script>
+        function showPopUp() {
+            document.getElementById("pop-up-div").style.display = "block";
+        }
+
+        function hidePopUp() {
+            document.getElementById("pop-up-div").style.display = "none";
+        }
+    </script>
+{% elif order.status == "in_transit" %}
+    <button class="pop-up-show" id="pop-up-btn" onclick="window.location='{% url 'other:done_delivery' order.orderid %}';">Завершить заказ</button>
+{% endif %}
+
 {% endblock %}

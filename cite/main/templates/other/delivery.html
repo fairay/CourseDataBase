@@ -10,18 +10,23 @@
             <tr>
                 <td><b>Номер</b></td>
                 <td><b>Статус</b></td>
+                <td><b>Курьер</b></td>
                 <td><b>Адрес</b></td>
                 <td><b>Контакты</b></td>
-                <td><b>Время создания</b></td>
             </tr>
 
             {% for obj in del_arr %}
             <tr class="href-row" onclick="window.location='{% url 'other:delivery_page' obj.orderid %}';">
                 <td>{{obj.orderid}}</td>
                 <td>{{obj.rus_status}}</td>
+                {% if obj.login %}
+                    <td>{{obj.login}}</td>
+                {% else %}
+                    <td>Не назначен</td>
+                {% endif %}
                 <td>{{obj.address}}</td>
                 <td>{{obj.phonenumber}}</td>
-                <td>{{obj.creationtime}}</td>
+
             </tr>
             {% endfor %}
         </table>

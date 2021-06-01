@@ -3,6 +3,7 @@ from .base_proc import BaseProc
 from objects import *
 import errors as exc
 from .person_proc import PersonProc
+from .acc_proc import AccountProc
 
 import re
 import datetime
@@ -36,6 +37,13 @@ class DeliveryProc(BaseProc):
 
         return Delivery(**init_dict)
 
+    def get(self, order_id: int) -> Delivery:
+        rep_: DeliveryRepository = inject.instance(DeliveryRepository)(self._con)
+        obj = rep_.get_by_id(order_id)
+        if obj is None:
+            raise exc.WrongFormatExc('заказ с таким id не существует')
+        return obj
+
     def get_all(self):
         rep_ = inject.instance(DeliveryRepository)(self._con)
         del_arr = []
@@ -54,6 +62,28 @@ class DeliveryProc(BaseProc):
 
         return obj
 
+    def assign(self, order_id: int, login: str):
+        rep_: DeliveryRepository = inject.instance(DeliveryRepository)(self._con)
+
+        if not AccountProc(self._role, con=self._con).check_role(login, 'driver'):
+            raise exc.WrongFormatExc('привязываемый аккаунт не пренадлежит водителю')
+
+        obj = self.get(order_id)
+        new_obj = obj.clone()
+        new_obj.login = login
+        new_obj.status = 'in_transit'
+
+        rep_.update(obj, new_obj)
+
+    def set_done(self, order_id: int):
+        obj = self.get(order_id)
+        new_obj = obj.clone()
+        new_obj.status = 'delivered'
+        new_obj.completion_t = datetime.datetime.now()
+
+        rep_ = inject.instance(DeliveryRepository)(self._con)
+        rep_.update(obj, new_obj)
+
     def delivery_info(self, orderid: int) -> dict:
         rep_ = inject.instance(DeliveryRepository)(self._con)
         obj = rep_.get_by_id(orderid)
@@ -67,8 +97,8 @@ class DeliveryProc(BaseProc):
 
         d['creationtime'] = d['creationtime'].strftime('%d.%m.%Y %H:%M:%S')
         if d['completiontime'] is not None:
-            d['completiontime'] = d['creationtime'].strftime('%d.%m.%Y %H:%M:%S')
+            d['completiontime'] = d['completiontime'].strftime('%d.%m.%Y %H:%M:%S')
         if extended and d['login'] is not None:
-            d['driver'] = PersonProc(self._con).profile_info(d['login'])
+            d['driver'] = PersonProc(self._role, self._con).profile_info(d['login'])
 
         return d

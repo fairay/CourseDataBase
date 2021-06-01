@@ -114,6 +114,46 @@ def delivery_page(request: ReqClass, orderid: int):
     return render(request, 'other/delivery_page.html', locals())
 
 
+def assign_delivery(request: ReqClass):
+    msg = extract_msg(request)
+    check_redirect = check_account(request, bm.DriverCheck())
+    if check_redirect is not None:
+        return check_redirect
+
+    proc = bm.DeliveryProc(request.session['user']['perstype'])
+    pre_data = extract_post(request)
+
+    try:
+        proc.assign(pre_data['orderid'], pre_data['login'])
+    except exc.WrongFormatExc as e:
+        request.session['warning_msg'] = 'Некорректные параметры назначения заказа: ' + str(e)
+    except exc.RepositoryExc:
+        request.session['warning_msg'] = 'Объект не был обновлён: Ошибка в работе базы данных'
+    else:
+        request.session['info_msg'] = 'Заказ назначен водителю ' + pre_data['login']
+
+    return HttpResponseRedirect(reverse('other:delivery_page', kwargs={'orderid': pre_data['orderid']}))
+
+
+def done_delivery(request: ReqClass, orderid: int):
+    msg = extract_msg(request)
+    check_redirect = check_account(request, bm.DriverCheck())
+    if check_redirect is not None:
+        return check_redirect
+
+    proc = bm.DeliveryProc(request.session['user']['perstype'])
+    try:
+        proc.set_done(orderid)
+    except exc.WrongFormatExc as e:
+        request.session['warning_msg'] = 'Некорректные параметры: ' + str(e)
+    except exc.RepositoryExc:
+        request.session['warning_msg'] = 'Объект не был обновлён: Ошибка в работе базы данных'
+    else:
+        request.session['info_msg'] = 'Доставка зарегистрирована'
+
+    return HttpResponseRedirect(reverse('other:delivery_page', kwargs={'orderid': orderid}))
+
+
 def pass_record(request: ReqClass):
     msg = extract_msg(request)
     check_redirect = check_account(request, bm.DriverCheck())
