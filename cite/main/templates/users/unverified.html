@@ -11,17 +11,22 @@
                 <td><b>Предполагаемая должность</b></td>
                 <td><b>Фамилия</b></td>
                 <td><b>Имя</b></td>
-                <td><b>Профиль</b></td>
-                <td><b>Подтвердить</b></td>
+                <td><b>Логин</b></td>
+                <td><b>Действие</b></td>
             </tr>
 
             {% for person in person_arr %}
-            <tr>
+            <tr class="href-row" onclick="window.location='{% url 'users:profile' person.login %}';">
                 <td>{{person.type_name}}</td>
                 <td>{{person.surname}}</td>
                 <td>{{person.forename}}</td>
-                <td> <a href="{% url 'users:profile' person.login %}">Профиль</a> </td>
-                <td> <a href="{% url 'users:unverified' person.login %}"> ✔ </a></td>
+                <td>{{person.login}}</td>
+                <td class="no-pad"> 
+                    <div class="two-but-div">
+                    <a class="small-a" title="Подтвердить" href="{% url 'users:unverified' person.login %}"> ✔ </a>
+                    <a class="small-a" title="Отклонить" href="{% url 'users:unverified' person.login %}"> ✖ </a>
+                    </div>
+                </td>
             </tr>
             {% endfor %}
         </table>

@@ -76,21 +76,18 @@ def register(request: ReqClass):
     if request.method != 'POST':
         return HttpResponseRedirect(reverse('auth:login'))
 
-    pre_data = dict(request.POST.copy())
-    for key in pre_data.keys():
-        pre_data[key] = pre_data[key][0]
-
+    pre_data = extract_post(request)
     acc_proc = bm.AccountProc('admin')
     pers_proc = bm.PersonProc('admin')
 
     acc = acc_proc.register(pre_data['login'], pre_data['password'], pre_data['perstype'])
     if acc is None:
-        request.session['warning_msg'] = 'Аккаунт с данным именем уже зарегестрирован, попробуйте другой логин'
+        request.session['warning_msg'] = 'Аккаунт с данным именем уже зарегистрирован, попробуйте другой логин'
         pre_data['login'] = ''
         request.session['bad_signup'] = pre_data
         return HttpResponseRedirect(reverse('auth:signup'))
 
-    pers = pers_proc.create(pre_data)
+    pers = pers_proc.create(**pre_data)
     pers = pers_proc.add(pers)
     if pers is None:
         acc_proc.unregister(acc)

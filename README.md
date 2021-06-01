@@ -6,26 +6,32 @@
 ## ER-диаграмма сущностей  
 ![image](docs/schemes/er.jpg)
 
-## Описание типа приложения
-Web-Spa
-
 ## Технологический стек
 * Фреймворк для веб-приложения - **Django** 
 * Язык программирования - **Python**
 * СУБД - **PostgreSQL**
 * ORM - **Peewee**
+* Тип приложения - **Web MPA**
 
 ## UML диаграмма компонента доступа к данным
-WIP
+![image](docs/uml/repsoitory.jpg)
 
 ## UML диаграмма компонента с бизнес-логикой
-WIP
+![image](docs/uml/business_models.jpg)
 
 ## ER диаграмма сущностей БД
 ![image](docs/schemes/er_db.jpg)
 
 ## UML диаграмма сущностей системы
-WIP
+![image](docs/uml/business_obj.jpg)
 
-## UML диаграмма транспортных сущностей
-WIP
+
+# Лабораторная работа 2
+## UML-диаграммы классов для компонента/модуля, связывающего GUI и бизнес-логику
+![image](docs/uml/webGUI.jpg)
+
+## UML-диаграмма классов для технологического UI ко всем функциям системы
+![image](docs/uml/techUI.jpg)
+
+## UML-диаграмма компонентов для всего приложения
+![image](docs/uml/components.jpg)

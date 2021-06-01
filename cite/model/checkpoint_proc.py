@@ -9,10 +9,11 @@ import re
 class CheckpointProc(BaseProc):
     @staticmethod
     def create(**init_dict) -> Checkpoint:
+        print(init_dict)
         if not {'address', 'phonenumber'}.issubset(init_dict.keys()):
             raise exc.CheckpointLackExc()
 
-        init_dict['phonenumber'] = CheckpointProc.transform_phone('+7 ' + init_dict['phonenumber'])
+        init_dict['phonenumber'] = CheckpointProc.transform_phone(init_dict['phonenumber'])
         if init_dict['phonenumber'] is None:
             raise exc.CheckpointWrongExc()
         init_dict['checkpointid'] = None

@@ -5,14 +5,14 @@
 
 {% block content %}
     <div>
-        <table>
-            <tr>    <td>Имя</td>            <td>{{person.forename}}</td> </tr>
-            <tr>    <td>Фамилия</td>        <td>{{person.surname}}</td> </tr>
-            <tr>    <td>Должность</td>      <td>{{person.type_name}}</td> </tr>
-            <tr>    <td>Логин</td>          <td>{{person.login}}</td> </tr>
-            <tr>    <td>Пол</td>            <td>{{person.gender}}</td> </tr>
-            <tr>    <td>Дата рождения</td>  <td>{{person.dob}}</td> </tr>
-            <tr>    <td>Телефон</td>        <td>{{person.phonenumber}}</td> </tr>
+        <table class="profile-table">
+            <tr>    <td><b>Имя</b></td>            <td>{{person.forename}}</td> </tr>
+            <tr>    <td><b>Фамилия</b></td>        <td>{{person.surname}}</td> </tr>
+            <tr>    <td><b>Должность</b></td>      <td>{{person.type_name}}</td> </tr>
+            <tr>    <td><b>Логин</b></td>          <td>{{person.login}}</td> </tr>
+            <tr>    <td><b>Пол</b></td>            <td>{{person.gender}}</td> </tr>
+            <tr>    <td><b>Дата рождения</b></td>  <td>{{person.dob}}</td> </tr>
+            <tr>    <td><b>Телефон</b></td>        <td>{{person.phonenumber}}</td> </tr>
         </table>
     </div>
 {% endblock %}

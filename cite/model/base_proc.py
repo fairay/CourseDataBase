@@ -30,6 +30,7 @@ class BaseProc(object):
 
     @staticmethod
     def transform_phone(phone: str) -> str:
+        phone = '+7 ' + phone
         if not re.match(r"\+7[ (-]?[0-9]{3}[ )-]?[0-9]{3}[ -]?[0-9]{2}[ -]?[0-9]{2}", phone):
             return None
         return phone

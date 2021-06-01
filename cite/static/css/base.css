@@ -7,6 +7,7 @@
  @import url("top_menu.css");
  @import url("pop_up.css");
  @import url("switch.css");
+ @import url("table.css");
  
 :root {
     --header-h: 80px
@@ -17,6 +18,7 @@ html, body {
     padding: 0;
     background-color: #45A29e;
     height: calc(100% - 8%);
+    font-family: 'Montserrat', sans-serif; 
 }
 
 
@@ -91,6 +93,7 @@ input:invalid {
 .list-table tr:first-child {
     background-color: #1f2833;
     color: whitesmoke;
+    text-transform: uppercase;
 }
 .list-table tr:first-child td {
     border-left: 2px solid #66fcf1;
@@ -113,8 +116,8 @@ input:invalid {
 
 
 .list-table a {
-    display: block;
-    padding: 16px;
+    /* display: block;
+    padding: 16px; */
 }
 
 .logo {
@@ -142,7 +145,7 @@ input:invalid {
     right: 170px;
     padding-top: 20px;
     text-align: center;
-    font-family:  "Exo2-Medium", sans-serif;
+    font-family: "Exo2-Medium", sans-serif;
     font-size: 32px;
     color: white;
 }

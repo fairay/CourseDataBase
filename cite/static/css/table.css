@@ -1,0 +1,62 @@
+.profile-table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 2px solid #0B0C10e0;
+    border-right: 2px solid #0B0C10e0;
+}
+
+.profile-table th {
+    text-align: left;
+    padding: 10px;
+}
+
+.profile-table td {
+    text-align: left;
+    padding: 10px;
+}
+
+
+.profile-table tr {
+    border: 2px solid #ffffff00;
+    border-style: inset;
+}
+
+.profile-table tr td:first-child {
+    background-color: #0B0C10e0;
+    color: whitesmoke;
+    width: 25%;
+    text-transform: uppercase;
+}
+.profile-table tr:nth-child(even) td:first-child {
+    background-color: #1f2833e0;
+    color: whitesmoke;
+}
+
+.profile-table tr:nth-child(odd) {
+    background-color: #dbecec;
+}
+
+.small-a {
+    height: 25px;
+    display: block;
+    padding-top: 5px;
+    width: 40%;
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    background-color: #1f2833;
+    border: 2px solid #66fcf2a1;
+
+    margin: 3px;
+    transition: all 0.5s ease;
+}
+.small-a:hover {
+    background: #66fcf1;
+    color: #0B0C10;
+}
+
+.two-but-div {
+    display: flex;
+}

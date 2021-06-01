@@ -28,7 +28,7 @@ class DeliveryProc(BaseProc):
         if not {'address', 'phonenumber'}.issubset(init_dict.keys()):
             raise exc.LackArgExc()
 
-        init_dict['phonenumber'] = DeliveryProc.transform_phone('+7 ' + init_dict['phonenumber'])
+        init_dict['phonenumber'] = DeliveryProc.transform_phone(init_dict['phonenumber'])
         if init_dict['phonenumber'] is None:
             raise exc.WrongFormatExc()
         init_dict['orderid'] = None

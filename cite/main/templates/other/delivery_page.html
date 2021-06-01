@@ -5,21 +5,21 @@
 
 {% block content %}
 <div>
-    <table>
-        <tr>    <td>Статус</td>         <td>{{order.rus_status}}</td> </tr>
-        <tr>    <td>Адрес</td>          <td>{{order.address}}</td> </tr>
-        <tr>    <td>Контакты</td>       <td>{{order.phonenumber}}</td> </tr>
-        <tr>    <td>Время создания</td> <td>{{order.creationtime}}</td> </tr>
+    <table class="profile-table">
+        <tr>    <td><b>Статус</b></td>          <td>{{order.rus_status}}</td> </tr>
+        <tr>    <td><b>Адрес</b></td>           <td>{{order.address}}</td> </tr>
+        <tr>    <td><b>Контакты</b></td>        <td>{{order.phonenumber}}</td> </tr>
+        <tr>    <td><b>Время создания</b></td>  <td>{{order.creationtime}}</td> </tr>
 
         {% if order.completiontime %}
-        <tr>    <td>Время доставки</td> <td>{{order.completiontime}}</td> </tr>
+        <tr>    <td><b>Время доставки</b></td>  <td>{{order.completiontime}}</td> </tr>
         {% endif %}
 
         {% if order.driver %}
-        <tr>    <td>Курьер</td>         <td>{{order.driver.surname}} {{order.driver.forename}} ({{order.driver.login}})</td></tr>
+        <tr>    <td><b>Курьер</b></td>          <td>{{order.driver.surname}} {{order.driver.forename}} ({{order.driver.login}})</td></tr>
         {% endif %}
 
-        <tr>    <td>Описание</td>       <td>{{order.description}}</td> </tr>
+        <tr>    <td><b>Описание</b></td>        <td>{{order.description}}</td> </tr>
     </table>
 </div>
 

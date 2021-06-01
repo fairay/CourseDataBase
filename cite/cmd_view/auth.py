@@ -13,7 +13,7 @@ class CmdAuthView(CmdBaseView):
 
         acc = acc_proc.register(init_dict['login'], init_dict['password'], init_dict['perstype'])
         if acc is None:
-            return 'Аккаунт с данным именем уже зарегестрирован, попробуйте другой логин'
+            return 'Аккаунт с данным именем уже зарегистрирован, попробуйте другой логин'
 
         pers = pers_proc.create(**init_dict)
         pers = pers_proc.add(pers)
@@ -21,5 +21,5 @@ class CmdAuthView(CmdBaseView):
             acc_proc.unregister(acc)
             return 'Ошибка регистрации личных данных'
 
-        return 'Пользователь успешно зарегестрирован.\n' +\
+        return 'Пользователь успешно зарегистрирован.\n' +\
                CmdUsersView.profile(init_dict['login'])
