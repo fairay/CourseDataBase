@@ -22,6 +22,15 @@ class PersonProc(BaseProc):
 
         return obj
 
+    def delete(self, login: str):
+        rep_ = inject.instance(PersonRepository)(self._con)
+        obj = rep_.get_by_login(login)
+        if obj is None:
+            raise exc.NoneExistExc('данный логин не зарегистрирован')
+        rep_.delete(obj)
+
+        AccountProc(self._role, self._con).delete(login)
+
     def profile_info(self, login: str):
         rep_ = inject.instance(PersonRepository)(self._con)
         person_ = rep_.get_by_login(login)

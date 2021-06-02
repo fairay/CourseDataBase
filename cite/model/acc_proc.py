@@ -42,6 +42,14 @@ class AccountProc(BaseProc):
         acc = acc_rep.get_by_login(login)
         return AccountProc._get_cookie(acc)
 
+    def delete(self, login: str):
+        rep_ = inject.instance(AccountsRepository)(self._con)
+        obj = rep_.get_by_login(login)
+        if obj is None:
+            raise exc.NoneExistExc('данный логин не зарегистрирован')
+
+        rep_.delete(obj)
+
     def login(self, login: str, password: str) -> Account or None:
         acc_rep = inject.instance(AccountsRepository)(self._con)
         acc = acc_rep.get_by_login(login)

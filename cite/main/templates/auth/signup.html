@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <select name="password" required>
+        <select name="perstype" required>
             {% if pre_data.perstype %}
                 <option disabled value="">Выберите должность</option>
             {% else %}
@@ -102,5 +102,4 @@
         <button type="submit" onclick="this.disabled=true;this.form.submit();">Создать аккаунт</button>
     </form>
     </div>
-
 {% endblock %}

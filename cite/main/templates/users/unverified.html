@@ -24,7 +24,7 @@
                 <td class="no-pad"> 
                     <div class="two-but-div">
                     <a class="small-a" title="Подтвердить" href="{% url 'users:unverified' person.login %}"> ✔ </a>
-                    <a class="small-a" title="Отклонить" href="{% url 'users:unverified' person.login %}"> ✖ </a>
+                    <a class="small-a" title="Отклонить" href="{% url 'users:del_user' person.login %}"> ✖ </a>
                     </div>
                 </td>
             </tr>

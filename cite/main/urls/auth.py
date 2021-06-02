@@ -9,5 +9,5 @@ urlpatterns = [
     path('logout/', view_log(auth.logout), name='logout'),
     path('signup/', view_log(auth.signup), name='signup'),
     path('register/', view_log(auth.register), name='register'),
-    path('upd_type/', view_log(auth.upd_type), name='upd_type')
+    path('upd_type/', view_log(auth.upd_type), name='upd_type'),
 ]

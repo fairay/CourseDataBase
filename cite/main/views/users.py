@@ -58,6 +58,20 @@ def approve_user(request: ReqClass, login: str):
     return get_unverified(request)
 
 
+def del_user(request: ReqClass, login: str):
+    check_redirect = check_account(request, bm.AdminCheck())
+    if check_redirect is not None:
+        return check_redirect
+
+    proc = bm.PersonProc(request.session['user']['perstype'])
+    try:
+        proc.delete(login)
+    except exc.CreateObjExc as ex:
+        request.session['warning_msg'] = 'Ошибка операции: ' + str(ex)
+
+    return get_unverified(request)
+
+
 def get_unverified(request: ReqClass):
     msg = extract_msg(request)
     check_redirect = check_account(request, bm.AdminCheck())
