@@ -18,7 +18,11 @@
             {% for obj in duty_arr %}
             <tr>
                 <td>{{obj.checkpointid}}</td>
-                <td>{{obj.login}}</td>
+
+                <td class="href-row" onclick="window.location='{% url 'users:profile' obj.login %}';">
+                    {{obj.login}}
+                </td>
+
                 <td>
                     {% if obj.enddate %}
                         с {{obj.begindate}} по {{obj.enddate}}
@@ -41,7 +45,7 @@
             {% endfor %}
         </table>
         {% else %}
-        <h1> Деружства охранников не назначены </h1>
+        <h1> Дежурства охранников не назначены </h1>
         {% endif %}
     </div>
 

@@ -63,7 +63,8 @@ class PWDriverDutyRep(DriverDutyRepository):
             where_exp = DriverDutysModel.enddate.is_null() & (DriverDutysModel.begindate <= end_date)
             where_exp |= ~DriverDutysModel.enddate.is_null() & (
                     DriverDutysModel.begindate.between(begin_date, end_date) |
-                    DriverDutysModel.enddate.between(begin_date, end_date)
+                    DriverDutysModel.enddate.between(begin_date, end_date) |
+                    ((DriverDutysModel.begindate <= end_date) & (end_date <= DriverDutysModel.enddate))
             )
 
         if login is not None:

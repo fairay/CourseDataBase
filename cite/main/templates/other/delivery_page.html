@@ -16,7 +16,10 @@
         {% endif %}
 
         {% if order.driver %}
-        <tr>    <td><b>Курьер</b></td>          <td>{{order.driver.surname}} {{order.driver.forename}} ({{order.driver.login}})</td></tr>
+        <tr class="href-row" onclick="window.location='{% url 'users:profile' order.driver.login %}';">    
+            <td><b>Курьер</b></td>
+            <td>{{order.driver.surname}} {{order.driver.forename}} ({{order.driver.login}})</td>
+        </tr>
         {% endif %}
 
         <tr>    <td><b>Описание</b></td>        <td>{{order.description}}</td> </tr>

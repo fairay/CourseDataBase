@@ -125,6 +125,10 @@ input:invalid {
 
     border: 2px solid #45A29e;
 }
+td + .href-row:hover {
+    background-color: #45a29d88;
+    border: 2px solid #45A29e;
+}
 
 
 .list-table a {

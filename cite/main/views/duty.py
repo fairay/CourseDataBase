@@ -8,6 +8,7 @@ def drivers(request: ReqClass):
         return check_redirect
 
     proc = bm.DriverDutyProc(request.session['user']['perstype'])
+    active_duty_arr = proc.get_current()
     duty_arr = proc.get_all()
     dow_names = proc.dow_short_names
     return render(request, 'duty/drivers.html', locals())

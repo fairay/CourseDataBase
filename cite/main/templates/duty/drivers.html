@@ -15,10 +15,52 @@
                 <td><b>Дни работы</b></td>
             </tr>
 
+            {% if active_duty_arr %}
+            <tr>
+                <td colspan="5" style="text-align: center;"><b>Текущие дежурства</b></td>
+            </tr>
+
+            {% for obj in active_duty_arr %}
+            <tr>
+                <td>{{obj.platenumber}}</td>
+                
+                <td class="href-row" onclick="window.location='{% url 'users:profile' obj.login %}';">
+                    {{obj.login}}
+                </td>
+
+                <td>
+                    {% if obj.enddate %}
+                        с {{obj.begindate}} по {{obj.enddate}}
+                    {% else %}
+                        с {{obj.begindate}}
+                    {% endif %}
+                </td>
+                <td>{{obj.begintime}} - {{obj.endtime}}</td>
+                <td>
+                    {% for dow, is_set in obj.dow_view.items %}
+                        {% if is_set %}
+                            <input class="dow-checkbox" type="checkbox" checked title="{{dow}}" disabled>
+                        {% else %}
+                            <input class="dow-checkbox" type="checkbox"  title="{{dow}}" disabled>
+                            <!-- <input type="text" value="{{dow}}" disabled> -->
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %} 
+            <tr>
+                <td colspan="5" style="text-align: center;"><b>Все дежурства</b></td>
+            </tr>
+            {% endif %}
+
             {% for obj in duty_arr %}
             <tr>
                 <td>{{obj.platenumber}}</td>
-                <td>{{obj.login}}</td>
+                
+                <td class="href-row" onclick="window.location='{% url 'users:profile' obj.login %}';">
+                    {{obj.login}}
+                </td>
+
                 <td>
                     {% if obj.enddate %}
                         с {{obj.begindate}} по {{obj.enddate}}
@@ -41,7 +83,7 @@
             {% endfor %}
         </table>
         {% else %}
-        <h1> Деружства водителей не назначены </h1>
+        <h1> Дежурства водителей не назначены </h1>
         {% endif %}
     </div>
 
