@@ -10,103 +10,97 @@
 {% block top_title %} Регистрация {% endblock %}
 
 {% block content %}
-    <h3> Заполните форму регистрации </h3>
-
+    <div class="login-div lower-input">
     <form method="post", action="{% url 'auth:register'%}">
         {% csrf_token %}
-        <p><table>
-            <tr>
-                <td> Логин </td>
-                <td> <input type="text" name="login" value="{{ pre_data.login }}"
-                     pattern="[a-z0-9_]*" title="Прописные латинские буквы, цифры, _" required> </td>
-            </tr>
-
-            <tr>
-                <td> Пароль </td>
-                <td> <input type="password" name="password" value="{{ pre_data.password }}" 
-                    pattern="[A-Za-z0-9_!#$%&]*" title="Латинские буквы, цифры, _!#$%&" required> </td>
-            </tr>
-
-            <tr>
-                <td> Должность </td>
-                <td> <select name="perstype" required>
-                    {% if pre_data.perstype %}
-                        <option disabled value="">Выберите должность</option>
-                    {% else %}
-                        <option disabled value="" selected>Выберите должность</option>
-                    {% endif %}
-                    
-
-                    {% for key, value in pers_types.items %}
-                        {% if pre_data.perstype == key %}
-                            <option selected value="{{key}}"> {{value}} </option>
-                        {% else %}
-                            <option value="{{key}}"> {{value}} </option>
-                        {% endif %}
-                    {% endfor %}
-                </select></td>
-            </tr>
-        </table></p>
-        
-        <p><table>
-            <tr>
-                <td> Имя </td>
-                <td> <input type="text" name="forename" value="{{ pre_data.forename }}"
-                    pattern="[А-Яа-яA-Za-z ]{1,64}" title="Имя содержит только буквы и пробелы" required> </td>
-            </tr>
-
-            <tr>
-                <td> Фамилия </td>
-                <td> <input type="text" name="surname" value="{{ pre_data.surname }}"
-                    pattern="[А-Яа-яA-Za-z ]{1,64}" title="Фамилия содержит только буквы и пробелы" required> </td>
-            </tr>
-
-            <tr>
-                <td> Пол </td>
-                <td>
-                    <div class="form_gender_btn">
-                        {% if pre_data.gender == "м" %}
-                            <input id="gender-1" type="radio" name="gender" value="м" checked>
-                        {% else %}
-                            <input id="gender-1" type="radio" name="gender" value="м">
-                        {% endif %}
-                        <label for="gender-1">Мужской</label>
-                    </div>
-                    
-                    <div class="form_gender_btn">
-                        {% if pre_data.gender == "ж" %}
-                        <input id="gender-2" type="radio" name="gender" value="ж" checked>
-                        {% else %}
-                        <input id="gender-2" type="radio" name="gender" value="ж">
-                        {% endif %}
-                        <label for="gender-2">Женский</label>
-                    </div>
-                </td>
-            </tr>
-
-            <tr>
-                <td> Дата рождения </td>
-                <td>
-                    {% if pre_data.dob %}
-                        <input type="date" name="dob" value="{{ pre_data.dob }}" required>
-                    {% else %}
-                        <input type="date" name="dob" value="2000-01-01" required>
-                    {% endif %}
-                </td>
-            </tr>
-
-            <tr>
-                <td> Телефон </td>
-                <td> +7 <input type="tel" name="phonenumber" value="{{ pre_data.phonenumber }}"
-                    placeholder="000 123 4567" pattern="[(-]?[0-9]{3}[ )-]?[0-9]{3}[ -]?[0-9]{2}[ -]?[0-9]{2}"
-                    title="Формат ввода: 000 123 4567" required> </td>
-            </tr>
-        </table></p>
-
-        <div>
-            <button type="submit" onclick="this.disabled=true;this.form.submit();">Создать аккаунт</button>
+        <div style="display: flex;">
+            <div class="half-div">
+            <label for="login"> Логин </label>
+            <input type="text" name="login" value="{{ pre_data.login }}"
+                        pattern="[a-z0-9_]*" title="Прописные латинские буквы, цифры, _" required>
+            </div>
             
+            <div class="half-div">
+            <label for="password"> Пароль </label>
+            <input type="password" name="password" value="{{ pre_data.password }}" 
+                pattern="[A-Za-z0-9_!#$%&]*" title="Латинские буквы, цифры, _!#$%&" required>
+            </div>
         </div>
+
+        <select name="password" required>
+            {% if pre_data.perstype %}
+                <option disabled value="">Выберите должность</option>
+            {% else %}
+                <option disabled value="" selected>Выберите должность</option>
+            {% endif %}
+            
+
+            {% for key, value in pers_types.items %}
+                {% if pre_data.perstype == key %}
+                    <option selected value="{{key}}"> {{value}} </option>
+                {% else %}
+                    <option value="{{key}}"> {{value}} </option>
+                {% endif %}
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <div style="display: flex;">
+            <div class="half-div">
+                <label for="forename"> Имя </label>
+                <input type="text" name="forename" value="{{ pre_data.forename }}"
+                    pattern="[А-Яа-яA-Za-z ]{1,64}" title="Имя содержит только буквы и пробелы" required>
+            </div>
+            
+            <div class="half-div">
+                <label for="surname"> Фамилия </label>
+                <input type="text" name="surname" value="{{ pre_data.surname }}"
+                    pattern="[А-Яа-яA-Za-z ]{1,64}" title="Фамилия содержит только буквы и пробелы" required>
+            </div>
+        </div>
+        
+        <div style="display: flex;">
+            <div class="half-div">
+                <label for="gender-1">Мужчина</label>
+                {% if pre_data.gender == "м" %}
+                    <input id="gender-1" type="radio" name="gender" value="м" checked>
+                {% elif pre_data.gender %}
+                    <input id="gender-1" type="radio" name="gender" value="м">
+                {% else %}
+                    <input id="gender-1" type="radio" name="gender" value="м" checked>
+                {% endif %}
+            </div>
+        
+            <div class="half-div">
+                <label for="gender-2">Женщина</label>
+                {% if pre_data.gender == "ж" %}
+                    <input id="gender-2" type="radio" name="gender" value="ж" checked>
+                {% else %}
+                    <input id="gender-2" type="radio" name="gender" value="ж">
+                {% endif %}
+            </div>
+        </div>
+        
+        <br>
+
+        <label for="date"> Дата рождения </label>
+        {% if pre_data.dob %}
+            <input type="date" name="dob" value="{{ pre_data.dob }}" required>
+        {% else %}
+            <input type="date" name="dob" value="2000-01-01" required>
+        {% endif %}
+
+        <label for="phonenumber"> Телефон </label>
+        <div class="pop-up-phone">
+            <b>+7</b>
+            <input type="tel" name="phonenumber" value="{{ pre_data.phonenumber }}"
+                    placeholder="000 123 4567" pattern="[(-]?[0-9]{3}[ )-]?[0-9]{3}[ -]?[0-9]{2}[ -]?[0-9]{2}"
+                    title="Формат ввода: 000 123 4567" required>
+        </div>
+        
+        <button type="submit" onclick="this.disabled=true;this.form.submit();">Создать аккаунт</button>
     </form>
+    </div>
 
 {% endblock %}

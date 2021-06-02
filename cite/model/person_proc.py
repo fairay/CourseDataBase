@@ -6,7 +6,7 @@ import errors as exc
 
 
 class PersonProc(BaseProc):
-    _gender_dict = {'м': 'Мужской', 'ж': 'Женский'}
+    _gender_dict = {'м': 'Мужчина', 'ж': 'Женщина'}
 
     def create(self, **init_dict) -> Person:
         init_dict['phonenumber'] = self.transform_phone(init_dict['phonenumber'])

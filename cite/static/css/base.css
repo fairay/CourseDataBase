@@ -21,6 +21,18 @@ html, body {
     font-family: 'Montserrat', sans-serif; 
 }
 
+button {
+    display: block;
+    padding: 10px;
+    min-width: 100px;
+    text-decoration: none;
+    background-color: #1f2833;
+    color: whitesmoke;
+}
+button:hover {
+    background: #66fcf1;
+    color: #0B0C10;
+}
 
 .wrapper {
     margin-right: 4%;
@@ -121,9 +133,9 @@ input:invalid {
 }
 
 .logo {
-    width: 100px;
+    max-width: 100px;
     float: left;
-    height: 80px;
+    max-height: 80px;
     margin-right: 10px;
 }
 .logo p {
@@ -333,4 +345,82 @@ input:invalid {
 .no-pad {
     padding-top: 0px !important;
     padding-bottom: 0px !important;
+}
+
+.login-div {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    padding-top: 15px;
+    width: 40%;
+    min-width: 300px;
+    background-color: #1f2833;
+}
+
+.login-div .half-div {
+    width: 48%;
+}
+
+.login-div .half-div input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    margin-left: 20px;
+}
+
+.login-div input {
+    height: 20px;
+    width: 90%;
+    margin-left: 10px;
+    margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+
+.login-div select {
+    width: 94%;
+    height: 30px;
+
+    margin-left: 10px;
+    margin-bottom: 10px;
+    
+    padding: 5px;
+}
+
+.lower-input input {
+    height: 15px;
+    padding: 5px;
+}
+
+.login-div label {
+    color: whitesmoke;
+    margin-left: 10px;
+}
+
+.login-div button {
+    width: 95%;
+    height: 40px;
+    padding: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+
+    background: #45A29e;
+    color: #0B0C10;
+}
+
+.login-div button:hover {
+    background: #66fcf1;
+    color: #0B0C10;
+}
+
+.login-div .pop-up-phone {
+    margin-left: 10px;
+}
+.login-div .pop-up-phone b {
+    color: whitesmoke;
+}
+.login-div .pop-up-phone input {
+    width: 79%;
 }

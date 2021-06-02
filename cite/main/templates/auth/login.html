@@ -10,24 +10,21 @@
 {% block top_title %} Авторизация {% endblock %}
 
 {% block content %}
+<div class="login-div">
     <form method="post", action="{% url 'auth:verify'%}">
         {% csrf_token %}
-
-        <div>
-            <label> Логин: </label>
+        
+            <label for="login"> Логин </label>
             <input type="text" name="login" value="{{ login }}" required>
-        </div>
 
-        <div>
-            <label> Пароль: </label>
+            <label for="password"> Пароль </label>
             <input type="password" name="password" required>
-        </div>
 
-        <div>
             <button type="submit">Войти</button>
-        </div>
+        
     </form>
-
-    <p><a href="{% url 'auth:signup' %}"> Зарегистрироваться </a></p>
-
+    <form action="{% url 'auth:signup' %}">
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+</div>
 {% endblock %}

@@ -8,9 +8,10 @@ def view_log(view_f):
         login = ' '
         if 'user' in request.session.keys():
             login = request.session['user']['login']
-        logging.info("user %s from %s requested url %s (redirected from %s)" %
-                     (login, request.environ['REMOTE_ADDR'], request.environ['PATH_INFO'],
-                      request.environ['HTTP_REFERER']))
+        logging.info("user %s from %s requested url %s" %
+                     (login, request.environ['REMOTE_ADDR'], request.environ['PATH_INFO']))
+        if 'HTTP_REFERER' in request.environ.keys():
+            logging.info('user redirected from %s' % request.environ['HTTP_REFERER'])
 
         try:
             return view_f(request, **kwargs)
