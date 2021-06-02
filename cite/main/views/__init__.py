@@ -6,4 +6,3 @@ from django.core.handlers.wsgi import WSGIRequest as ReqClass
 import model as bm
 import errors as exc
 from inject_config import *
-

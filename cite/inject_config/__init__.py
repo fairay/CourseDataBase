@@ -4,6 +4,7 @@ from playhouse.postgres_ext import *
 import config_loader
 import repository.repository as rep
 from repository.pw_db import DBFromConfig
+import logging
 
 from repository import *
 
@@ -48,3 +49,5 @@ def inject_config(binder):
 
 
 inject.clear_and_configure(inject_config)
+logging.basicConfig(filename=inject.instance(config_loader.ConfigLoader).get_article('log_file'),
+                    level=logging.INFO)
