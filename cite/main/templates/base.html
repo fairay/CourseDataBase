@@ -29,11 +29,15 @@
 
         {% if request.session.user %}
             <div class="block-top-auth">
-                <p><a href="{% url 'auth:logout'%}">Выйти</a></p>
+                <form action="{% url 'auth:logout'%}">
+                    <button type="submit">Выйти</button>
+                </form>
             </div>
         {% else %}
             <div class="block-top-auth">
-                <p><a href="{% url 'auth:login'%}">Войти</a></p>
+                <form action="{% url 'auth:login'%}">
+                    <button type="submit">Войти</button>
+                </form>
             </div>
         {% endif %}
 

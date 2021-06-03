@@ -276,34 +276,23 @@ td + .href-row:hover {
 */
 
 .block-top-auth {
-    width: 100px;
+    /* width: 5%;
     float: right;
     margin-left: 40px;
-    height: inherit;
+    height: inherit; */
+    position: absolute;
+    top: 0px;
+    right: 0px;
 }
-.block-top-auth p {
-    margin-top: 15px;
-    text-align: center;
-    margin-bottom: 8px;
+.block-top-auth button {
+    height: calc(var(--header-h) - 20px);
+    margin-top: 10px;
+    margin-right: 5px;
+    transition: all 0.4s ease;
 }
-.block-top-auth a {
-    text-decoration: none;
-    color: white;
-    font-family:  "Exo2-Medium", sans-serif;
-    font-size: 15px;
-    text-decoration: underline;
-    cursor: pointer;
-
-    transition: all 0.5s ease;
-    -webkit-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    -ms-transition:all 0.5s ease;
-    -moz-transition:all 0.5s ease;
+.block-top-auth:hover button {
+    margin-right: 10px;
 }
-.block-top-auth a:hover {
-    color: #00ADE4;
-}
-
 
 .tipmsg {
     float: left;
