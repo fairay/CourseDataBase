@@ -55,7 +55,7 @@ class DriverDutyProc(BaseDutyProc):
         return duty_arr
 
     def get_current(self):
-        rep_:DriverDutyRepository = inject.instance(DriverDutyRepository)(self._con)
+        rep_: DriverDutyRepository = inject.instance(DriverDutyRepository)(self._con)
         duty_arr = []
         now_date = datetime.now().date()
         for obj in rep_.get_by_time(now_date, now_date):
@@ -93,11 +93,3 @@ class DriverDutyProc(BaseDutyProc):
 
         return (obj2.btime <= obj1.btime <= obj2.etime or
                 obj1.btime <= obj2.btime <= obj1.etime)
-
-    @staticmethod
-    def _is_active(obj: DriverDuty):
-        now = datetime.now()
-        if not str(now.weekday()) in obj.dow:
-            return False
-
-        return obj.btime <= now.time() <= obj.etime

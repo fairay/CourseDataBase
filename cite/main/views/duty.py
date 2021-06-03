@@ -46,6 +46,7 @@ def guards(request: ReqClass):
         return check_redirect
 
     proc = bm.GuardDutyProc(request.session['user']['perstype'])
+    active_duty_arr = proc.get_current()
     duty_arr = proc.get_all()
     dow_names = proc.dow_short_names
     return render(request, 'duty/guards.html', locals())

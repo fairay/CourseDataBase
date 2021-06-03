@@ -68,7 +68,8 @@ class PWGuardDutyRep(GuardDutyRepository):
             where_exp = GuardDutysModel.enddate.is_null() & (GuardDutysModel.begindate <= end_date)
             where_exp |= ~GuardDutysModel.enddate.is_null() & (
                     GuardDutysModel.begindate.between(begin_date, end_date) |
-                    GuardDutysModel.enddate.between(begin_date, end_date)
+                    GuardDutysModel.enddate.between(begin_date, end_date) |
+                    ((GuardDutysModel.begindate <= end_date) & (end_date <= GuardDutysModel.enddate))
             )
 
         if login is not None:
