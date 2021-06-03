@@ -40,6 +40,14 @@ class PassRecordProc(BaseProc):
 
         return pass_arr
 
+    def get_by_duty(self, duty: GuardDuty):
+        rep_ = inject.instance(PassRecordsRepository)(self._con)
+        pass_arr = []
+        for obj in self.sort(rep_.get_by_duty(duty, datetime.now().date())):
+            pass_arr.append(self._to_view(obj))
+
+        return pass_arr
+
     def get_with_login(self):
         rep_ = inject.instance(PassRecordsRepository)(self._con)
         proc = DriverDutyProc(self._role, self._con)

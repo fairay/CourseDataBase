@@ -13,3 +13,9 @@ CREATE ROLE guard WITH
 GRANT ALL PRIVILEGES ON Passrecords TO guard;
 GRANT SELECT ON Accounts TO guard;
 GRANT SELECT ON Person TO guard;
+GRANT SELECT ON GuardDutys TO guard;
+GRANT SELECT, INSERT ON PassRecords TO guard;
+GRANT ALL PRIVILEGES ON SEQUENCE passrecords_recordid_seq TO guard;
+GRANT SELECT ON Checkpoints TO guard;
+GRANT SELECT ON Trucks TO guard;
+

@@ -30,9 +30,9 @@
                 <td class="w220 no-pad">
                     <label class="switch w200">
                         {% if obj.direction == "out" %}
-                            <input type="checkbox" name='direction' value="in" id="togBtn" disabled checked>
-                        {% else %}
                             <input type="checkbox" name='direction' value="in" id="togBtn" disabled>
+                        {% else %}
+                            <input type="checkbox" name='direction' value="in" id="togBtn" disabled checked>
                         {% endif %}
                         <div class="slider round">
                             <span class="on"><b>Въезд</b></span>

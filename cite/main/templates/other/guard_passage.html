@@ -1,0 +1,85 @@
+{% extends "general.html" %}
+
+{% block head_title %} Записи о проездах {% endblock %}
+{% block top_title %}
+    {% if duty %}
+        Проезды КПП №{{duty.checkpoint}} 
+    {% else %}
+        Записи о проездах
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div>
+    {% if duty %}
+    {% if pass_arr %}
+    <table class="list-table"> 
+        <tr>
+            <td><b>Номер машины</b></td>
+            <td><b>Время</b></td>
+            <td><b>Направление</b></td>
+        </tr>
+
+        {% for obj in pass_arr %}
+        <tr>
+            <td>{{obj.platenumber}}</td>
+            <td>{{obj.passdate}} {{obj.passtime}}</td>
+            <td class="w220 no-pad">
+                <label class="switch w200">
+                    {% if obj.direction == "out" %}
+                        <input type="checkbox" value="in" id="togBtn" disabled>
+                    {% else %}
+                        <input type="checkbox" value="in" id="togBtn" disabled checked>
+                    {% endif %}
+                    <div class="slider round">
+                        <span class="on"><b>Въезд</b></span>
+                        <span class="off"><b>Выезд</b></span>
+                    </div>
+                </label>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <h1> История проездов пуста </h1>
+    {% endif %}
+</div>
+
+<button class="pop-up-show" id="pop-up-btn" onclick="showPopUp()">Создать запись</button>
+<div class="pop-up-div" id="pop-up-div">
+    <form class="pop-up-form" method="post" action="{% url 'other:add_pass_record'%}">
+        {% csrf_token %}
+
+        <label for="platenumber"><b>Номер машины</b></label>
+        <input type="text" placeholder="A0123ВЕ777" name="platenumber"
+        pattern="[АВЕКМНОРСТХ]\d{3}[АВЕКМНОРСТХ]{2}\d{3}" required>
+
+        <input type="hidden" placeholder="1" name="checkpointid" value="{{duty.checkpoint}}" required>
+
+        <label for="checkpointid"><b>Направление</b></label>
+        <label class="switch">
+            <input type="checkbox" name='direction' value="in" id="togBtn">
+            <div class="slider round">
+                <span class="on"><b>Въезд</b></span>
+                <span class="off"><b>Выезд</b></span>
+            </div>
+        </label>
+
+        <button type="submit" onclick="submitForm(this);" class="btn">Добавить</button>
+        <button type="button" class="pop-up-hide" id="pop-up-btn" onclick="hidePopUp()">Закрыть</button>
+    </form>
+    {% else %}
+        <h1>Функционал недоступен до следующего <a href="#">дежурства</a></h1>
+    {% endif %}
+</div>
+<script>
+    function showPopUp() {
+        document.getElementById("pop-up-div").style.display = "block";
+    }
+
+    function hidePopUp() {
+        document.getElementById("pop-up-div").style.display = "none";
+    }
+</script>
+{% endblock %}
+

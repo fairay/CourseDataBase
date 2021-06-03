@@ -46,13 +46,19 @@ class GuardDutyProc(BaseDutyProc):
                 return False
         return True
 
-    def get_current(self):
+    def get_current_view(self, login: str = None):
+        duty_arr = []
+        for obj in self.get_current(login):
+            duty_arr.append(self._to_view(obj))
+        return duty_arr
+
+    def get_current(self, login: str = None):
         rep_: GuardDutyRepository = inject.instance(GuardDutyRepository)(self._con)
         duty_arr = []
         now_date = datetime.now().date()
-        for obj in rep_.get_by_time(now_date, now_date):
+        for obj in rep_.get_by_time(now_date, now_date, login):
             if self._is_active(obj, datetime.now()):
-                duty_arr.append(self._to_view(obj))
+                duty_arr.append(obj)
 
         return duty_arr
 
