@@ -55,11 +55,22 @@ class DriverDutyProc(BaseDutyProc):
         return duty_arr
 
     def get_current(self, login: str = None, platenumber: str = None):
+        return self.get_by_time(datetime.now(), login, platenumber)
+        # rep_: DriverDutyRepository = inject.instance(DriverDutyRepository)(self._con)
+        # duty_arr = []
+        # now_date = datetime.now().date()
+        # for obj in rep_.get_by_time(now_date, now_date):
+        #     if self._is_active(obj, datetime.now()):
+        #         duty_arr.append(self._to_view(obj))
+        #
+        # return duty_arr
+
+    def get_by_time(self, date_time, login: str = None, platenumber: str = None):
         rep_: DriverDutyRepository = inject.instance(DriverDutyRepository)(self._con)
         duty_arr = []
-        now_date = datetime.now().date()
-        for obj in rep_.get_by_time(now_date, now_date):
-            if self._is_active(obj):
+        date_ = date_time.date()
+        for obj in rep_.get_by_time(date_, date_, login, platenumber):
+            if self._is_active(obj, date_time):
                 duty_arr.append(self._to_view(obj))
 
         return duty_arr

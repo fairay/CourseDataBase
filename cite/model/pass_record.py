@@ -5,6 +5,7 @@ import errors as exc
 
 from .checkpoint_proc import CheckpointProc
 from .truck_proc import TruckProc
+from .driver_duty import DriverDutyProc
 
 import re
 from datetime import *
@@ -34,8 +35,33 @@ class PassRecordProc(BaseProc):
     def get_all(self):
         rep_ = inject.instance(PassRecordsRepository)(self._con)
         pass_arr = []
-        for obj in rep_.get_all():
+        for obj in self.sort(rep_.get_all()):
             pass_arr.append(self._to_view(obj))
+
+        return pass_arr
+
+    def get_with_login(self):
+        rep_ = inject.instance(PassRecordsRepository)(self._con)
+        proc = DriverDutyProc(self._role, self._con)
+        pass_arr = []
+
+        for obj in self.sort(rep_.get_all()):
+            pass_arr.append(self._to_view(obj))
+            duty = proc.get_by_time(obj.time, platenumber=obj.number)
+            if len(duty):
+                pass_arr[-1]['login'] = duty[0]['login']
+
+        return pass_arr
+
+    def get_by_login(self, login: str):
+        rep_ = inject.instance(PassRecordsRepository)(self._con)
+        proc = DriverDutyProc(self._role, self._con)
+        pass_arr = []
+
+        for obj in self.sort(rep_.get_all()):
+            duty = proc.get_by_time(obj.time, platenumber=obj.number)
+            if len(duty) and duty[0]['login'] == login:
+                pass_arr.append(self._to_view(obj))
 
         return pass_arr
 
@@ -48,6 +74,10 @@ class PassRecordProc(BaseProc):
             obj = None
 
         return obj
+
+    @staticmethod
+    def sort(arr: [PassRecord]) -> [PassRecord]:
+        return sorted(arr, key=lambda obj: obj.time, reverse=True)
 
     def _to_view(self, obj: PassRecord):
         d = obj.to_dict()

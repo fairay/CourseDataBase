@@ -193,13 +193,25 @@ def done_delivery(request: ReqClass, orderid: int):
 
 def pass_record(request: ReqClass):
     msg = extract_msg(request)
-    check_redirect = check_account(request, bm.DriverCheck())
+    check_redirect = check_account(request, bm.AdminCheck())
     if check_redirect is not None:
         return check_redirect
 
     proc = bm.PassRecordProc(request.session['user']['perstype'])
-    pass_arr = proc.get_all()
+    # pass_arr = proc.get_all()
+    pass_arr = proc.get_with_login()
     return render(request, 'other/pass_records.html', locals())
+
+
+def my_pass_record(request: ReqClass):
+    msg = extract_msg(request)
+    check_redirect = check_account(request, bm.OnlyDriverCheck())
+    if check_redirect is not None:
+        return check_redirect
+
+    proc = bm.PassRecordProc(request.session['user']['perstype'])
+    pass_arr = proc.get_by_login(request.session['user']['login'])
+    return render(request, 'other/my_passage.html', locals())
 
 
 def add_pass_record(request: ReqClass):

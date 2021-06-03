@@ -61,8 +61,8 @@ class BaseDutyProc(BaseProc):
         return ans_str
 
     @staticmethod
-    def _is_active(obj):
-        now = datetime.now()
+    def _is_active(obj, now):
+        # now = datetime.now()
         if not str(now.weekday()) in obj.dow:
             return False
 

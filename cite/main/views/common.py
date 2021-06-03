@@ -24,7 +24,7 @@ def check_account(request: ReqClass, verifier: bm.BaseAccCheck, set_msg=True) ->
     except exc.NotAllowedExc:
         if set_msg:
             request.session['warning_msg'] = 'Данная функция недоступна вашму аккаунту'
-        return HttpResponseRedirect(reverse('auth:login'))
+        return HttpResponseRedirect(reverse('users:profile'))
 
     return None
 

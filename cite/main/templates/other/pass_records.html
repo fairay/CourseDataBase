@@ -9,14 +9,22 @@
         <table class="list-table"> 
             <tr>
                 <td><b>Номер машины</b></td>
+                <td><b>Водитель</b></td>
                 <td><b>КПП</b></td>
-                <td><b>Время проезда</b></td>
+                <td><b>Время</b></td>
                 <td><b>Направление</b></td>
             </tr>
 
             {% for obj in pass_arr %}
             <tr>
                 <td>{{obj.platenumber}}</td>
+                {% if obj.login %}
+                    <td class="href-row" onclick="window.location='{% url 'users:profile' obj.login %}';">
+                        {{obj.login}}
+                    </td>
+                {% else %}
+                    <td> - </td>
+                {% endif %}
                 <td>{{obj.checkpointid}}</td>
                 <td>{{obj.passdate}} {{obj.passtime}}</td>
                 <td class="w220 no-pad">
