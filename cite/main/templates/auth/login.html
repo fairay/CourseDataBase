@@ -20,7 +20,7 @@
             <label for="password"> Пароль </label>
             <input type="password" name="password" required>
 
-            <button type="submit">Войти</button>
+            <button type="submit" onclick="submitForm(this);">Войти</button>
         
     </form>
     <form action="{% url 'auth:signup' %}">
