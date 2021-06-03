@@ -5,13 +5,7 @@
         <ul class="top-menu">
             <li><p>Водитель</p></li>
             <li><a href="{% url 'users:profile'%}">Профиль</a></li>
-            <li>
-                <a href="{% url 'users:all'%}" class="submenu-link">Заказы</a>
-                <ul class="top-submenu">
-                    <li><a href="{% url 'users:all'%}"> Все сотрудники </a></li>
-                    <li><a href="{% url 'users:unverified'%}"> Заявки </a></li>
-                </ul>
-            </li>
+            <li><a href="{% url 'other:delivery'%}">Заказы</a></li>
             <li><a href="#">Проезды</a></li>
             <li><a href="#">Дежурства</a></li>
             <!-- {{ request.path }} -->

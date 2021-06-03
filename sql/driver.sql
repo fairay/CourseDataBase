@@ -13,3 +13,5 @@ CREATE ROLE driver WITH
 GRANT ALL PRIVILEGES ON Passrecords TO driver;
 GRANT SELECT ON Accounts TO driver;
 GRANT SELECT ON Person TO driver;
+GRANT SELECT, UPDATE ON Delivery TO driver;
+GRANT SELECT ON DriverDutys TO driver;

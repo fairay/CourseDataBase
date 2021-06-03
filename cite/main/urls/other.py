@@ -11,6 +11,7 @@ urlpatterns = [
     path('delivery/', view_log(other.delivery), name='delivery'),
     path('delivery/<int:orderid>', view_log(other.delivery_page), name='delivery_page'),
     path('delivery/assign/', view_log(other.assign_delivery), name='assign_delivery'),
+    path('delivery/pick/<int:orderid>', view_log(other.pick_delivey), name='pick_delivery'),
     path('delivery/done/<int:orderid>', view_log(other.done_delivery), name='done_delivery'),
     path('add_delivery/', view_log(other.add_delivery), name='add_delivery'),
     path('pass_record/', view_log(other.pass_record), name='pass_record'),

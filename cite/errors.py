@@ -45,3 +45,9 @@ class CheckpointWrongExc(CheckpointExc): pass
 
 class DeliveryExc(BaseException): pass
 class DeliveryWrongExc(DeliveryExc): pass
+class AlreadyPickedExc(DeliveryExc): pass
+class NotAssignedExc(DeliveryExc): pass
+
+
+class DutyExc(BaseException): pass
+class NotOnDutyExc(DutyExc): pass

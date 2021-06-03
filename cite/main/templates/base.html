@@ -54,4 +54,13 @@
 </html>
 
 <script>
+    function submitForm(btn) {
+        if (btn.form.checkValidity()) {
+            btn.disabled = true;
+            btn.classList.add("disabled-btn");
+            btn.form.submit();
+        } else {
+            return false;
+        }
+    }
 </script>

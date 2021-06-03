@@ -46,7 +46,7 @@ class Delivery(BaseObj):
     def get_creation_t(self): return self._creation_t
     def get_address(self): return self._address
     def get_phone(self): return self._phone
-    def get_login(self): return self.login
+    def get_login(self): return self._login
     def get_completion_t(self): return self._completion_t
     def get_descr(self): return self._descr
 

@@ -4,6 +4,7 @@ from objects import *
 import errors as exc
 from .person_proc import PersonProc
 from .acc_proc import AccountProc
+from .driver_duty import DriverDutyProc
 
 import re
 import datetime
@@ -69,14 +70,34 @@ class DeliveryProc(BaseProc):
             raise exc.WrongFormatExc('привязываемый аккаунт не пренадлежит водителю')
 
         obj = self.get(order_id)
+        if obj is None:
+            raise exc.NoneExistExc()
+        if obj.status != 'not_assigned':
+            raise exc.AlreadyPickedExc()
+
         new_obj = obj.clone()
         new_obj.login = login
         new_obj.status = 'in_transit'
 
         rep_.update(obj, new_obj)
 
-    def set_done(self, order_id: int):
+    def set_done(self, order_id: int, actor_login: str):
         obj = self.get(order_id)
+        if obj is None:
+            raise exc.NoneExistExc()
+        if obj.status != 'in_transit':
+            raise exc.NotAssignedExc()
+
+        acc_proc = AccountProc(self._role, con=self._con)
+        if acc_proc.check_role(actor_login, 'admin'):
+            pass
+        elif acc_proc.check_role(actor_login, 'driver') and obj.login == actor_login:
+            duty_proc = DriverDutyProc(self._role, con=self._con)
+            if len(duty_proc.get_current(actor_login)) == 0:
+                raise exc.NotOnDutyExc()
+        else:
+            raise exc.WrongFormatExc('недостаточно прав для завершения данного заказа')
+
         new_obj = obj.clone()
         new_obj.status = 'delivered'
         new_obj.completion_t = datetime.datetime.now()

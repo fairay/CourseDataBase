@@ -33,6 +33,11 @@ button:hover {
     background: #66fcf1;
     color: #0B0C10;
 }
+.disabled-btn {
+    pointer-events: none;
+    opacity: 0.3;
+}
+
 
 .wrapper {
     margin-right: 4%;

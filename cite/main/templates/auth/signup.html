@@ -11,7 +11,7 @@
 
 {% block content %}
     <div class="login-div lower-input">
-    <form method="post", action="{% url 'auth:register'%}">
+    <form method="post" action="{% url 'auth:register'%}"> 
         {% csrf_token %}
         <div style="display: flex;">
             <div class="half-div">
@@ -99,7 +99,9 @@
                     title="Формат ввода: 000 123 4567" required>
         </div>
         
-        <button type="submit" onclick="this.disabled=true;this.form.submit();">Создать аккаунт</button>
+        <!-- <button type="submit" onclick="this.disabled=true;this.form.submit();">Создать аккаунт</button> -->
+        <!-- <button type="submit">Создать аккаунт</button> -->
+        <button type="submit" onclick="submitForm(this);">Создать аккаунт</button>
     </form>
     </div>
 {% endblock %}

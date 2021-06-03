@@ -2,6 +2,9 @@ import logging
 from inject_config import *
 from django.core.handlers.wsgi import WSGIRequest as ReqClass
 
+from cite.settings import DEBUG
+LOG_EXCEPTION = not DEBUG
+
 
 def view_log(view_f):
     def view_shell(request: ReqClass, **kwargs):
@@ -13,10 +16,13 @@ def view_log(view_f):
         if 'HTTP_REFERER' in request.environ.keys():
             logging.info('user redirected from %s' % request.environ['HTTP_REFERER'])
 
-        try:
+        if LOG_EXCEPTION:
+            try:
+                return view_f(request, **kwargs)
+            except BaseException as ex:
+                logging.exception("while processing %s (%s) exception %s raised: %s" %
+                                  (view_f.__name__, request.environ['PATH_INFO'], ex.__class__, str(ex)))
+        else:
             return view_f(request, **kwargs)
-        except BaseException as ex:
-            logging.exception("while processing %s (%s) exception %s raised: %s" %
-                              (view_f.__name__, request.environ['PATH_INFO'], ex.__class__, str(ex)))
 
     return view_shell

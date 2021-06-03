@@ -54,7 +54,7 @@ class DriverDutyProc(BaseDutyProc):
 
         return duty_arr
 
-    def get_current(self):
+    def get_current(self, login: str = None, platenumber: str = None):
         rep_: DriverDutyRepository = inject.instance(DriverDutyRepository)(self._con)
         duty_arr = []
         now_date = datetime.now().date()

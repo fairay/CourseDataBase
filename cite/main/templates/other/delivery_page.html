@@ -16,17 +16,27 @@
         {% endif %}
 
         {% if order.driver %}
+        {% if request.session.user.perstype == 'admin' %}
         <tr class="href-row" onclick="window.location='{% url 'users:profile' order.driver.login %}';">    
+        {% else %}
+        <tr>
+        {% endif %}
             <td><b>Курьер</b></td>
             <td>{{order.driver.surname}} {{order.driver.forename}} ({{order.driver.login}})</td>
         </tr>
         {% endif %}
 
         <tr>    <td><b>Описание</b></td>        <td>{{order.description}}</td> </tr>
+        {% if request.session.user.perstype == 'driver' and not order.driver %}
+        <tr class="href-row" onclick="window.location='{% url 'other:pick_delivery' order.orderid %}';">    
+            <td colspan="2" style="text-align: center;"><b>Выбрать заказ</b></td>
+        </tr>
+        {% endif %}
     </table>
 </div>
 
 {% if order.status == "not_assigned" %}
+    {% if request.session.user.perstype == 'admin' %}
     <button class="pop-up-show" id="pop-up-btn" onclick="showPopUp()">Назначить заказ</button>
     <div class="pop-up-div" id="pop-up-div">
         <form class="pop-up-form" method="post" action="{% url 'other:assign_delivery'%}">
@@ -41,6 +51,7 @@
             <button type="button" class="pop-up-hide" id="pop-up-btn" onclick="hidePopUp()">Закрыть</button>
         </form>
     </div>
+    {% endif %}
     <script>
         function showPopUp() {
             document.getElementById("pop-up-div").style.display = "block";

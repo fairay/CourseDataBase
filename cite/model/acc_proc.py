@@ -61,6 +61,11 @@ class AccountProc(BaseProc):
         else:
             return None  # TODO: raise wrong login/password
 
+    # TODO: validation with create
+    # def create(self, **init_dict):
+    #     if not {'login', 'password', 'perstype'}.issubset(init_dict.keys()):
+    #         raise exc.LackArgExc()
+
     def register(self, login: str, password: str, perstype: str):
         acc_rep = inject.instance(AccountsRepository)(self._con)
         old_acc = acc_rep.get_by_login(login)
@@ -110,7 +115,14 @@ class AccountProc(BaseProc):
         acc = acc_rep.get_by_login(login)
         if acc is None:
             return False
-        return acc.pers_type == role
+
+        if type(role) is str:
+            return acc.pers_type == role
+        elif type(role) is list:
+            for r in role:
+                if acc.pers_type == r:
+                    return True
+        return False
 
     @staticmethod
     def _generate_salt():
@@ -151,4 +163,5 @@ class RoleCheck(BaseAccCheck):
 class AllRoleCheck(RoleCheck): _allowed_roles = ['admin', 'guard', 'driver']
 class AdminCheck(RoleCheck):  _allowed_roles = ['admin']
 class DriverCheck(RoleCheck): _allowed_roles = ['admin', 'driver']
+class OnlyDriverCheck(RoleCheck): _allowed_roles = ['driver']
 class GuardCheck(RoleCheck): _allowed_roles = ['admin', 'guard']

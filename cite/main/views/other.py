@@ -127,12 +127,42 @@ def assign_delivery(request: ReqClass):
         proc.assign(pre_data['orderid'], pre_data['login'])
     except exc.WrongFormatExc as e:
         request.session['warning_msg'] = 'Некорректные параметры назначения заказа: ' + str(e)
+    except exc.NoneExistExc as e:
+        request.session['warning_msg'] = 'Данный заказ не существует'
+        return HttpResponseRedirect(reverse('users:profile'))
+    except exc.AlreadyPickedExc as e:
+        request.session['warning_msg'] = 'Данный заказ уже назначен или доставлен'
     except exc.RepositoryExc:
         request.session['warning_msg'] = 'Объект не был обновлён: Ошибка в работе базы данных'
     else:
         request.session['info_msg'] = 'Заказ назначен водителю ' + pre_data['login']
 
     return HttpResponseRedirect(reverse('other:delivery_page', kwargs={'orderid': pre_data['orderid']}))
+
+
+def pick_delivey(request: ReqClass, orderid: int):
+    msg = extract_msg(request)
+    check_redirect = check_account(request, bm.OnlyDriverCheck())
+    if check_redirect is not None:
+        return check_redirect
+
+    proc = bm.DeliveryProc(request.session['user']['perstype'])
+
+    try:
+        proc.assign(orderid, request.session['user']['login'])
+    except exc.WrongFormatExc as e:
+        request.session['warning_msg'] = 'Некорректные параметры назначения заказа: ' + str(e)
+    except exc.NoneExistExc as e:
+        request.session['warning_msg'] = 'Данный заказ не существует'
+        return HttpResponseRedirect(reverse('users:profile'))
+    except exc.AlreadyPickedExc as e:
+        request.session['warning_msg'] = 'Данный заказ уже назначен или доставлен'
+    except exc.RepositoryExc:
+        request.session['warning_msg'] = 'Объект не был обновлён: Ошибка в работе базы данных'
+    else:
+        request.session['info_msg'] = 'Заказ успешно назначен Вам'
+
+    return HttpResponseRedirect(reverse('other:delivery_page', kwargs={'orderid': orderid}))
 
 
 def done_delivery(request: ReqClass, orderid: int):
@@ -143,9 +173,16 @@ def done_delivery(request: ReqClass, orderid: int):
 
     proc = bm.DeliveryProc(request.session['user']['perstype'])
     try:
-        proc.set_done(orderid)
+        proc.set_done(orderid, request.session['user']['login'])
+    except exc.NoneExistExc as e:
+        request.session['warning_msg'] = 'Данный заказ не существует'
+        return HttpResponseRedirect(reverse('users:profile'))
     except exc.WrongFormatExc as e:
         request.session['warning_msg'] = 'Некорректные параметры: ' + str(e)
+    except exc.NotAssignedExc as e:
+        request.session['warning_msg'] = 'Заказ не в доставке'
+    except exc.NotOnDutyExc as e:
+        request.session['warning_msg'] = 'Заказ можно доставить только во время дежурства'
     except exc.RepositoryExc:
         request.session['warning_msg'] = 'Объект не был обновлён: Ошибка в работе базы данных'
     else:
