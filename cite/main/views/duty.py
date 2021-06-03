@@ -3,7 +3,7 @@ from .common import *
 
 def drivers(request: ReqClass):
     msg = extract_msg(request)
-    check_redirect = check_account(request, bm.DriverCheck())
+    check_redirect = check_account(request, bm.AdminCheck())
     if check_redirect is not None:
         return check_redirect
 
@@ -12,6 +12,20 @@ def drivers(request: ReqClass):
     duty_arr = proc.get_all()
     dow_names = proc.dow_short_names
     return render(request, 'duty/drivers.html', locals())
+
+
+def my_drivers(request: ReqClass):
+    msg = extract_msg(request)
+    check_redirect = check_account(request, bm.OnlyDriverCheck())
+    if check_redirect is not None:
+        return check_redirect
+
+    proc = bm.DriverDutyProc(request.session['user']['perstype'])
+    duty_arr = proc.get_all(request.session['user']['login'])
+    closest_duty = proc.get_closest(request.session['user']['login'])
+    dow_names = proc.dow_short_names
+
+    return render(request, 'duty/my_drivers.html', locals())
 
 
 def add_driver_duty(request: ReqClass):

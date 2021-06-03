@@ -46,11 +46,13 @@ class DriverDutyProc(BaseDutyProc):
                 return False
         return True
 
-    def get_all(self):
+    def get_all(self, login: str = None):
         rep_ = inject.instance(DriverDutyRepository)(self._con)
         duty_arr = []
+
         for obj in rep_.get_all():
-            duty_arr.append(self._to_view(obj))
+            if login is None or obj.login == login:
+                duty_arr.append(self._to_view(obj))
 
         return duty_arr
 
@@ -74,6 +76,29 @@ class DriverDutyProc(BaseDutyProc):
                 duty_arr.append(self._to_view(obj))
 
         return duty_arr
+
+    def get_closest(self, login: str):
+        rep_: DriverDutyRepository = inject.instance(DriverDutyRepository)(self._con)
+
+        date_ = datetime.now().date()
+        duty_arr = rep_.get_by_time(date_, None, login)
+
+        if len(duty_arr) == 0:
+            return None
+
+        min_duty = duty_arr[0]
+        min_date = self._closest_date(datetime.now(), min_duty)
+
+        for obj in duty_arr:
+            cl_date = self._closest_date(datetime.now(), obj)
+            print(cl_date)
+            if min_date > cl_date or (min_date == cl_date and min_duty.btime > obj.btime):
+                min_date = cl_date
+                min_duty = obj
+
+        min_duty = self._to_view(min_duty)
+        min_duty['min_date'] = min_date.strftime('%d.%m.%Y')
+        return min_duty
 
     def add(self, obj: DriverDuty):
         rep_ = inject.instance(DriverDutyRepository)(self._con)

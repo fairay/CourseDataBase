@@ -61,9 +61,28 @@ class BaseDutyProc(BaseProc):
         return ans_str
 
     @staticmethod
-    def _is_active(obj, now):
+    def _is_active(obj, now, check_time=True):
         # now = datetime.now()
         if not str(now.weekday()) in obj.dow:
             return False
 
-        return obj.btime <= now.time() <= obj.etime
+        if check_time:
+            return obj.btime <= now.time() <= obj.etime
+        else:
+            return True
+
+    @staticmethod
+    def _closest_date(dtime: datetime, obj):
+        d = max(dtime.date(), obj.bdate)
+        wday = d.weekday()
+
+        if str(wday) in obj.dow and dtime.time() < obj.etime:
+            return d
+
+        off = 0
+        for i in range(1, 6):
+            if str(wday + i) in obj.dow:
+                off = i
+                break
+
+        return d + timedelta(days=off)

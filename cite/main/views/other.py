@@ -229,8 +229,6 @@ def add_pass_record(request: ReqClass):
         request.session['warning_msg'] = 'Некорректные параметры записи проезда'
         return HttpResponseRedirect(reverse('other:pass_record'))
 
-    print(record)
-
     record = proc.add(record)
     if record is None:
         request.session['warning_msg'] = 'Объект не был добавлен: Ошибка в работе базы данных'
