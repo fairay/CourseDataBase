@@ -78,4 +78,5 @@ class PWGuardDutyRep(GuardDutyRepository):
             where_exp &= GuardDutysModel.checkpointid == check_id
 
         res = self._model.select().where(where_exp)
+        print(res)
         return request_to_objects(res, GuardDuty)

@@ -18,11 +18,11 @@
             <img src="{% static "icons/logo2.png" %}" width="100" height="70" />
         </div>
         {% if msg.warning %}
-            <div class="tipmsg" msg="{{msg.warning}}">
+            <span class="tipmsg" onclick="this.style.display = 'none';" id="blink2" msg="{{msg.warning}}">
                 <img src="{% static "icons/warning2.png" %}" width="50" height="50" />
-            </div>
+            </span> 
         {% elif msg.info %}
-            <div class="tipmsg" msg="{{msg.info}}">
+            <div class="tipmsg" onclick="this.style.display = 'none';" id="blink1" msg="{{msg.info}}">
                 <img src="{% static "icons/info.png" %}" width="50" height="50" />
             </div>
         {% endif %}

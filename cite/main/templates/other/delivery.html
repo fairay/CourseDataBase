@@ -17,7 +17,7 @@
 
             {% for obj in del_arr %}
             <tr class="href-row" onclick="window.location='{% url 'other:delivery_page' obj.orderid %}';">
-                <td>{{obj.orderid}}</td>
+                <td class="short-w" >{{obj.orderid}}</td>
                 <td>{{obj.rus_status}}</td>
                 {% if obj.login %}
                     <td>{{obj.login}}</td>

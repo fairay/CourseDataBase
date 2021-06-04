@@ -55,7 +55,7 @@
 
             {% for obj in duty_arr %}
             <tr>
-                <td>{{obj.platenumber}}</td>
+                <td class="medi-w">{{obj.platenumber}}</td>
                 
                 <td class="href-row" onclick="window.location='{% url 'users:profile' obj.login %}';">
                     {{obj.login}}

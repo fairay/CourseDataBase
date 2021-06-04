@@ -91,7 +91,6 @@ class DriverDutyProc(BaseDutyProc):
 
         for obj in duty_arr:
             cl_date = self._closest_date(datetime.now(), obj)
-            print(cl_date)
             if min_date > cl_date or (min_date == cl_date and min_duty.btime > obj.btime):
                 min_date = cl_date
                 min_duty = obj

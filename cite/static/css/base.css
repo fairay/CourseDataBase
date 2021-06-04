@@ -88,6 +88,8 @@ input:invalid {
 .list-table td {
     text-align: left;
     padding: 10px;
+    max-width: 200px;
+    word-break: break-word;
     /* border-radius: 25px; */
 }  
 .list-table tr {
@@ -302,10 +304,13 @@ td + .href-row:hover {
 .tipmsg {
     float: left;
     height: auto;
-    padding-top: calc(var(--header-h)/4);
+    margin-top: 10px;
+    border-radius: 5px;
     display: inline-block;
     position: relative;
+    padding: 5px;
 }
+
 .tipmsg p {
     font-size: 32px;
     color: white;
@@ -318,11 +323,11 @@ td + .href-row:hover {
     white-space: nowrap;
     left: 20%; top: 30%;
     z-index: 1;
-    background: rgba(255,255,255,0.9);
-    font-family: Arial, sans-serif; 
-    font-size: 14px;
+    background: #1f2833;
+    color: whitesmoke;
+    font-size: 16px;
     padding: 5px 10px;
-    border: 2px solid #333;
+    border: 2px solid #45A29e;
 }
 
 .dow-checkbox {
@@ -339,6 +344,12 @@ td + .href-row:hover {
 }
 .w200 {
     width: 200px;
+}
+.short-w {
+    width: 70px;
+}
+.medi-w {
+    width: 100px;
 }
 .no-pad {
     padding-top: 0px !important;
@@ -421,4 +432,36 @@ td + .href-row:hover {
 }
 .login-div .pop-up-phone input {
     width: 79%;
+}
+
+
+#blink1 {
+    -webkit-animation: rainbow 5s linear 5s infinite;
+	animation: rainbow 5s linear 5s infinite;
+}
+@-webkit-keyframes rainbow {
+    0% {background: #45a29d;}
+	50% {background: #000}
+	100% {background: #45a29d;}
+    /* #45a29d */
+}
+@keyframes rainbow {
+    0% {background:  #45a29d;}
+	50% {background: #000}
+	100% {background:  #45a29d;}
+}
+
+#blink2 {
+    -webkit-animation: rainbow2 2s linear 2s infinite;
+	animation: rainbow2 2s linear 2s infinite;
+}
+@-webkit-keyframes rainbow2 {
+    0% {background: #66fcf1;}
+	50% {background: #000}
+	100% {background: #66fcf1;}
+}
+@keyframes rainbow2 {
+    0% {background:  #66fcf1;}
+	50% {background: #000}
+	100% {background:  #66fcf1;}
 }

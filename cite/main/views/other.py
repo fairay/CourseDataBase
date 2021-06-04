@@ -37,7 +37,7 @@ def add_truck(request: ReqClass):
 
 def checkpoints(request: ReqClass):
     msg = extract_msg(request)
-    check_redirect = check_account(request, bm.AdminCheck())
+    check_redirect = check_account(request, bm.GuardCheck())
     if check_redirect is not None:
         return check_redirect
 

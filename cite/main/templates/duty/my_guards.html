@@ -8,7 +8,7 @@
     {% if duty_arr %}
     <table class="list-table"> 
         <tr>
-            <td class="medi-w"><b>Машина</b></td>
+            <td><b>КПП</b></td>
             <td><b>Период</b></td>
             <td><b>Время</b></td>
             <td><b>Дни работы</b></td>
@@ -20,7 +20,7 @@
         </tr>
 
         <tr>
-            <td>{{closest_duty.platenumber}}</td>
+            <td>{{closest_duty.checkpointid}}</td>
             <td>{{closest_duty.min_date}}</td>
             <td>{{closest_duty.begintime}} - {{closest_duty.endtime}}</td>
             <td></td>
@@ -33,7 +33,7 @@
 
         {% for obj in duty_arr %}
         <tr>
-            <td>{{obj.platenumber}}</td>
+            <td>{{obj.checkpointid}}</td>
             
             <td>
                 {% if obj.enddate %}
