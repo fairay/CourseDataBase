@@ -3,7 +3,7 @@ from .common import *
 
 def trucks(request: ReqClass):
     msg = extract_msg(request)
-    check_redirect = check_account(request, bm.AdminCheck())
+    check_redirect = check_account(request, bm.DriverCheck())
     if check_redirect is not None:
         return check_redirect
 

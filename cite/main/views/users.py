@@ -1,7 +1,7 @@
 from .common import *
 
 
-def _profile(request: ReqClass, login: str):
+def _profile(request: ReqClass, login: str, msg=None):
     proc = bm.PersonProc(request.session['user']['perstype'])
     person = proc.profile_info(login)
     if person is None:
@@ -22,7 +22,7 @@ def my_profile(request: ReqClass):
     if check_redirect is not None:
         return check_redirect
 
-    return _profile(request, request.session['user']['login'])
+    return _profile(request, request.session['user']['login'], msg)
 
 
 def profile(request: ReqClass, login: str):
@@ -34,7 +34,7 @@ def profile(request: ReqClass, login: str):
     if login == request.session['user']['login']:
         return HttpResponseRedirect(reverse('users:profile'))
 
-    return _profile(request, login)
+    return _profile(request, login, msg)
 
 
 def get_all(request: ReqClass):

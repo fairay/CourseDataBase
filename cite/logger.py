@@ -24,6 +24,7 @@ def view_log(view_f):
             except BaseException as ex:
                 logging.exception("while processing %s (%s) exception %s raised: %s" %
                                   (view_f.__name__, request.environ['PATH_INFO'], ex.__class__, str(ex)))
+                print(ex)
 
                 request.session['error_msg'] = str(ex.__class__)
                 return HttpResponseRedirect(reverse('unknown_error'))

@@ -26,6 +26,7 @@
         {% endif %}
     </div>
 
+    {% if request.session.user.perstype == 'admin' %}
     <button class="pop-up-show" id="pop-up-btn" onclick="showPopUp()">Добавить машину</button>
     <div class="pop-up-div" id="pop-up-div">
         <form class="pop-up-form" method="post" action="{% url 'other:add_truck'%}">
@@ -57,5 +58,6 @@
             document.getElementById("pop-up-div").style.display = "none";
         }
     </script>
+    {% endif %}
 {% endblock %}
 
