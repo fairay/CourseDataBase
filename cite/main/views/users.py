@@ -1,20 +1,32 @@
 from .common import *
 
 
+def _profile(request: ReqClass, login: str):
+    proc = bm.PersonProc(request.session['user']['perstype'])
+    person = proc.profile_info(login)
+    if person is None:
+        request.session['warning_msg'] = 'Ошибка: профиль не найден'
+        if login == request.session['user']['login']:
+            return HttpResponseRedirect(reverse('auth:logout'))
+        else:
+            return HttpResponseRedirect(reverse('users:all'))
+
+    if person['pers_type'] == 'driver':
+        del_arr = bm.DeliveryProc(person['pers_type']).get_all(person['login'])
+    return render(request, 'auth/profile.html', locals())
+
+
 def my_profile(request: ReqClass):
     msg = extract_msg(request)
     check_redirect = check_account(request, bm.BaseAccCheck())
     if check_redirect is not None:
         return check_redirect
 
-    proc = bm.PersonProc(request.session['user']['perstype'])
-    person = proc.profile_info(request.session['user']['login'])
-    if person is None:
-        msg['warning'] = 'Ошибка: профиль не найден'
-    return render(request, 'auth/profile.html', locals())
+    return _profile(request, request.session['user']['login'])
 
 
 def profile(request: ReqClass, login: str):
+    msg = extract_msg(request)
     check_redirect = check_account(request, bm.AdminCheck())
     if check_redirect is not None:
         return check_redirect
@@ -22,9 +34,7 @@ def profile(request: ReqClass, login: str):
     if login == request.session['user']['login']:
         return HttpResponseRedirect(reverse('users:profile'))
 
-    proc = bm.PersonProc(request.session['user']['perstype'])
-    person = proc.profile_info(login)
-    return render(request, 'auth/profile.html', locals())
+    return _profile(request, login)
 
 
 def get_all(request: ReqClass):

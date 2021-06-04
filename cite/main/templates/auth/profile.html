@@ -4,15 +4,50 @@
 {% block top_title %} Профиль {% endblock %}
 
 {% block content %}
-    <div>
-        <table class="profile-table">
-            <tr>    <td><b>Имя</b></td>            <td>{{person.forename}}</td> </tr>
-            <tr>    <td><b>Фамилия</b></td>        <td>{{person.surname}}</td> </tr>
-            <tr>    <td><b>Должность</b></td>      <td>{{person.type_name}}</td> </tr>
-            <tr>    <td><b>Логин</b></td>          <td>{{person.login}}</td> </tr>
-            <tr>    <td><b>Пол</b></td>            <td>{{person.gender}}</td> </tr>
-            <tr>    <td><b>Дата рождения</b></td>  <td>{{person.dob}}</td> </tr>
-            <tr>    <td><b>Телефон</b></td>        <td>{{person.phonenumber}}</td> </tr>
-        </table>
-    </div>
+<div>
+    <table class="profile-table">
+        <tr>    <td><b>Имя</b></td>            <td>{{person.forename}}</td> </tr>
+        <tr>    <td><b>Фамилия</b></td>        <td>{{person.surname}}</td> </tr>
+        <tr>    <td><b>Должность</b></td>      <td>{{person.type_name}}</td> </tr>
+        <tr>    <td><b>Логин</b></td>          <td>{{person.login}}</td> </tr>
+        <tr>    <td><b>Пол</b></td>            <td>{{person.gender}}</td> </tr>
+        <tr>    <td><b>Дата рождения</b></td>  <td>{{person.dob}}</td> </tr>
+        <tr>    <td><b>Телефон</b></td>        <td>{{person.phonenumber}}</td> </tr>
+    </table>
+</div>
+
+{% if del_arr %}
+
+{% if request.session.user.perstype == "driver" %}
+    <h1> История моих заказов </h1>
+{% else %}
+    <h1> История заказов водителя </h1>
+{% endif%}
+
+<table class="list-table"> 
+    <tr>
+        <td><b>Номер</b></td>
+        <td><b>Статус</b></td>
+        <td><b>Адрес</b></td>
+        <td><b>Доставлен</b></td>
+    </tr>
+
+    {% for obj in del_arr %}
+    <tr class="href-row" onclick="window.location='{% url 'other:delivery_page' obj.orderid %}';">
+        <td class="short-w" >{{obj.orderid}}</td>
+        <td>{{obj.rus_status}}</td>
+        <td>{{obj.address}}</td>
+        <td>
+            {% if obj.completiontime %}
+                {{obj.completiontime}}
+            {% else %}
+                <b>-</b>
+            {% endif %}
+        </td>
+
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
 {% endblock %}

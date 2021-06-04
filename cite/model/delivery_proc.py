@@ -45,10 +45,16 @@ class DeliveryProc(BaseProc):
             raise exc.WrongFormatExc('заказ с таким id не существует')
         return obj
 
-    def get_all(self):
-        rep_ = inject.instance(DeliveryRepository)(self._con)
+    def get_all(self, login: str = None):
+        rep_: DeliveryRepository = inject.instance(DeliveryRepository)(self._con)
+
+        if login is None:
+            obj_arr = rep_.get_all()
+        else:
+            obj_arr = rep_.get_by_login(login)
+
         del_arr = []
-        for obj in self.sort_delivery(rep_.get_all()):
+        for obj in self.sort_delivery(obj_arr):
             del_arr.append(self._to_view(obj))
 
         return del_arr

@@ -18,7 +18,7 @@ urlpatterns = [
     path('add_delivery/', view_log(other.add_delivery), name='add_delivery'),
 
     path('pass_record/', view_log(other.pass_record), name='pass_record'),
-    path('pass_record/my', view_log(other.my_pass_record), name='my_pass_record'),
+    path('pass_record/my', view_log(other.driver_pass_record), name='driver_pass_record'),
     path('pass_record/guard', view_log(other.guard_pass_record), name='guard_pass_record'),
     path('pass_record/add', view_log(other.add_pass_record), name='add_pass_record'),
 ]

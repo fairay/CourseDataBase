@@ -206,7 +206,7 @@ def pass_record(request: ReqClass):
     return render(request, 'other/pass_records.html', locals())
 
 
-def my_pass_record(request: ReqClass):
+def driver_pass_record(request: ReqClass):
     msg = extract_msg(request)
     check_redirect = check_account(request, bm.OnlyDriverCheck())
     if check_redirect is not None:
@@ -214,7 +214,7 @@ def my_pass_record(request: ReqClass):
 
     proc = bm.PassRecordProc(request.session['user']['perstype'])
     pass_arr = proc.get_by_login(request.session['user']['login'])
-    return render(request, 'other/my_passage.html', locals())
+    return render(request, 'other/driver_passage.html', locals())
 
 
 def guard_pass_record(request: ReqClass):

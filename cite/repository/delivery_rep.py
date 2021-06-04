@@ -9,6 +9,7 @@ class DeliveryRepository(Repository):
     def update(self, old_obj: Delivery, new_obj: Delivery): raise NotImplementedError
     def delete(self, obj: Delivery): raise NotImplementedError
     def get_all(self) -> [Delivery]: raise NotImplementedError
+    def get_by_login(self, login: str) -> [Delivery]: raise NotImplementedError
     def get_by_id(self, del_id: int) -> Delivery: raise NotImplementedError
 
 
@@ -59,3 +60,7 @@ class PWDeliveryRep(DeliveryRepository):
         res = self._model.select().where(DeliveryModel.orderid == check_id)
         acc_arr = request_to_objects(res, Delivery)
         return acc_arr[0] if len(acc_arr) else None
+
+    def get_by_login(self, login: str) -> [Delivery]:
+        res = self._model.select().where(DeliveryModel.login == login)
+        return request_to_objects(res, Delivery)
