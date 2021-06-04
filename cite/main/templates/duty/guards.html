@@ -92,10 +92,21 @@
             {% csrf_token %}
 
             <label for="checkpointid"><b>Номер КПП</b></label>
-            <input type="text" placeholder="1" name="checkpointid" required>
+            <input list="checkpoints" placeholder="1" name="checkpointid" autocomplete="off"
+            pattern="[\d]+" required>
+            <datalist id="checkpoints">
+                {% for obj in check_arr %}
+                    <option value="{{obj.checkpointid}}">
+                {% endfor %}
+            </datalist>
             
             <label for="login"><b>Охранник</b></label>
-            <input type="text" placeholder="Логин" name="login" required>
+            <input list="guards" name="login" autocomplete="off" placeholder="Логин" required>
+            <datalist id="guards">
+                {% for obj in guard_arr %}
+                    <option value="{{obj.login}}">
+                {% endfor %}
+            </datalist>
             
             <label for="date"><b>Период дежурства</b></label>
             <div class="pop-up-date">

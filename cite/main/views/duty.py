@@ -10,6 +10,9 @@ def drivers(request: ReqClass):
     proc = bm.DriverDutyProc(request.session['user']['perstype'])
     active_duty_arr = proc.get_current()
     duty_arr = proc.get_all()
+
+    driver_arr = bm.AccountProc(request.session['user']['perstype']).get_all('driver')
+    truck_arr = bm.TruckProc(request.session['user']['perstype']).get_all()
     dow_names = proc.dow_short_names
     return render(request, 'duty/drivers.html', locals())
 
@@ -42,7 +45,7 @@ def add_driver_duty(request: ReqClass):
     except exc.CreateObjExc as ex:
         request.session['warning_msg'] = 'Некорректные параметры дежурства'
         if str(ex) != '':
-            request.session['warning_msg'] = request.session['warning_msg'] + ': ' + str(ex)
+            request.session['warning_msg'] += ': ' + str(ex)
         return HttpResponseRedirect(reverse('duty:drivers'))
 
     duty = proc.add(duty)
@@ -63,6 +66,9 @@ def guards(request: ReqClass):
     active_duty_arr = proc.get_current_view()
     duty_arr = proc.get_all()
     dow_names = proc.dow_short_names
+
+    check_arr = bm.CheckpointProc(request.session['user']['perstype']).get_all()
+    guard_arr = bm.AccountProc(request.session['user']['perstype']).get_all('guard')
     return render(request, 'duty/guards.html', locals())
 
 
@@ -94,7 +100,7 @@ def add_guard_duty(request: ReqClass):
     except exc.CreateObjExc as ex:
         request.session['warning_msg'] = 'Некорректные параметры дежурства'
         if str(ex) != '':
-            request.session['warning_msg'] = request.session['warning_msg'] + ': ' + str(ex)
+            request.session['warning_msg'] += ': ' + str(ex)
         return HttpResponseRedirect(reverse('duty:guards'))
 
     duty = proc.add(duty)

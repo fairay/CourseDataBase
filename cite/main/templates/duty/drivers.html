@@ -93,11 +93,21 @@
             {% csrf_token %}
 
             <label for="platenumber"><b>Номер машины</b></label>
-            <input type="text" placeholder="A0123ВЕ777" name="platenumber"
+            <input list="trucks" name="platenumber" autocomplete="off" placeholder="A0123ВЕ777"
             pattern="[АВЕКМНОРСТХ]\d{3}[АВЕКМНОРСТХ]{2}\d{3}" required>
+            <datalist id="trucks">
+                {% for obj in truck_arr %}
+                    <option value="{{obj.platenumber}}">
+                {% endfor %}
+            </datalist>
             
             <label for="login"><b>Водитель</b></label>
-            <input type="text" placeholder="Логин" name="login" required>
+            <input list="drivers" name="login" autocomplete="off" placeholder="Логин" required>
+            <datalist id="drivers">
+                {% for obj in driver_arr %}
+                    <option value="{{obj.login}}">
+                {% endfor %}
+            </datalist>
             
             <label for="date"><b>Период дежурства</b></label>
             <div class="pop-up-date">

@@ -38,8 +38,10 @@ class AccountProc(BaseProc):
         return obj_dict
 
     def get_cookie(self, login: str):
-        acc_rep = inject.instance(AccountsRepository)(self._con)
-        acc = acc_rep.get_by_login(login)
+        rep_ = inject.instance(AccountsRepository)(self._con)
+        acc = rep_.get_by_login(login)
+        if acc is None:
+            raise exc.NoneExistExc()
         return AccountProc._get_cookie(acc)
 
     def delete(self, login: str):
@@ -99,6 +101,18 @@ class AccountProc(BaseProc):
         new_acc = acc.clone()
         new_acc.pers_type = acc.pers_type[1:]
         rep_.update(acc, new_acc)
+
+    def get_all(self, role: str = None):
+        rep_: AccountsRepository = inject.instance(AccountsRepository)(self._con)
+
+        if role is None: obj_arr = rep_.get_all()
+        else:            obj_arr = rep_.get_by_role(role)
+
+        dict_arr = []
+        for obj in obj_arr:
+            dict_arr.append(obj.to_dict())
+
+        return dict_arr
 
     def get(self, login: str):
         acc_rep = inject.instance(AccountsRepository)(self._con)

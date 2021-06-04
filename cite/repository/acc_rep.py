@@ -9,6 +9,7 @@ class AccountsRepository(Repository):
     def update(self, old_obj: Account, new_obj: Account): raise NotImplementedError
     def delete(self, obj: Account): raise NotImplementedError
     def get_all(self) -> [Account]: raise NotImplementedError
+    def get_by_role(self, role: str) -> [Account]: raise NotImplementedError
     def get_by_login(self, login: str) -> Account: raise NotImplementedError
 
 
@@ -49,6 +50,10 @@ class PWAccountsRep(AccountsRepository):
 
     def get_all(self) -> [Account]:
         res = self._model.select()
+        return request_to_objects(res, Account)
+
+    def get_by_role(self, role: str) -> [Account]:
+        res = self._model.select().where(AccountsModel.perstype == role)
         return request_to_objects(res, Account)
 
     def get_by_login(self, login: str) -> Account:

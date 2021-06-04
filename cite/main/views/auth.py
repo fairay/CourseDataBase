@@ -67,7 +67,12 @@ def upd_type(request: ReqClass):
         return check_redirect
 
     proc = bm.AccountProc(request.session['user']['perstype'])
-    request.session['user'] = proc.get_cookie(request.session['user']['login'])
+    try:
+        request.session['user'] = proc.get_cookie(request.session['user']['login'])
+    except exc.NoneExistExc as e:
+        del request.session['user']
+        request.session['warning_msg'] = 'Регистрация аккаунта была отклонена, попробуйте снова'
+        return HttpResponseRedirect(reverse('auth:signup'))
     return HttpResponseRedirect(reverse('users:profile'))
 
 
