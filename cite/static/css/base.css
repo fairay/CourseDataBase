@@ -40,11 +40,9 @@ button:hover {
 
 
 .wrapper {
-    margin-right: 4%;
-    margin-left:  4%;
-
     max-width: 95%;
-    min-height: calc(100% - 51px);
+    /* min-height: calc(100% - 51px); */
+    min-height: calc(118% - 144px);
     overflow: hidden;
 
     padding-right: 0px;
@@ -57,8 +55,8 @@ button:hover {
 .content {
     padding-top: 15px;
     padding-bottom: 20px;
-    padding-right: 20px;
-    padding-left:  35px;
+    padding-right: 3%;
+    padding-left: 3%;
 }
 
 header {
@@ -145,28 +143,31 @@ td + .href-row:hover {
 
 .logo {
     max-width: 100px;
+    width: 13%;
+    height: 80px;
+
+    display: flex;
     float: left;
-    max-height: 80px;
-    margin-right: 10px;
+    margin-right: 3%;
 }
-.logo p {
-    margin-left: 20px;
-    margin-top: 2px;
-    margin-bottom: 10px;
-    font-family:  "Exo2-Medium", sans-serif;
-    font-size: 13px;
-    color: white;
+.logo img {
+    max-width: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: auto;
 }
 
 .top-title {
     float:center;
+    height: var(--header-h);
+    display: flex;
 }
 .top-title h1 {
     margin: auto;
-    position: absolute;
+    /* position: absolute; */
     left: 200px;
     right: 170px;
-    padding-top: 20px;
+    /* padding-top: 20px; */
     text-align: center;
     font-family: "Exo2-Medium", sans-serif;
     font-size: 32px;
@@ -287,18 +288,21 @@ td + .href-row:hover {
     float: right;
     margin-left: 40px;
     height: inherit; */
-    position: absolute;
+    /* position: absolute;
     top: 0px;
-    right: 0px;
+    right: 0px; */
+    float: right;
 }
 .block-top-auth button {
     height: calc(var(--header-h) - 20px);
     margin-top: 10px;
     margin-right: 5px;
+    margin-left: 5px;
     transition: all 0.4s ease;
 }
 .block-top-auth:hover button {
     margin-right: 10px;
+    margin-left: 0px;
 }
 
 .tipmsg {

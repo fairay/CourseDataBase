@@ -8,7 +8,14 @@
     padding-left: 0px;
 
     display: flex;
+
+    /* overflow-y:visible;
+    overflow-x: hidden; */
 }
+
+/* #navigation {
+} */
+
 .top-menu li {
     list-style: none;
     float: left;
@@ -58,7 +65,7 @@
     -ms-transition:all 0.5s ease;
     -moz-transition:all 0.5s ease;
 }
-.top-menu > li:hover > a {
+.top-menu > li:hover > a, .top-menu > li:active > a {
     height: 45px;
     margin-top: 5px;
     background: #66fcf1;
