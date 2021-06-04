@@ -80,16 +80,38 @@ def register(request: ReqClass):
     acc_proc = bm.AccountProc('admin')
     pers_proc = bm.PersonProc('admin')
 
-    acc = acc_proc.register(pre_data['login'], pre_data['password'], pre_data['perstype'])
-    if acc is None:
+    try:
+        acc = acc_proc.create(**pre_data)
+        acc_proc.register(acc)
+    except exc.AlreadyExistsExc as e:
         request.session['warning_msg'] = 'Аккаунт с данным именем уже зарегистрирован, попробуйте другой логин'
         pre_data['login'] = ''
         request.session['bad_signup'] = pre_data
         return HttpResponseRedirect(reverse('auth:signup'))
+    except exc.CreateObjExc as e:
+        request.session['warning_msg'] = 'Некорректный формат данных'
+        if str(e) != '':
+            request.session['warning_msg'] += ': ' + str(e)
+        request.session['bad_signup'] = pre_data
+        return HttpResponseRedirect(reverse('auth:signup'))
+    except exc.RepositoryExc as e:
+        request.session['warning_msg'] = 'Аккаунт не был добавлен: ошибка работы базы данных'
+        request.session['bad_signup'] = pre_data
+        return HttpResponseRedirect(reverse('auth:signup'))
 
-    pers = pers_proc.create(**pre_data)
-    pers = pers_proc.add(pers)
-    if pers is None:
+    try:
+        pers = pers_proc.create(**pre_data)
+        pers_proc.add(pers)
+    except exc.CreateObjExc as e:
+        acc_proc.unregister(acc)
+        request.session['warning_msg'] = 'Некорректные параметры дежурства'
+        if str(e) != '':
+            request.session['warning_msg'] = request.session['warning_msg'] + ': ' + str(e)
+
+        request.session['bad_signup'] = pre_data
+        return HttpResponseRedirect(reverse('auth:signup'))
+
+    except exc.RepositoryExc as e:
         acc_proc.unregister(acc)
         request.session['warning_msg'] = 'Ошибка регистрации личных данных'
         request.session['bad_signup'] = pre_data

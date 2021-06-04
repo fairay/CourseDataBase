@@ -200,6 +200,9 @@ def pass_record(request: ReqClass):
     proc = bm.PassRecordProc(request.session['user']['perstype'])
     # pass_arr = proc.get_all()
     pass_arr = proc.get_with_login()
+
+    truck_arr = bm.TruckProc(request.session['user']['perstype']).get_all()
+    check_arr = bm.CheckpointProc(request.session['user']['perstype']).get_all()
     return render(request, 'other/pass_records.html', locals())
 
 
@@ -226,6 +229,8 @@ def guard_pass_record(request: ReqClass):
         duty = duty[0]
         proc = bm.PassRecordProc(request.session['user']['perstype'])
         pass_arr = proc.get_by_duty(duty)
+
+        truck_arr = bm.TruckProc(request.session['user']['perstype']).get_all()
     else:
         duty = None
     return render(request, 'other/guard_passage.html', locals())

@@ -54,11 +54,25 @@
             {% csrf_token %}
 
             <label for="platenumber"><b>Номер машины</b></label>
-            <input type="text" placeholder="A0123ВЕ777" name="platenumber"
+            <!-- <input type="text" placeholder="A0123ВЕ777" name="platenumber"
+            pattern="[АВЕКМНОРСТХ]\d{3}[АВЕКМНОРСТХ]{2}\d{3}" required> -->
+            <input list="trucks" name="platenumber" autocomplete="off" placeholder="A0123ВЕ777"
             pattern="[АВЕКМНОРСТХ]\d{3}[АВЕКМНОРСТХ]{2}\d{3}" required>
+            <datalist id="trucks">
+                {% for obj in truck_arr %}
+                    <option value="{{obj.platenumber}}">
+                {% endfor %}
+            </datalist>
 
             <label for="checkpointid"><b>Номер КПП</b></label>
-            <input type="text" placeholder="1" name="checkpointid" required>
+            <input list="checkpoints" placeholder="1" name="checkpointid" autocomplete="off"
+            pattern="[\d]+" required>
+            <datalist id="checkpoints">
+                {% for obj in check_arr %}
+                    <option value="{{obj.checkpointid}}">
+                {% endfor %}
+            </datalist>
+            
 
             <label for="checkpointid"><b>Направление</b></label>
             <label class="switch">

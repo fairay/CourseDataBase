@@ -62,31 +62,25 @@ class AccountProc(BaseProc):
             return None  # TODO: raise wrong login/password
 
     # TODO: validation with create
-    # def create(self, **init_dict):
-    #     if not {'login', 'password', 'perstype'}.issubset(init_dict.keys()):
-    #         raise exc.LackArgExc()
+    def create(self, **init_dict):
+        if not {'login', 'password', 'perstype'}.issubset(init_dict.keys()):
+            raise exc.LackArgExc()
 
-    def register(self, login: str, password: str, perstype: str):
-        acc_rep = inject.instance(AccountsRepository)(self._con)
-        old_acc = acc_rep.get_by_login(login)
+        rep_ = inject.instance(AccountsRepository)(self._con)
+        if rep_.get_by_login(init_dict['login']) is not None:
+            raise exc.AlreadyExistsExc()
 
-        if old_acc is not None:
-            return None  # TODO : raise already exists
+        if init_dict['perstype'] not in self._type_dict.keys():
+            raise exc.WrongFormatExc('некорректная должность')
 
-        perstype = '~' + perstype
-        salt = AccountProc._generate_salt()
-        hashedpassword = AccountProc._hash_password(password, salt)
+        init_dict['perstype'] = '~' + init_dict['perstype']
+        init_dict['salt'] = self._generate_salt()
+        init_dict['hashedpassword'] = self._hash_password(init_dict['password'], init_dict['salt'])
+        return Account(**init_dict)
 
-        acc_dict = locals()
-        del acc_dict['self']
-        new_acc = Account(**acc_dict)
-        print(new_acc.to_dict())
-        try:
-            acc_rep.create(new_acc)
-        except exc.AlreadyExistsExc:
-            new_acc = None
-
-        return new_acc
+    def register(self, obj: Account):
+        rep_ = inject.instance(AccountsRepository)(self._con)
+        rep_.create(obj)
 
     def unregister(self, obj: Account):
         rep_ = inject.instance(AccountsRepository)(self._con)

@@ -27,8 +27,7 @@ class Person(BaseObj):
         #     self._id = init_dict['personid']
 
     def to_dict(self) -> dict:
-        return {#'personid': self._id,
-                'login': self._login, 'surname': self._surname,
+        return {'login': self._login, 'surname': self._surname,
                 'forename': self._forename, 'dob': self._dob, 'gender': self._gender,
                 'phonenumber': self._phone}
 

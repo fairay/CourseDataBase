@@ -4,23 +4,34 @@ from .acc_proc import AccountProc
 from objects import *
 import errors as exc
 
+from datetime import *
 
 class PersonProc(BaseProc):
     _gender_dict = {'м': 'Мужчина', 'ж': 'Женщина'}
 
     def create(self, **init_dict) -> Person:
+        if not {'login', 'surname', 'forename', 'dob',
+                'gender', 'phonenumber'}.issubset(init_dict.keys()):
+            raise exc.LackArgExc()
+
+        init_dict['dob'] = datetime.strptime(init_dict['dob'], '%Y-%m-%d').date()
+        dif = datetime.now().date() - init_dict['dob']
+        years = dif.days / 365.25
+        if years < 16:
+            raise exc.WrongFormatExc('недостаточный возраст для работы')
+
+        if not {init_dict['gender']}.issubset(('м', 'ж')):
+            raise exc.WrongFormatExc('некорректный пол')
+
         init_dict['phonenumber'] = self.transform_phone(init_dict['phonenumber'])
+        if init_dict['phonenumber'] is None:
+            raise exc.WrongFormatExc('некорректный номер телефона')
+
         return Person(**init_dict)
 
     def add(self, obj: Person):
         rep_ = inject.instance(PersonRepository)(self._con)
-
-        try:
-            rep_.create(obj)
-        except exc.AlreadyExistsExc:
-            obj = None
-
-        return obj
+        rep_.create(obj)
 
     def delete(self, login: str):
         rep_ = inject.instance(PersonRepository)(self._con)
