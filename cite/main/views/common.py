@@ -40,6 +40,10 @@ def extract_msg(request: ReqClass) -> dict:
         msg["info"] = request.session['info_msg']
         del request.session['info_msg']
 
+    elif 'error_msg' in request.session:
+        msg["error"] = request.session['error_msg']
+        del request.session['error_msg']
+
     return msg
 
 

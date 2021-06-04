@@ -1,6 +1,8 @@
 import logging
 from inject_config import *
 from django.core.handlers.wsgi import WSGIRequest as ReqClass
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 from cite.settings import DEBUG
 LOG_EXCEPTION = not DEBUG
@@ -22,6 +24,9 @@ def view_log(view_f):
             except BaseException as ex:
                 logging.exception("while processing %s (%s) exception %s raised: %s" %
                                   (view_f.__name__, request.environ['PATH_INFO'], ex.__class__, str(ex)))
+
+                request.session['error_msg'] = str(ex.__class__)
+                return HttpResponseRedirect(reverse('unknown_error'))
         else:
             return view_f(request, **kwargs)
 

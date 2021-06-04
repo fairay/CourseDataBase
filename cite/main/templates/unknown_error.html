@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_block %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static '\css\unlogin.css' %}"/>
+{% endblock %}
+
+{% block head_title %} Неизвестная ошибка {% endblock %}
+{% block top_title %} Неизвестная ошибка {% endblock %}
+
+
+{% block content %}
+<h3>О нет, произошла непридвиденная ошибка: {{msg.error}}</h3>
+{% endblock %}
+

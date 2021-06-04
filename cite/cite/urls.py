@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from .view import unknown_error
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,4 +24,5 @@ urlpatterns = [
     path('', include('main.urls.users', namespace='users'), name='users'),
     path('', include('main.urls.other', namespace='other'), name='other'),
     path('duty/', include('main.urls.duty', namespace='duty'), name='duty'),
+    path('unknown_error', unknown_error, name='unknown_error'),
 ]
