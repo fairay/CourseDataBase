@@ -1,3 +1,5 @@
+from psycopg2.extras import RealDictCursor
+
 from repository.repository import *
 from objects.driver_duty import *
 from repository.pw_rep import *
@@ -17,7 +19,7 @@ class PWDriverDutyRep(DriverDutyRepository):
     _model = None
     _con = None
 
-    def __init__(self, con):
+    def __init__(self, con: Database):
         super().__init__(con)
         self._con = con
         self._model = DriverDutysModel(con)
@@ -66,6 +68,9 @@ class PWDriverDutyRep(DriverDutyRepository):
                     DriverDutysModel.enddate.between(begin_date, end_date) |
                     ((DriverDutysModel.begindate <= end_date) & (end_date <= DriverDutysModel.enddate))
             )
+
+        # TODO: refactor to stored function call
+        print(storedf_call(self._con, 'ddutyinf', begin_date))
 
         if login is not None:
             where_exp &= DriverDutysModel.login == login

@@ -3,9 +3,32 @@ from peewee import *
 import inject
 
 
+def storedf_call(con: Database, f_name, *f_args):
+    cur = con.cursor()
+    cur.callproc(f_name, f_args)
+
+    query_res = []
+    for obj in cur.fetchall():
+        obj_dict = {}
+        for col, val in zip(cur.description, obj):
+            col_name = col[0]
+            obj_dict[col_name] = val
+        query_res.append(obj_dict)
+    cur.close()
+
+    return query_res
+
+
 def request_to_objects(req, obj_class):
     obj_arr = []
     for obj_dict in req.dicts():
+        obj_arr.append(obj_class(**obj_dict))
+    return obj_arr
+
+
+def dicts_to_objects(dict_arr: [dict], obj_class):
+    obj_arr = []
+    for obj_dict in dict_arr:
         obj_arr.append(obj_class(**obj_dict))
     return obj_arr
 

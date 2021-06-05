@@ -81,7 +81,7 @@ class BaseDutyProc(BaseProc):
 
         off = 0
         for i in range(1, 6):
-            if str(wday + i) in obj.dow:
+            if str((wday + i) % 7) in obj.dow:
                 off = i
                 break
 
