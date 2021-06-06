@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS GuardDutys (
 	EndDate			DATE,
 	BeginTime		TIME			NOT NULL,
 	EndTime			TIME			NOT NULL,
-	DOW				VARCHAR(7)
+	DOW				VARCHAR(7)		NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS DriverDutys (

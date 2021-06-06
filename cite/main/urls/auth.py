@@ -4,6 +4,7 @@ from logger import view_log
 
 app_name = 'auth'
 urlpatterns = [
+    path('', view_log(auth.login), name='login'),
     path('login/', view_log(auth.login), name='login'),
     path('verify/', view_log(auth.verify), name='verify'),
     path('logout/', view_log(auth.logout), name='logout'),
