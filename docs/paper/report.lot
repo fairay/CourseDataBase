@@ -1,0 +1,14 @@
+\babel@toc {russian}{}
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {1.1}{\ignorespaces Роли сотрудников и их функционал\relax }}{10}{table.caption.7}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {2.1}{\ignorespaces Accounts (таблица аккаунтов)\relax }}{15}{table.caption.10}%
+\contentsline {table}{\numberline {2.2}{\ignorespaces Person (таблица личной информации)\relax }}{15}{table.caption.11}%
+\contentsline {table}{\numberline {2.3}{\ignorespaces Trucks (таблица машин)\relax }}{15}{table.caption.12}%
+\contentsline {table}{\numberline {2.4}{\ignorespaces Delivery (таблица заказов)\relax }}{16}{table.caption.13}%
+\contentsline {table}{\numberline {2.5}{\ignorespaces Checkpoints (таблица КПП)\relax }}{16}{table.caption.14}%
+\contentsline {table}{\numberline {2.6}{\ignorespaces GuardDutys (таблица дежурств охранников)\relax }}{17}{table.caption.15}%
+\contentsline {table}{\numberline {2.7}{\ignorespaces DriverDutys (таблица дежурств водителей)\relax }}{17}{table.caption.16}%
+\contentsline {table}{\numberline {2.8}{\ignorespaces PassRecords (таблица записей проездов)\relax }}{18}{table.caption.17}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Сравнение реляционных СУБД\relax }}{20}{table.3.1}%
