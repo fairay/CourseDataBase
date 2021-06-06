@@ -1203,7 +1203,7 @@
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
             <y:GroupNode>
-              <y:Geometry height="161.78978037698562" width="582.6000000000001" x="684.2429153235587" y="731.980238976813"/>
+              <y:Geometry height="161.78978037698562" width="582.6000000000001" x="684.2429153235587" y="680.5500198303309"/>
               <y:Fill hasColor="false" transparent="false"/>
               <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
               <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#C0C0C0" borderDistance="0.0" fontFamily="Dialog" fontSize="32" fontStyle="plain" hasLineColor="false" height="43.203125" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="582.6000000000001" x="0.0" xml:space="preserve" y="0.0">View</y:NodeLabel>
@@ -1229,7 +1229,7 @@
         <node id="n2::n0">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="34.0" width="537.5999999999999" x="714.2429153235587" y="831.8178709162986"/>
+              <y:Geometry height="34.0" width="537.5999999999999" x="714.2429153235587" y="780.3876517698166"/>
               <y:Fill hasColor="false" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#FFFFFF" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="22" fontStyle="plain" hasLineColor="false" height="30.9521484375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="145.83984375" x="195.88007812499995" xml:space="preserve" y="4.0">Command line</y:NodeLabel>
@@ -1250,7 +1250,7 @@
         <node id="n2::n1">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="34.0" width="537.6" x="714.2429153235587" y="790.183363976813"/>
+              <y:Geometry height="34.0" width="537.6" x="714.2429153235587" y="738.7531448303309"/>
               <y:Fill hasColor="false" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#FFFFFF" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="22" fontStyle="plain" hasLineColor="false" height="30.9521484375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="94.4599609375" x="221.57001953124995" xml:space="preserve" y="4.0">Web GUI</y:NodeLabel>
@@ -1592,7 +1592,7 @@
         <y:PolyLineEdge>
           <y:Path sx="154.11896702938157" sy="7.383412043880185" tx="-43.71557018053493" ty="0.0">
             <y:Point x="1286.8429153235588" y="1194.7713171325981"/>
-            <y:Point x="1286.8429153235588" y="807.183363976813"/>
+            <y:Point x="1286.8429153235588" y="755.7531448303309"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="white_diamond"/>
