@@ -1,13 +1,13 @@
 from .base_duty import BaseDuty
 
 
-class DriverRDuty(BaseDuty):
+class DriverDuty(BaseDuty):
     _id: int = None
     _number: str = None
     _login: str = None
 
     def __init__(self, **init_dict):
-        super(DriverRDuty, self).__init__(**init_dict)
+        super(DriverDuty, self).__init__(**init_dict)
         if init_dict is None:
             return
 
@@ -16,7 +16,7 @@ class DriverRDuty(BaseDuty):
         self._login = init_dict['login']
 
     def to_dict(self) -> dict:
-        d = super(DriverRDuty, self).to_dict()
+        d = super(DriverDuty, self).to_dict()
         d['dutyid'] = self._id
         d['platenumber'] = self._number
         d['login'] = self._login

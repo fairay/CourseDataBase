@@ -11,7 +11,7 @@ from datetime import *
 
 
 class DriverDutyProc(BaseDutyProc):
-    def create(self, **init_dict) -> DriverRDuty:
+    def create(self, **init_dict) -> DriverDuty:
         if not {'platenumber', 'login', 'begindate', 'enddate', 'begintime',
                 'endtime', 'dow'}.issubset(init_dict.keys()):
             raise exc.LackArgExc()
@@ -23,9 +23,7 @@ class DriverDutyProc(BaseDutyProc):
         if TruckProc(con=self._con).get(init_dict['platenumber']) is None:
             raise exc.NoneExistExc('машина не существует')
 
-        init_dict['dutyid'] = None
-        init_dict['ruleid'] = None
-        duty = DriverRDuty(**init_dict)
+        duty = DriverDuty(**init_dict)
 
         if not self.is_driver_free(duty):
             raise exc.WrongFormatExc('водитель занят в данный период')
@@ -33,14 +31,14 @@ class DriverDutyProc(BaseDutyProc):
             raise exc.WrongFormatExc('машина занята в данный период')
         return duty
 
-    def is_driver_free(self, obj: DriverRDuty) -> bool:
+    def is_driver_free(self, obj: DriverDuty) -> bool:
         rep_: DriverDutyRepository = inject.instance(DriverDutyRepository)(self._con)
         for other in rep_.get_by_time(obj.bdate, obj.edate, login=obj.login):
             if self._is_collide(obj, other):
                 return False
         return True
 
-    def is_truck_free(self, obj: DriverRDuty) -> bool:
+    def is_truck_free(self, obj: DriverDuty) -> bool:
         rep_: DriverDutyRepository = inject.instance(DriverDutyRepository)(self._con)
         for other in rep_.get_by_time(obj.bdate, obj.edate, platenumber=obj.number):
             if self._is_collide(obj, other):
@@ -59,14 +57,6 @@ class DriverDutyProc(BaseDutyProc):
 
     def get_current(self, login: str = None, platenumber: str = None):
         return self.get_by_time(datetime.now(), login, platenumber)
-        # rep_: DriverDutyRepository = inject.instance(DriverDutyRepository)(self._con)
-        # duty_arr = []
-        # now_date = datetime.now().date()
-        # for obj in rep_.get_by_time(now_date, now_date):
-        #     if self._is_active(obj, datetime.now()):
-        #         duty_arr.append(self._to_view(obj))
-        #
-        # return duty_arr
 
     def get_by_time(self, date_time, login: str = None, platenumber: str = None):
         rep_: DriverDutyRepository = inject.instance(DriverDutyRepository)(self._con)
@@ -100,7 +90,7 @@ class DriverDutyProc(BaseDutyProc):
         min_duty['min_date'] = min_date.strftime('%d.%m.%Y')
         return min_duty
 
-    def add(self, obj: DriverRDuty):
+    def add(self, obj: DriverDuty):
         rep_ = inject.instance(DriverDutyRepository)(self._con)
 
         try:
@@ -109,23 +99,3 @@ class DriverDutyProc(BaseDutyProc):
             obj = None
 
         return obj
-
-    def _to_view(self, obj: DriverRDuty):
-        d = obj.to_dict()
-        d['begindate'] = d['begindate'].strftime('%d.%m.%Y')
-        if d['enddate'] is not None:
-            d['enddate'] = d['enddate'].strftime('%d.%m.%Y')
-
-        d['dow_view'] = self._dow_view(d['dow'])
-        d['begintime'] = d['begintime'].strftime('%H:%M')
-        d['endtime'] = d['endtime'].strftime('%H:%M')
-        return d
-
-    @staticmethod
-    def _is_collide(obj1: DriverRDuty, obj2: DriverRDuty):
-        dow_inter = set(obj2.dow).intersection(obj1.dow)
-        if not len(dow_inter):
-            return False
-
-        return (obj2.btime <= obj1.btime <= obj2.etime or
-                obj1.btime <= obj2.btime <= obj1.etime)

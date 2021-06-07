@@ -11,7 +11,7 @@ from datetime import *
 
 
 class GuardDutyProc(BaseDutyProc):
-    def create(self, **init_dict) -> GuardRDuty:
+    def create(self, **init_dict) -> GuardDuty:
         if not {'checkpointid', 'login', 'begindate', 'enddate', 'begintime',
                 'endtime', 'dow'}.issubset(init_dict.keys()):
             raise exc.LackArgExc()
@@ -23,9 +23,7 @@ class GuardDutyProc(BaseDutyProc):
         if CheckpointProc(con=self._con).get(init_dict['checkpointid']) is None:
             raise exc.NoneExistExc('КПП не существует')
 
-        init_dict['dutyid'] = None
-        init_dict['ruleid'] = None
-        duty = GuardRDuty(**init_dict)
+        duty = GuardDuty(**init_dict)
 
         if not self.is_guard_free(duty):
             raise exc.WrongFormatExc('охранник занят в данный период')
@@ -33,14 +31,14 @@ class GuardDutyProc(BaseDutyProc):
             raise exc.WrongFormatExc('КПП занят в данный период')
         return duty
 
-    def is_guard_free(self, obj: GuardRDuty) -> bool:
+    def is_guard_free(self, obj: GuardDuty) -> bool:
         rep_: GuardDutyRepository = inject.instance(GuardDutyRepository)(self._con)
         for other in rep_.get_by_time(obj.bdate, obj.edate, login=obj.login):
             if self._is_collide(obj, other):
                 return False
         return True
 
-    def is_checkpoint_free(self, obj: GuardRDuty) -> bool:
+    def is_checkpoint_free(self, obj: GuardDuty) -> bool:
         rep_: GuardDutyRepository = inject.instance(GuardDutyRepository)(self._con)
         for other in rep_.get_by_time(obj.bdate, obj.edate, check_id=obj.checkpoint):
             if self._is_collide(obj, other):
@@ -94,7 +92,7 @@ class GuardDutyProc(BaseDutyProc):
         min_duty['min_date'] = min_date.strftime('%d.%m.%Y')
         return min_duty
 
-    def add(self, obj: GuardRDuty):
+    def add(self, obj: GuardDuty):
         rep_ = inject.instance(GuardDutyRepository)(self._con)
 
         try:
@@ -103,23 +101,3 @@ class GuardDutyProc(BaseDutyProc):
             obj = None
 
         return obj
-
-    def _to_view(self, obj: GuardRDuty):
-        d = obj.to_dict()
-        d['begindate'] = d['begindate'].strftime('%d.%m.%Y')
-        if d['enddate'] is not None:
-            d['enddate'] = d['enddate'].strftime('%d.%m.%Y')
-
-        d['dow_view'] = self._dow_view(d['dow'])
-        d['begintime'] = d['begintime'].strftime('%H:%M')
-        d['endtime'] = d['endtime'].strftime('%H:%M')
-        return d
-
-    @staticmethod
-    def _is_collide(obj1: GuardRDuty, obj2: GuardRDuty):
-        dow_inter = set(obj2.dow).intersection(obj1.dow)
-        if not len(dow_inter):
-            return False
-
-        return (obj2.btime <= obj1.btime <= obj2.etime or
-                obj1.btime <= obj2.btime <= obj1.etime)

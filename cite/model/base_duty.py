@@ -35,6 +35,8 @@ class BaseDutyProc(BaseProc):
         elif init_dict['begindate'] > init_dict['enddate']:
             raise exc.WrongFormatExc('дата начала смены больше даты окончания')
 
+        init_dict['dutyid'] = None
+        init_dict['ruleid'] = None
         return init_dict
 
     def _dow_view(self, dow_str: str, short=False) -> dict:
@@ -86,3 +88,23 @@ class BaseDutyProc(BaseProc):
                 break
 
         return d + timedelta(days=off)
+
+    @staticmethod
+    def _is_collide(obj1: BaseDuty, obj2: BaseDuty):
+        dow_inter = set(obj2.dow).intersection(obj1.dow)
+        if not len(dow_inter):
+            return False
+
+        return (obj2.btime <= obj1.btime <= obj2.etime or
+                obj1.btime <= obj2.btime <= obj1.etime)
+
+    def _to_view(self, obj: BaseDuty):
+        d = obj.to_dict()
+        d['begindate'] = d['begindate'].strftime('%d.%m.%Y')
+        if d['enddate'] is not None:
+            d['enddate'] = d['enddate'].strftime('%d.%m.%Y')
+
+        d['dow_view'] = self._dow_view(d['dow'])
+        d['begintime'] = d['begintime'].strftime('%H:%M')
+        d['endtime'] = d['endtime'].strftime('%H:%M')
+        return d

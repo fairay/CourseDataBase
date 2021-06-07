@@ -1,16 +1,16 @@
 from repository.repository import *
-from objects.guard_duty import GuardRDuty
+from objects.guard_duty import GuardDuty
 from repository.pw_rep import *
 from errors import *
 
 
 class GuardDutyRepository(Repository):
-    def create(self, obj: GuardRDuty): raise NotImplementedError
-    def update(self, old_obj: GuardRDuty, new_obj: GuardRDuty): raise NotImplementedError
-    def delete(self, obj: GuardRDuty): raise NotImplementedError
-    def get_all(self) -> [GuardRDuty]: raise NotImplementedError
-    def get_by_time(self, begin_date, end_date=None, login=None, check_id=None) -> [GuardRDuty]: raise NotImplementedError
-    def get_by_id(self, id_: int) -> GuardRDuty: raise NotImplementedError
+    def create(self, obj: GuardDuty): raise NotImplementedError
+    def update(self, old_obj: GuardDuty, new_obj: GuardDuty): raise NotImplementedError
+    def delete(self, obj: GuardDuty): raise NotImplementedError
+    def get_all(self) -> [GuardDuty]: raise NotImplementedError
+    def get_by_time(self, begin_date, end_date=None, login=None, check_id=None) -> [GuardDuty]: raise NotImplementedError
+    def get_by_id(self, id_: int) -> GuardDuty: raise NotImplementedError
 
 
 class PWGuardDutyRep(GuardDutyRepository):
@@ -24,7 +24,7 @@ class PWGuardDutyRep(GuardDutyRepository):
         self._model = GuardDutyModel(con)
         self._rule_model = DutyRulesModel(con)
 
-    def create(self, obj: GuardRDuty):
+    def create(self, obj: GuardDuty):
         if obj.id is not None and self.get_by_id(obj.id) is not None:
             raise AlreadyExistsExc()
 
@@ -43,7 +43,7 @@ class PWGuardDutyRep(GuardDutyRepository):
         except IntegrityError as exc:
             raise AlreadyExistsExc()
 
-    def update(self, old_obj: GuardRDuty, new_obj: GuardRDuty):
+    def update(self, old_obj: GuardDuty, new_obj: GuardDuty):
         return NotImplementedError
         if self.get_by_id(old_obj.id) is None:
             raise NotExistsExc()
@@ -56,7 +56,7 @@ class PWGuardDutyRep(GuardDutyRepository):
         except IntegrityError as exc:
             raise WrongUpdExc()
 
-    def delete(self, obj: GuardRDuty):
+    def delete(self, obj: GuardDuty):
         if self.get_by_id(obj.id) is None:
             raise NotExistsExc()
 
@@ -65,12 +65,12 @@ class PWGuardDutyRep(GuardDutyRepository):
         query = self._model.delete().where(GuardDutyModel.dutyid == obj.id)
         query.execute()
 
-    def get_all(self) -> [GuardRDuty]:
+    def get_all(self) -> [GuardDuty]:
         res = self._model.select(GuardDutyModel, DutyRulesModel)\
             .join(DutyRulesModel, on=(GuardDutyModel.ruleid == DutyRulesModel.ruleid))
-        return request_to_objects(res, GuardRDuty)
+        return request_to_objects(res, GuardDuty)
 
-    def get_by_time(self, begin_date, end_date=None, login=None, check_id=None) -> [GuardRDuty]:
+    def get_by_time(self, begin_date, end_date=None, login=None, check_id=None) -> [GuardDuty]:
         if end_date is None:
             where_exp = DutyRulesModel.enddate.is_null() | (DutyRulesModel.enddate >= begin_date)
         else:
@@ -92,12 +92,12 @@ class PWGuardDutyRep(GuardDutyRepository):
         res = self._model.select(GuardDutyModel, DutyRulesModel) \
             .join(DutyRulesModel, on=(GuardDutyModel.ruleid == DutyRulesModel.ruleid))\
             .switch(self._model).where(where_exp)
-        return request_to_objects(res, GuardRDuty)
+        return request_to_objects(res, GuardDuty)
 
-    def get_by_id(self, check_id: int) -> GuardRDuty:
+    def get_by_id(self, check_id: int) -> GuardDuty:
         res = self._model.select(GuardDutyModel, DutyRulesModel) \
             .join(DutyRulesModel, on=(GuardDutyModel.ruleid == DutyRulesModel.ruleid))\
             .switch(self._model)\
             .where(GuardDutyModel.dutyid == check_id)
-        acc_arr = request_to_objects(res, GuardRDuty)
+        acc_arr = request_to_objects(res, GuardDuty)
         return acc_arr[0] if len(acc_arr) else None

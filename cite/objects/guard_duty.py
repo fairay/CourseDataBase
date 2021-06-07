@@ -1,13 +1,13 @@
 from .base_duty import BaseDuty
 
 
-class GuardRDuty(BaseDuty):
+class GuardDuty(BaseDuty):
     _id: int = None
     _checkpoint: int = None
     _login: str = None
 
     def __init__(self, **init_dict):
-        super(GuardRDuty, self).__init__(**init_dict)
+        super(GuardDuty, self).__init__(**init_dict)
         if init_dict is None:
             return
 
@@ -16,7 +16,7 @@ class GuardRDuty(BaseDuty):
         self._login = init_dict['login']
 
     def to_dict(self) -> dict:
-        d = super(GuardRDuty, self).to_dict()
+        d = super(GuardDuty, self).to_dict()
         d['dutyid'] = self._id
         d['checkpointid'] = self._checkpoint
         d['login'] = self._login

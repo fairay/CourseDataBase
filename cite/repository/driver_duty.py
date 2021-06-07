@@ -1,16 +1,16 @@
 from repository.repository import *
-from objects.driver_duty import DriverRDuty
+from objects.driver_duty import DriverDuty
 from repository.pw_rep import *
 from errors import *
 
 
 class DriverDutyRepository(Repository):
-    def create(self, obj: DriverRDuty): raise NotImplementedError
-    def update(self, old_obj: DriverRDuty, new_obj: DriverRDuty): raise NotImplementedError
-    def delete(self, obj: DriverRDuty): raise NotImplementedError
-    def get_all(self) -> [DriverRDuty]: raise NotImplementedError
-    def get_by_time(self, begin_date, end_date=None, login=None, platenumber=None) -> [DriverRDuty]: raise NotImplementedError
-    def get_by_id(self, id_: int) -> DriverRDuty: raise NotImplementedError
+    def create(self, obj: DriverDuty): raise NotImplementedError
+    def update(self, old_obj: DriverDuty, new_obj: DriverDuty): raise NotImplementedError
+    def delete(self, obj: DriverDuty): raise NotImplementedError
+    def get_all(self) -> [DriverDuty]: raise NotImplementedError
+    def get_by_time(self, begin_date, end_date=None, login=None, platenumber=None) -> [DriverDuty]: raise NotImplementedError
+    def get_by_id(self, id_: int) -> DriverDuty: raise NotImplementedError
 
 
 class PWDriverDutyRep(DriverDutyRepository):
@@ -24,7 +24,7 @@ class PWDriverDutyRep(DriverDutyRepository):
         self._model = DriverDutyModel(con)
         self._rule_model = DutyRulesModel(con)
 
-    def create(self, obj: DriverRDuty):
+    def create(self, obj: DriverDuty):
         if obj.id is not None and self.get_by_id(obj.id) is not None:
             raise AlreadyExistsExc()
 
@@ -43,7 +43,7 @@ class PWDriverDutyRep(DriverDutyRepository):
         except IntegrityError as exc:
             raise AlreadyExistsExc()
 
-    def update(self, old_obj: DriverRDuty, new_obj: DriverRDuty):
+    def update(self, old_obj: DriverDuty, new_obj: DriverDuty):
         return NotImplementedError
         if self.get_by_id(old_obj.id) is None:
             raise NotExistsExc()
@@ -56,7 +56,7 @@ class PWDriverDutyRep(DriverDutyRepository):
         except IntegrityError as exc:
             raise WrongUpdExc()
 
-    def delete(self, obj: DriverRDuty):
+    def delete(self, obj: DriverDuty):
         if self.get_by_id(obj.id) is None:
             raise NotExistsExc()
 
@@ -65,12 +65,12 @@ class PWDriverDutyRep(DriverDutyRepository):
         query = self._model.delete().where(DriverDutyModel.dutyid == obj.id)
         query.execute()
 
-    def get_all(self) -> [DriverRDuty]:
+    def get_all(self) -> [DriverDuty]:
         res = self._model.select(DriverDutyModel, DutyRulesModel)\
             .join(DutyRulesModel, on=(DriverDutyModel.ruleid == DutyRulesModel.ruleid))
-        return request_to_objects(res, DriverRDuty)
+        return request_to_objects(res, DriverDuty)
 
-    def get_by_time(self, begin_date, end_date=None, login=None, platenumber=None) -> [DriverRDuty]:
+    def get_by_time(self, begin_date, end_date=None, login=None, platenumber=None) -> [DriverDuty]:
         if end_date is None:
             where_exp = DutyRulesModel.enddate.is_null() | (DutyRulesModel.enddate >= begin_date)
         else:
@@ -92,12 +92,12 @@ class PWDriverDutyRep(DriverDutyRepository):
         res = self._model.select(DriverDutyModel, DutyRulesModel) \
             .join(DutyRulesModel, on=(DriverDutyModel.ruleid == DutyRulesModel.ruleid))\
             .switch(self._model).where(where_exp)
-        return request_to_objects(res, DriverRDuty)
+        return request_to_objects(res, DriverDuty)
 
-    def get_by_id(self, check_id: int) -> DriverRDuty:
+    def get_by_id(self, check_id: int) -> DriverDuty:
         res = self._model.select(DriverDutyModel, DutyRulesModel) \
             .join(DutyRulesModel, on=(DriverDutyModel.ruleid == DutyRulesModel.ruleid))\
             .switch(self._rule_model)\
             .where(DriverDutyModel.dutyid == check_id)
-        acc_arr = request_to_objects(res, DriverRDuty)
+        acc_arr = request_to_objects(res, DriverDuty)
         return acc_arr[0] if len(acc_arr) else None
