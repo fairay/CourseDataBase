@@ -1,6 +1,6 @@
 from repository.repository import *
 from objects.pass_record import *
-from objects.guard_duty import GuardDuty
+from objects.guard_duty import GuardRDuty
 from repository.pw_rep import *
 from errors import *
 
@@ -13,7 +13,7 @@ class PassRecordsRepository(Repository):
     def delete(self, obj: PassRecord): raise NotImplementedError
     def get_all(self) -> [PassRecord]: raise NotImplementedError
     def get_by_id(self, id_: int) -> PassRecord: raise NotImplementedError
-    def get_by_duty(self, duty: GuardDuty, d: date) -> [PassRecord]: raise NotImplementedError
+    def get_by_duty(self, duty: GuardRDuty, d: date) -> [PassRecord]: raise NotImplementedError
 
 
 class PWPassRecordsRep(PassRecordsRepository):
@@ -68,7 +68,7 @@ class PWPassRecordsRep(PassRecordsRepository):
         res = self._model.select().where(PassRecordsModel.checkpointid == check_id)
         return request_to_objects(res, PassRecord)
 
-    def get_by_duty(self, duty: GuardDuty, d: date) -> [PassRecord]:
+    def get_by_duty(self, duty: GuardRDuty, d: date) -> [PassRecord]:
         btime = datetime.combine(d, duty.btime)
         etime = datetime.combine(d, duty.etime)
         res = self._model.select().where(

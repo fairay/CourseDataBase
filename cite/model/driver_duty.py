@@ -34,21 +34,21 @@ class DriverDutyProc(BaseDutyProc):
         return duty
 
     def is_driver_free(self, obj: DriverRDuty) -> bool:
-        rep_: DriverRDutyRepository = inject.instance(DriverRDutyRepository)(self._con)
+        rep_: DriverDutyRepository = inject.instance(DriverDutyRepository)(self._con)
         for other in rep_.get_by_time(obj.bdate, obj.edate, login=obj.login):
             if self._is_collide(obj, other):
                 return False
         return True
 
     def is_truck_free(self, obj: DriverRDuty) -> bool:
-        rep_: DriverRDutyRepository = inject.instance(DriverRDutyRepository)(self._con)
+        rep_: DriverDutyRepository = inject.instance(DriverDutyRepository)(self._con)
         for other in rep_.get_by_time(obj.bdate, obj.edate, platenumber=obj.number):
             if self._is_collide(obj, other):
                 return False
         return True
 
     def get_all(self, login: str = None):
-        rep_ = inject.instance(DriverRDutyRepository)(self._con)
+        rep_ = inject.instance(DriverDutyRepository)(self._con)
         duty_arr = []
 
         for obj in rep_.get_all():
@@ -69,7 +69,7 @@ class DriverDutyProc(BaseDutyProc):
         # return duty_arr
 
     def get_by_time(self, date_time, login: str = None, platenumber: str = None):
-        rep_: DriverRDutyRepository = inject.instance(DriverRDutyRepository)(self._con)
+        rep_: DriverDutyRepository = inject.instance(DriverDutyRepository)(self._con)
         duty_arr = []
         date_ = date_time.date()
         for obj in rep_.get_by_time(date_, date_, login, platenumber):
@@ -79,7 +79,7 @@ class DriverDutyProc(BaseDutyProc):
         return duty_arr
 
     def get_closest(self, login: str):
-        rep_: DriverRDutyRepository = inject.instance(DriverRDutyRepository)(self._con)
+        rep_: DriverDutyRepository = inject.instance(DriverDutyRepository)(self._con)
 
         date_ = datetime.now().date()
         duty_arr = rep_.get_by_time(date_, None, login)
@@ -101,7 +101,7 @@ class DriverDutyProc(BaseDutyProc):
         return min_duty
 
     def add(self, obj: DriverRDuty):
-        rep_ = inject.instance(DriverRDutyRepository)(self._con)
+        rep_ = inject.instance(DriverDutyRepository)(self._con)
 
         try:
             rep_.create(obj)

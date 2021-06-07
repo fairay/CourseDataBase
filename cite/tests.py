@@ -318,7 +318,7 @@ class RecordsRepTest(BaseRepTest, ut.TestCase):
 
 class GuardRDutyRepTest(BaseRepTest, ut.TestCase):
     _con = SqliteDatabase(':memory:')
-    _rep = PWGuardRDutyRep(_con)
+    _rep = PWGuardDutyRep(_con)
 
     _obj_upd = GuardRDuty(dutyid=1, ruleid=1,
                           checkpointid=0, login='guard',
@@ -351,7 +351,7 @@ class GuardRDutyRepTest(BaseRepTest, ut.TestCase):
 
     def setUp(self) -> None:
         self._con.connect()
-        self._con.create_tables([DutyRulesModel, GuardRDutyModel])
+        self._con.create_tables([DutyRulesModel, GuardDutyModel])
         super(GuardRDutyRepTest, self).setUp()
 
     def test_get_id(self):
@@ -368,7 +368,7 @@ class GuardRDutyRepTest(BaseRepTest, ut.TestCase):
 
 class DriverRDutyRepTest(BaseRepTest, ut.TestCase):
     _con = SqliteDatabase(':memory:')
-    _rep = PWDriverRDutyRep(_con)
+    _rep = PWDriverDutyRep(_con)
 
     _obj_upd = DriverRDuty(dutyid=1, ruleid=1,
                            platenumber='П000СО666', login='driver',
@@ -401,7 +401,7 @@ class DriverRDutyRepTest(BaseRepTest, ut.TestCase):
 
     def setUp(self) -> None:
         self._con.connect()
-        self._con.create_tables([DutyRulesModel, DriverRDutyModel])
+        self._con.create_tables([DutyRulesModel, DriverDutyModel])
         super(DriverRDutyRepTest, self).setUp()
 
     def test_get_id(self):

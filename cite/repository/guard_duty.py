@@ -4,7 +4,7 @@ from repository.pw_rep import *
 from errors import *
 
 
-class GuardRDutyRepository(Repository):
+class GuardDutyRepository(Repository):
     def create(self, obj: GuardRDuty): raise NotImplementedError
     def update(self, old_obj: GuardRDuty, new_obj: GuardRDuty): raise NotImplementedError
     def delete(self, obj: GuardRDuty): raise NotImplementedError
@@ -13,7 +13,7 @@ class GuardRDutyRepository(Repository):
     def get_by_id(self, id_: int) -> GuardRDuty: raise NotImplementedError
 
 
-class PWGuardRDutyRep(GuardRDutyRepository):
+class PWGuardDutyRep(GuardDutyRepository):
     _model = None
     _rule_model = None
     _con = None
@@ -21,7 +21,7 @@ class PWGuardRDutyRep(GuardRDutyRepository):
     def __init__(self, con: Database):
         super().__init__(con)
         self._con = con
-        self._model = GuardRDutyModel(con)
+        self._model = GuardDutyModel(con)
         self._rule_model = DutyRulesModel(con)
 
     def create(self, obj: GuardRDuty):
@@ -50,7 +50,7 @@ class PWGuardRDutyRep(GuardRDutyRepository):
 
         query = self._model.\
             update(**new_obj.to_dict()).\
-            where(GuardRDutyModel.dutyid == old_obj.id)
+            where(GuardDutyModel.dutyid == old_obj.id)
         try:
             query.execute()
         except IntegrityError as exc:
@@ -62,12 +62,12 @@ class PWGuardRDutyRep(GuardRDutyRepository):
 
         query = self._rule_model.delete().where(DutyRulesModel.ruleid == obj.ruleid)
         query.execute()
-        query = self._model.delete().where(GuardRDutyModel.dutyid == obj.id)
+        query = self._model.delete().where(GuardDutyModel.dutyid == obj.id)
         query.execute()
 
     def get_all(self) -> [GuardRDuty]:
-        res = self._model.select(GuardRDutyModel, DutyRulesModel)\
-            .join(DutyRulesModel, on=(GuardRDutyModel.ruleid == DutyRulesModel.ruleid))
+        res = self._model.select(GuardDutyModel, DutyRulesModel)\
+            .join(DutyRulesModel, on=(GuardDutyModel.ruleid == DutyRulesModel.ruleid))
         return request_to_objects(res, GuardRDuty)
 
     def get_by_time(self, begin_date, end_date=None, login=None, check_id=None) -> [GuardRDuty]:
@@ -85,19 +85,19 @@ class PWGuardRDutyRep(GuardRDutyRepository):
         # print(storedf_call(self._con, 'ddutyinf', begin_date))
 
         if login is not None:
-            where_exp &= GuardRDutyModel.login == login
+            where_exp &= GuardDutyModel.login == login
         if check_id is not None:
-            where_exp &= GuardRDutyModel.checkpointid == check_id
+            where_exp &= GuardDutyModel.checkpointid == check_id
 
-        res = self._model.select(GuardRDutyModel, DutyRulesModel) \
-            .join(DutyRulesModel, on=(GuardRDutyModel.ruleid == DutyRulesModel.ruleid))\
+        res = self._model.select(GuardDutyModel, DutyRulesModel) \
+            .join(DutyRulesModel, on=(GuardDutyModel.ruleid == DutyRulesModel.ruleid))\
             .switch(self._model).where(where_exp)
         return request_to_objects(res, GuardRDuty)
 
     def get_by_id(self, check_id: int) -> GuardRDuty:
-        res = self._model.select(GuardRDutyModel, DutyRulesModel) \
-            .join(DutyRulesModel, on=(GuardRDutyModel.ruleid == DutyRulesModel.ruleid))\
+        res = self._model.select(GuardDutyModel, DutyRulesModel) \
+            .join(DutyRulesModel, on=(GuardDutyModel.ruleid == DutyRulesModel.ruleid))\
             .switch(self._model)\
-            .where(GuardRDutyModel.dutyid == check_id)
+            .where(GuardDutyModel.dutyid == check_id)
         acc_arr = request_to_objects(res, GuardRDuty)
         return acc_arr[0] if len(acc_arr) else None

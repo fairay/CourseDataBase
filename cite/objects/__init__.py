@@ -3,6 +3,7 @@ from .account import Account
 from .person import Person
 from .truck import Truck
 from .checkpoint import Checkpoint
+from .base_duty import BaseDuty
 from .driver_duty import DriverRDuty
 from .guard_duty import GuardRDuty
 from .delivery import Delivery

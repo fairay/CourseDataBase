@@ -9,5 +9,5 @@ from .delivery_rep import DeliveryRepository, PWDeliveryRep
 from .record_rep import PassRecordsRepository, PWPassRecordsRep
 
 #
-from .driver_duty import DriverRDutyRepository, PWDriverRDutyRep
-from .guard_duty import GuardRDutyRepository, PWGuardRDutyRep
+from .driver_duty import DriverDutyRepository, PWDriverDutyRep
+from .guard_duty import GuardDutyRepository, PWGuardDutyRep

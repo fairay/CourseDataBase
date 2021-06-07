@@ -9,7 +9,6 @@ import re
 class CheckpointProc(BaseProc):
     @staticmethod
     def create(**init_dict) -> Checkpoint:
-        print(init_dict)
         if not {'address', 'phonenumber'}.issubset(init_dict.keys()):
             raise exc.CheckpointLackExc()
 

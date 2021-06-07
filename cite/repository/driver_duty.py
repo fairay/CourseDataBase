@@ -4,7 +4,7 @@ from repository.pw_rep import *
 from errors import *
 
 
-class DriverRDutyRepository(Repository):
+class DriverDutyRepository(Repository):
     def create(self, obj: DriverRDuty): raise NotImplementedError
     def update(self, old_obj: DriverRDuty, new_obj: DriverRDuty): raise NotImplementedError
     def delete(self, obj: DriverRDuty): raise NotImplementedError
@@ -13,7 +13,7 @@ class DriverRDutyRepository(Repository):
     def get_by_id(self, id_: int) -> DriverRDuty: raise NotImplementedError
 
 
-class PWDriverRDutyRep(DriverRDutyRepository):
+class PWDriverDutyRep(DriverDutyRepository):
     _model = None
     _rule_model = None
     _con = None
@@ -21,7 +21,7 @@ class PWDriverRDutyRep(DriverRDutyRepository):
     def __init__(self, con: Database):
         super().__init__(con)
         self._con = con
-        self._model = DriverRDutyModel(con)
+        self._model = DriverDutyModel(con)
         self._rule_model = DutyRulesModel(con)
 
     def create(self, obj: DriverRDuty):
@@ -41,7 +41,6 @@ class PWDriverRDutyRep(DriverRDutyRepository):
                                login=d['login'],
                                ruleid=d['ruleid']).execute()
         except IntegrityError as exc:
-            print("!!!", exc)
             raise AlreadyExistsExc()
 
     def update(self, old_obj: DriverRDuty, new_obj: DriverRDuty):
@@ -51,7 +50,7 @@ class PWDriverRDutyRep(DriverRDutyRepository):
 
         query = self._model.\
             update(**new_obj.to_dict()).\
-            where(DriverRDutyModel.dutyid == old_obj.id)
+            where(DriverDutyModel.dutyid == old_obj.id)
         try:
             query.execute()
         except IntegrityError as exc:
@@ -63,12 +62,12 @@ class PWDriverRDutyRep(DriverRDutyRepository):
 
         query = self._rule_model.delete().where(DutyRulesModel.ruleid == obj.ruleid)
         query.execute()
-        query = self._model.delete().where(DriverRDutyModel.dutyid == obj.id)
+        query = self._model.delete().where(DriverDutyModel.dutyid == obj.id)
         query.execute()
 
     def get_all(self) -> [DriverRDuty]:
-        res = self._model.select(DriverRDutyModel, DutyRulesModel)\
-            .join(DutyRulesModel, on=(DriverRDutyModel.ruleid == DutyRulesModel.ruleid))
+        res = self._model.select(DriverDutyModel, DutyRulesModel)\
+            .join(DutyRulesModel, on=(DriverDutyModel.ruleid == DutyRulesModel.ruleid))
         return request_to_objects(res, DriverRDuty)
 
     def get_by_time(self, begin_date, end_date=None, login=None, platenumber=None) -> [DriverRDuty]:
@@ -86,19 +85,19 @@ class PWDriverRDutyRep(DriverRDutyRepository):
         # print(storedf_call(self._con, 'ddutyinf', begin_date))
 
         if login is not None:
-            where_exp &= DriverRDutyModel.login == login
+            where_exp &= DriverDutyModel.login == login
         if platenumber is not None:
-            where_exp &= DriverRDutyModel.platenumber == platenumber
+            where_exp &= DriverDutyModel.platenumber == platenumber
 
-        res = self._model.select(DriverRDutyModel, DutyRulesModel) \
-            .join(DutyRulesModel, on=(DriverRDutyModel.ruleid == DutyRulesModel.ruleid))\
+        res = self._model.select(DriverDutyModel, DutyRulesModel) \
+            .join(DutyRulesModel, on=(DriverDutyModel.ruleid == DutyRulesModel.ruleid))\
             .switch(self._model).where(where_exp)
         return request_to_objects(res, DriverRDuty)
 
     def get_by_id(self, check_id: int) -> DriverRDuty:
-        res = self._model.select(DriverRDutyModel, DutyRulesModel) \
-            .join(DutyRulesModel, on=(DriverRDutyModel.ruleid == DutyRulesModel.ruleid))\
+        res = self._model.select(DriverDutyModel, DutyRulesModel) \
+            .join(DutyRulesModel, on=(DriverDutyModel.ruleid == DutyRulesModel.ruleid))\
             .switch(self._rule_model)\
-            .where(DriverRDutyModel.dutyid == check_id)
+            .where(DriverDutyModel.dutyid == check_id)
         acc_arr = request_to_objects(res, DriverRDuty)
         return acc_arr[0] if len(acc_arr) else None

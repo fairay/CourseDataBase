@@ -34,14 +34,14 @@ class GuardDutyProc(BaseDutyProc):
         return duty
 
     def is_guard_free(self, obj: GuardRDuty) -> bool:
-        rep_: GuardRDutyRepository = inject.instance(GuardRDutyRepository)(self._con)
+        rep_: GuardDutyRepository = inject.instance(GuardDutyRepository)(self._con)
         for other in rep_.get_by_time(obj.bdate, obj.edate, login=obj.login):
             if self._is_collide(obj, other):
                 return False
         return True
 
     def is_checkpoint_free(self, obj: GuardRDuty) -> bool:
-        rep_: GuardRDutyRepository = inject.instance(GuardRDutyRepository)(self._con)
+        rep_: GuardDutyRepository = inject.instance(GuardDutyRepository)(self._con)
         for other in rep_.get_by_time(obj.bdate, obj.edate, check_id=obj.checkpoint):
             if self._is_collide(obj, other):
                 return False
@@ -54,7 +54,7 @@ class GuardDutyProc(BaseDutyProc):
         return duty_arr
 
     def get_current(self, login: str = None):
-        rep_: GuardRDutyRepository = inject.instance(GuardRDutyRepository)(self._con)
+        rep_: GuardDutyRepository = inject.instance(GuardDutyRepository)(self._con)
         duty_arr = []
         now_date = datetime.now().date()
         for obj in rep_.get_by_time(now_date, now_date, login):
@@ -64,7 +64,7 @@ class GuardDutyProc(BaseDutyProc):
         return duty_arr
 
     def get_all(self, login: str = None):
-        rep_ = inject.instance(GuardRDutyRepository)(self._con)
+        rep_ = inject.instance(GuardDutyRepository)(self._con)
         duty_arr = []
         for obj in rep_.get_all():
             if login is None or obj.login == login:
@@ -73,7 +73,7 @@ class GuardDutyProc(BaseDutyProc):
         return duty_arr
 
     def get_closest(self, login: str):
-        rep_: GuardRDutyRepository = inject.instance(GuardRDutyRepository)(self._con)
+        rep_: GuardDutyRepository = inject.instance(GuardDutyRepository)(self._con)
 
         date_ = datetime.now().date()
         duty_arr = rep_.get_by_time(date_, None, login)
@@ -95,7 +95,7 @@ class GuardDutyProc(BaseDutyProc):
         return min_duty
 
     def add(self, obj: GuardRDuty):
-        rep_ = inject.instance(GuardRDutyRepository)(self._con)
+        rep_ = inject.instance(GuardDutyRepository)(self._con)
 
         try:
             rep_.create(obj)

@@ -104,7 +104,8 @@ class PassRecordsModel(BaseModel):
     class Meta:
         table_name = 'passrecords'
 
-
+# TODO: remove comment
+"""
 class GuardDutysModel(BaseModel):
     dutyid = AutoField(column_name='dutyid', primary_key=True)
     checkpointid = ForeignKeyField(CheckpointsModel, column_name='checkpointid', null=False)
@@ -131,6 +132,7 @@ class DriverDutysModel(BaseModel):
 
     class Meta:
         table_name = 'driverdutys'
+"""
 
 
 class DutyRulesModel(BaseModel):
@@ -145,7 +147,7 @@ class DutyRulesModel(BaseModel):
         table_name = 'dutyrules'
 
 
-class GuardRDutyModel(BaseModel):
+class GuardDutyModel(BaseModel):
     dutyid = AutoField(column_name='dutyid', primary_key=True)
     checkpointid = ForeignKeyField(CheckpointsModel, column_name='checkpointid', null=False)
     login = ForeignKeyField(AccountsModel, column_name='login', null=False)
@@ -155,7 +157,7 @@ class GuardRDutyModel(BaseModel):
         table_name = 'guardduty'
 
 
-class DriverRDutyModel(BaseModel):
+class DriverDutyModel(BaseModel):
     dutyid = AutoField(column_name='dutyid', primary_key=True)
     platenumber = ForeignKeyField(TrucksModel, column_name='platenumber', null=False)
     login = ForeignKeyField(AccountsModel, column_name='login', null=False)
