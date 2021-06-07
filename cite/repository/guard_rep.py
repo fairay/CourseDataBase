@@ -1,3 +1,4 @@
+"""
 from repository.repository import *
 from objects.guard_duty import *
 from repository.pw_rep import *
@@ -80,3 +81,4 @@ class PWGuardDutyRep(GuardDutyRepository):
         res = self._model.select().where(where_exp)
         print(res)
         return request_to_objects(res, GuardDuty)
+"""

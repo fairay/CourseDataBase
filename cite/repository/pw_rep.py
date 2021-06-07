@@ -151,6 +151,9 @@ class GuardRDutyModel(BaseModel):
     login = ForeignKeyField(AccountsModel, column_name='login', null=False)
     ruleid = ForeignKeyField(DutyRulesModel, column_name='ruleid', null=False)
 
+    class Meta:
+        table_name = 'guardduty'
+
 
 class DriverRDutyModel(BaseModel):
     dutyid = AutoField(column_name='dutyid', primary_key=True)

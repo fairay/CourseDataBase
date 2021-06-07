@@ -39,11 +39,12 @@ def inject_config_rep(binder):
     binder.bind(CheckpointsRepository, PWCheckpointsRep)
     binder.bind(DeliveryRepository, PWDeliveryRep)
     # binder.bind(DriverDutyRepository, PWDriverDutyRep)
-    binder.bind(GuardDutyRepository, PWGuardDutyRep)
+    # binder.bind(GuardDutyRepository, PWGuardDutyRep)
     binder.bind(PassRecordsRepository, PWPassRecordsRep)
 
     #
     binder.bind(DriverRDutyRepository, PWDriverRDutyRep)
+    binder.bind(GuardRDutyRepository, PWGuardRDutyRep)
 
 
 def inject_config(binder):

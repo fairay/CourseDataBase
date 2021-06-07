@@ -40,7 +40,7 @@ class PassRecordProc(BaseProc):
 
         return pass_arr
 
-    def get_by_duty(self, duty: GuardDuty):
+    def get_by_duty(self, duty: GuardRDuty):
         rep_ = inject.instance(PassRecordsRepository)(self._con)
         pass_arr = []
         for obj in self.sort(rep_.get_by_duty(duty, datetime.now().date())):

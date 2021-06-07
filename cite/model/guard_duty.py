@@ -11,7 +11,7 @@ from datetime import *
 
 
 class GuardDutyProc(BaseDutyProc):
-    def create(self, **init_dict) -> GuardDuty:
+    def create(self, **init_dict) -> GuardRDuty:
         if not {'checkpointid', 'login', 'begindate', 'enddate', 'begintime',
                 'endtime', 'dow'}.issubset(init_dict.keys()):
             raise exc.LackArgExc()
@@ -24,7 +24,8 @@ class GuardDutyProc(BaseDutyProc):
             raise exc.NoneExistExc('КПП не существует')
 
         init_dict['dutyid'] = None
-        duty = GuardDuty(**init_dict)
+        init_dict['ruleid'] = None
+        duty = GuardRDuty(**init_dict)
 
         if not self.is_guard_free(duty):
             raise exc.WrongFormatExc('охранник занят в данный период')
@@ -32,15 +33,15 @@ class GuardDutyProc(BaseDutyProc):
             raise exc.WrongFormatExc('КПП занят в данный период')
         return duty
 
-    def is_guard_free(self, obj: GuardDuty) -> bool:
-        rep_: GuardDutyRepository = inject.instance(GuardDutyRepository)(self._con)
+    def is_guard_free(self, obj: GuardRDuty) -> bool:
+        rep_: GuardRDutyRepository = inject.instance(GuardRDutyRepository)(self._con)
         for other in rep_.get_by_time(obj.bdate, obj.edate, login=obj.login):
             if self._is_collide(obj, other):
                 return False
         return True
 
-    def is_checkpoint_free(self, obj: GuardDuty) -> bool:
-        rep_: GuardDutyRepository = inject.instance(GuardDutyRepository)(self._con)
+    def is_checkpoint_free(self, obj: GuardRDuty) -> bool:
+        rep_: GuardRDutyRepository = inject.instance(GuardRDutyRepository)(self._con)
         for other in rep_.get_by_time(obj.bdate, obj.edate, check_id=obj.checkpoint):
             if self._is_collide(obj, other):
                 return False
@@ -53,7 +54,7 @@ class GuardDutyProc(BaseDutyProc):
         return duty_arr
 
     def get_current(self, login: str = None):
-        rep_: GuardDutyRepository = inject.instance(GuardDutyRepository)(self._con)
+        rep_: GuardRDutyRepository = inject.instance(GuardRDutyRepository)(self._con)
         duty_arr = []
         now_date = datetime.now().date()
         for obj in rep_.get_by_time(now_date, now_date, login):
@@ -63,7 +64,7 @@ class GuardDutyProc(BaseDutyProc):
         return duty_arr
 
     def get_all(self, login: str = None):
-        rep_ = inject.instance(GuardDutyRepository)(self._con)
+        rep_ = inject.instance(GuardRDutyRepository)(self._con)
         duty_arr = []
         for obj in rep_.get_all():
             if login is None or obj.login == login:
@@ -72,7 +73,7 @@ class GuardDutyProc(BaseDutyProc):
         return duty_arr
 
     def get_closest(self, login: str):
-        rep_: GuardDutyRepository = inject.instance(GuardDutyRepository)(self._con)
+        rep_: GuardRDutyRepository = inject.instance(GuardRDutyRepository)(self._con)
 
         date_ = datetime.now().date()
         duty_arr = rep_.get_by_time(date_, None, login)
@@ -93,8 +94,8 @@ class GuardDutyProc(BaseDutyProc):
         min_duty['min_date'] = min_date.strftime('%d.%m.%Y')
         return min_duty
 
-    def add(self, obj: GuardDuty):
-        rep_ = inject.instance(GuardDutyRepository)(self._con)
+    def add(self, obj: GuardRDuty):
+        rep_ = inject.instance(GuardRDutyRepository)(self._con)
 
         try:
             rep_.create(obj)
@@ -103,7 +104,7 @@ class GuardDutyProc(BaseDutyProc):
 
         return obj
 
-    def _to_view(self, obj: GuardDuty):
+    def _to_view(self, obj: GuardRDuty):
         d = obj.to_dict()
         d['begindate'] = d['begindate'].strftime('%d.%m.%Y')
         if d['enddate'] is not None:
@@ -115,7 +116,7 @@ class GuardDutyProc(BaseDutyProc):
         return d
 
     @staticmethod
-    def _is_collide(obj1: GuardDuty, obj2: GuardDuty):
+    def _is_collide(obj1: GuardRDuty, obj2: GuardRDuty):
         dow_inter = set(obj2.dow).intersection(obj1.dow)
         if not len(dow_inter):
             return False

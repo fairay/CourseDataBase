@@ -316,130 +316,87 @@ class RecordsRepTest(BaseRepTest, ut.TestCase):
         self.assertEqual(get_obj, None)
 
 
-class GuardDutyRepTest(BaseRepTest, ut.TestCase):
+class GuardRDutyRepTest(BaseRepTest, ut.TestCase):
     _con = SqliteDatabase(':memory:')
-    _rep = PWGuardDutyRep(_con)
+    _rep = PWGuardRDutyRep(_con)
 
-    _obj_upd = GuardDuty(dutyid=1, checkpointid=0, login='guard',
-                         begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
-                         begintime=time(9, 0, 0), endtime=time(18, 30, 0),
-                         dow='01234')
+    _obj_upd = GuardRDuty(dutyid=1, ruleid=1,
+                          checkpointid=0, login='guard',
+                          begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
+                          begintime=time(9, 0, 0), endtime=time(18, 30, 0),
+                          dow='01234')
 
-    _obj_nonexist = GuardDuty(dutyid=100, checkpointid=0, login='',
-                              begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
-                              begintime=time(9, 0, 0), endtime=time(18, 30, 0),
-                              dow='')
+    _obj_nonexist = GuardRDuty(dutyid=100, ruleid=100, checkpointid=0, login='',
+                               begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
+                               begintime=time(9, 0, 0), endtime=time(18, 30, 0),
+                               dow='')
     _obj_arr = [
-        GuardDuty(dutyid=1, checkpointid=0, login='guard',
+        GuardRDuty(dutyid=1, ruleid=1, checkpointid=0, login='guard',
                   begindate=date(2021, 5, 1),
                   begintime=time(9, 0, 0), endtime=time(18, 30, 0),
                   dow='01234'),
-        GuardDuty(dutyid=2, checkpointid=2, login='vasyok1997',
+        GuardRDuty(dutyid=2, ruleid=2, checkpointid=2, login='vasyok1997',
                   begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
                   begintime=time(9, 0, 0), endtime=time(18, 30, 0),
                   dow='01'),
-        GuardDuty(dutyid=3, checkpointid=1, login='chicksa1999',
+        GuardRDuty(dutyid=3, ruleid=3, checkpointid=1, login='chicksa1999',
                   begindate=date(2021, 1, 1), enddate=date(2022, 1, 1),
                   begintime=time(9, 0, 0), endtime=time(15, 0, 0),
                   dow='0246'),
     ]
 
     @staticmethod
-    def _sorted_arr(arr: [GuardDuty]) -> [GuardDuty]:
+    def _sorted_arr(arr: [GuardRDuty]) -> [GuardRDuty]:
         return sorted(arr, key=lambda x: x.id)
 
     def setUp(self) -> None:
         self._con.connect()
-        self._con.create_tables([GuardDutysModel])
-        super(GuardDutyRepTest, self).setUp()
+        self._con.create_tables([DutyRulesModel, GuardRDutyModel])
+        super(GuardRDutyRepTest, self).setUp()
 
     def test_get_id(self):
         get_obj = self._rep.get_by_id(self._obj_arr[0].id)
         self.assertEqual(get_obj, self._obj_arr[0])
+
+    def test_upd(self): pass
+    def test_upd_nonexist(self): pass
 
     def test_get_id_nonexist(self):
         get_obj = self._rep.get_by_id(self._obj_nonexist.id)
         self.assertEqual(get_obj, None)
 
 
-class DriverDutyRepTest(BaseRepTest, ut.TestCase):
-    _con = SqliteDatabase(':memory:')
-    _rep = PWDriverDutyRep(_con)
-
-    _obj_upd = DriverDuty(dutyid=1, platenumber='П000СО666', login='driver',
-                          begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
-                          begintime=time(9, 0, 0), endtime=time(18, 30, 0),
-                          dow='01234')
-
-    _obj_nonexist = DriverDuty(dutyid=100, platenumber='', login='',
-                               begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
-                               begintime=time(9, 0, 0), endtime=time(18, 30, 0),
-                               dow='')
-    _obj_arr = [
-        DriverDuty(dutyid=1, platenumber='П000СО666', login='driver',
-                   begindate=date(2021, 5, 1),
-                   begintime=time(9, 0, 0), endtime=time(18, 30, 0),
-                   dow='01234'),
-        DriverDuty(dutyid=2, platenumber='В000ОР199', login='sanyok1997',
-                   begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
-                   begintime=time(9, 0, 0), endtime=time(18, 30, 0),
-                   dow='01'),
-        DriverDuty(dutyid=3, platenumber='С777ОР100', login='chocksa1999',
-                   begindate=date(2021, 1, 1), enddate=date(2022, 1, 1),
-                   begintime=time(9, 0, 0), endtime=time(15, 0, 0),
-                   dow='0246'),
-    ]
-
-    @staticmethod
-    def _sorted_arr(arr: [GuardDuty]) -> [GuardDuty]:
-        return sorted(arr, key=lambda x: x.id)
-
-    def setUp(self) -> None:
-        self._con.connect()
-        self._con.create_tables([DriverDutysModel])
-        super(DriverDutyRepTest, self).setUp()
-
-    def test_get_id(self):
-        get_obj = self._rep.get_by_id(self._obj_arr[0].id)
-        self.assertEqual(get_obj, self._obj_arr[0])
-
-    def test_get_id_nonexist(self):
-        get_obj = self._rep.get_by_id(self._obj_nonexist.id)
-        self.assertEqual(get_obj, None)
-
-from objects.driver_duty import DriverRDuty
-from repository.driver_duty import PWDriverRDutyRep
 class DriverRDutyRepTest(BaseRepTest, ut.TestCase):
     _con = SqliteDatabase(':memory:')
     _rep = PWDriverRDutyRep(_con)
 
     _obj_upd = DriverRDuty(dutyid=1, ruleid=1,
                            platenumber='П000СО666', login='driver',
-                          begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
-                          begintime=time(9, 0, 0), endtime=time(18, 30, 0),
-                          dow='01234')
+                           begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
+                           begintime=time(9, 0, 0), endtime=time(18, 30, 0),
+                           dow='01234')
 
     _obj_nonexist = DriverRDuty(dutyid=100, ruleid=100, platenumber='', login='',
-                               begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
-                               begintime=time(9, 0, 0), endtime=time(18, 30, 0),
-                               dow='')
+                                begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
+                                begintime=time(9, 0, 0), endtime=time(18, 30, 0),
+                                dow='')
     _obj_arr = [
         DriverRDuty(dutyid=1, ruleid=1, platenumber='П000СО666', login='driver',
-                   begindate=date(2021, 5, 1),
-                   begintime=time(9, 0, 0), endtime=time(18, 30, 0),
-                   dow='01234'),
+                    begindate=date(2021, 5, 1),
+                    begintime=time(9, 0, 0), endtime=time(18, 30, 0),
+                    dow='01234'),
         DriverRDuty(dutyid=2, ruleid=2, platenumber='В000ОР199', login='sanyok1997',
-                   begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
-                   begintime=time(9, 0, 0), endtime=time(18, 30, 0),
-                   dow='01'),
+                    begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
+                    begintime=time(9, 0, 0), endtime=time(18, 30, 0),
+                    dow='01'),
         DriverRDuty(dutyid=3, ruleid=3, platenumber='С777ОР100', login='chocksa1999',
-                   begindate=date(2021, 1, 1), enddate=date(2022, 1, 1),
-                   begintime=time(9, 0, 0), endtime=time(15, 0, 0),
-                   dow='0246'),
+                    begindate=date(2021, 1, 1), enddate=date(2022, 1, 1),
+                    begintime=time(9, 0, 0), endtime=time(15, 0, 0),
+                    dow='0246'),
     ]
 
     @staticmethod
-    def _sorted_arr(arr: [GuardDuty]) -> [GuardDuty]:
+    def _sorted_arr(arr: [DriverRDuty]) -> [DriverRDuty]:
         return sorted(arr, key=lambda x: x.id)
 
     def setUp(self) -> None:
@@ -447,12 +404,16 @@ class DriverRDutyRepTest(BaseRepTest, ut.TestCase):
         self._con.create_tables([DutyRulesModel, DriverRDutyModel])
         super(DriverRDutyRepTest, self).setUp()
 
-    def test_upd(self): pass
-    def test_upd_nonexist(self): pass
-
     def test_get_id(self):
         get_obj = self._rep.get_by_id(self._obj_arr[0].id)
         self.assertEqual(get_obj, self._obj_arr[0])
+
+    def test_upd(self): pass
+    def test_upd_nonexist(self): pass
+
+    def test_get_id_nonexist(self):
+        get_obj = self._rep.get_by_id(self._obj_nonexist.id)
+        self.assertEqual(get_obj, None)
 
 
 if __name__ == '__main__':

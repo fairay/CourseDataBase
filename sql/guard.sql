@@ -20,3 +20,5 @@ GRANT SELECT ON Checkpoints TO guard;
 GRANT SELECT ON Trucks TO guard;
 GRANT INSERT ON LogActions TO guard;
 
+GRANT SELECT ON GuardDuty TO guard;
+GRANT SELECT ON DutyRules TO guard;

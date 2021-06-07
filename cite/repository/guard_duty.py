@@ -1,19 +1,19 @@
 from repository.repository import *
-from objects.driver_duty import DriverRDuty
+from objects.guard_duty import GuardRDuty
 from repository.pw_rep import *
 from errors import *
 
 
-class DriverRDutyRepository(Repository):
-    def create(self, obj: DriverRDuty): raise NotImplementedError
-    def update(self, old_obj: DriverRDuty, new_obj: DriverRDuty): raise NotImplementedError
-    def delete(self, obj: DriverRDuty): raise NotImplementedError
-    def get_all(self) -> [DriverRDuty]: raise NotImplementedError
-    def get_by_time(self, begin_date, end_date=None, login=None, platenumber=None) -> [DriverRDuty]: raise NotImplementedError
-    def get_by_id(self, id_: int) -> DriverRDuty: raise NotImplementedError
+class GuardRDutyRepository(Repository):
+    def create(self, obj: GuardRDuty): raise NotImplementedError
+    def update(self, old_obj: GuardRDuty, new_obj: GuardRDuty): raise NotImplementedError
+    def delete(self, obj: GuardRDuty): raise NotImplementedError
+    def get_all(self) -> [GuardRDuty]: raise NotImplementedError
+    def get_by_time(self, begin_date, end_date=None, login=None, check_id=None) -> [GuardRDuty]: raise NotImplementedError
+    def get_by_id(self, id_: int) -> GuardRDuty: raise NotImplementedError
 
 
-class PWDriverRDutyRep(DriverRDutyRepository):
+class PWGuardRDutyRep(GuardRDutyRepository):
     _model = None
     _rule_model = None
     _con = None
@@ -21,10 +21,10 @@ class PWDriverRDutyRep(DriverRDutyRepository):
     def __init__(self, con: Database):
         super().__init__(con)
         self._con = con
-        self._model = DriverRDutyModel(con)
+        self._model = GuardRDutyModel(con)
         self._rule_model = DutyRulesModel(con)
 
-    def create(self, obj: DriverRDuty):
+    def create(self, obj: GuardRDuty):
         if obj.id is not None and self.get_by_id(obj.id) is not None:
             raise AlreadyExistsExc()
 
@@ -37,41 +37,40 @@ class PWDriverRDutyRep(DriverRDutyRepository):
                                                   endtime=d['endtime'],
                                                   dow=d['dow']).execute()
             del d['dutyid']
-            self._model.insert(platenumber=d['platenumber'],
+            self._model.insert(checkpointid=d['checkpointid'],
                                login=d['login'],
                                ruleid=d['ruleid']).execute()
         except IntegrityError as exc:
-            print("!!!", exc)
             raise AlreadyExistsExc()
 
-    def update(self, old_obj: DriverRDuty, new_obj: DriverRDuty):
+    def update(self, old_obj: GuardRDuty, new_obj: GuardRDuty):
         return NotImplementedError
         if self.get_by_id(old_obj.id) is None:
             raise NotExistsExc()
 
         query = self._model.\
             update(**new_obj.to_dict()).\
-            where(DriverRDutyModel.dutyid == old_obj.id)
+            where(GuardRDutyModel.dutyid == old_obj.id)
         try:
             query.execute()
         except IntegrityError as exc:
             raise WrongUpdExc()
 
-    def delete(self, obj: DriverRDuty):
+    def delete(self, obj: GuardRDuty):
         if self.get_by_id(obj.id) is None:
             raise NotExistsExc()
 
         query = self._rule_model.delete().where(DutyRulesModel.ruleid == obj.ruleid)
         query.execute()
-        query = self._model.delete().where(DriverRDutyModel.dutyid == obj.id)
+        query = self._model.delete().where(GuardRDutyModel.dutyid == obj.id)
         query.execute()
 
-    def get_all(self) -> [DriverRDuty]:
-        res = self._model.select(DriverRDutyModel, DutyRulesModel)\
-            .join(DutyRulesModel, on=(DriverRDutyModel.ruleid == DutyRulesModel.ruleid))
-        return request_to_objects(res, DriverRDuty)
+    def get_all(self) -> [GuardRDuty]:
+        res = self._model.select(GuardRDutyModel, DutyRulesModel)\
+            .join(DutyRulesModel, on=(GuardRDutyModel.ruleid == DutyRulesModel.ruleid))
+        return request_to_objects(res, GuardRDuty)
 
-    def get_by_time(self, begin_date, end_date=None, login=None, platenumber=None) -> [DriverRDuty]:
+    def get_by_time(self, begin_date, end_date=None, login=None, check_id=None) -> [GuardRDuty]:
         if end_date is None:
             where_exp = DutyRulesModel.enddate.is_null() | (DutyRulesModel.enddate >= begin_date)
         else:
@@ -86,19 +85,19 @@ class PWDriverRDutyRep(DriverRDutyRepository):
         # print(storedf_call(self._con, 'ddutyinf', begin_date))
 
         if login is not None:
-            where_exp &= DriverRDutyModel.login == login
-        if platenumber is not None:
-            where_exp &= DriverRDutyModel.platenumber == platenumber
+            where_exp &= GuardRDutyModel.login == login
+        if check_id is not None:
+            where_exp &= GuardRDutyModel.checkpointid == check_id
 
-        res = self._model.select(DriverRDutyModel, DutyRulesModel) \
-            .join(DutyRulesModel, on=(DriverRDutyModel.ruleid == DutyRulesModel.ruleid))\
+        res = self._model.select(GuardRDutyModel, DutyRulesModel) \
+            .join(DutyRulesModel, on=(GuardRDutyModel.ruleid == DutyRulesModel.ruleid))\
             .switch(self._model).where(where_exp)
-        return request_to_objects(res, DriverRDuty)
+        return request_to_objects(res, GuardRDuty)
 
-    def get_by_id(self, check_id: int) -> DriverRDuty:
-        res = self._model.select(DriverRDutyModel, DutyRulesModel) \
-            .join(DutyRulesModel, on=(DriverRDutyModel.ruleid == DutyRulesModel.ruleid))\
-            .switch(self._rule_model)\
-            .where(DriverRDutyModel.dutyid == check_id)
-        acc_arr = request_to_objects(res, DriverRDuty)
+    def get_by_id(self, check_id: int) -> GuardRDuty:
+        res = self._model.select(GuardRDutyModel, DutyRulesModel) \
+            .join(DutyRulesModel, on=(GuardRDutyModel.ruleid == DutyRulesModel.ruleid))\
+            .switch(self._model)\
+            .where(GuardRDutyModel.dutyid == check_id)
+        acc_arr = request_to_objects(res, GuardRDuty)
         return acc_arr[0] if len(acc_arr) else None
