@@ -64,3 +64,24 @@ class DriverDuty(BaseObj):
     btime = property(get_btime, set_btime)
     etime = property(get_etime, set_etime)
     dow = property(get_dow, set_dow)
+
+
+class DriverRDuty(DriverDuty):
+    _ruleid: int = None
+
+    def __init__(self, **init_dict):
+        super(DriverRDuty, self).__init__(**init_dict)
+        if init_dict is None:
+            return
+
+        self._ruleid = init_dict['ruleid']
+
+    def to_dict(self) -> dict:
+        d = super(DriverRDuty, self).to_dict()
+        d['ruleid'] = self._ruleid
+        return d
+
+    def get_ruleid(self): return self._ruleid
+    def set_ruleid(self, val: int): self._ruleid = val
+
+    ruleid = property(get_ruleid, set_ruleid)

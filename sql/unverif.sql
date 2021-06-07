@@ -13,3 +13,4 @@ CREATE ROLE unverif WITH
 GRANT ALL PRIVILEGES ON Passrecords TO unverif;
 GRANT SELECT ON Accounts TO unverif;
 GRANT SELECT ON Person TO unverif;
+GRANT INSERT ON LogActions TO unverif;

@@ -407,6 +407,53 @@ class DriverDutyRepTest(BaseRepTest, ut.TestCase):
         get_obj = self._rep.get_by_id(self._obj_nonexist.id)
         self.assertEqual(get_obj, None)
 
+from objects.driver_duty import DriverRDuty
+from repository.driver_duty import PWDriverRDutyRep
+class DriverRDutyRepTest(BaseRepTest, ut.TestCase):
+    _con = SqliteDatabase(':memory:')
+    _rep = PWDriverRDutyRep(_con)
+
+    _obj_upd = DriverRDuty(dutyid=1, ruleid=1,
+                           platenumber='П000СО666', login='driver',
+                          begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
+                          begintime=time(9, 0, 0), endtime=time(18, 30, 0),
+                          dow='01234')
+
+    _obj_nonexist = DriverRDuty(dutyid=100, ruleid=100, platenumber='', login='',
+                               begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
+                               begintime=time(9, 0, 0), endtime=time(18, 30, 0),
+                               dow='')
+    _obj_arr = [
+        DriverRDuty(dutyid=1, ruleid=1, platenumber='П000СО666', login='driver',
+                   begindate=date(2021, 5, 1),
+                   begintime=time(9, 0, 0), endtime=time(18, 30, 0),
+                   dow='01234'),
+        DriverRDuty(dutyid=2, ruleid=2, platenumber='В000ОР199', login='sanyok1997',
+                   begindate=date(2021, 5, 1), enddate=date(2021, 6, 1),
+                   begintime=time(9, 0, 0), endtime=time(18, 30, 0),
+                   dow='01'),
+        DriverRDuty(dutyid=3, ruleid=3, platenumber='С777ОР100', login='chocksa1999',
+                   begindate=date(2021, 1, 1), enddate=date(2022, 1, 1),
+                   begintime=time(9, 0, 0), endtime=time(15, 0, 0),
+                   dow='0246'),
+    ]
+
+    @staticmethod
+    def _sorted_arr(arr: [GuardDuty]) -> [GuardDuty]:
+        return sorted(arr, key=lambda x: x.id)
+
+    def setUp(self) -> None:
+        self._con.connect()
+        self._con.create_tables([DutyRulesModel, DriverRDutyModel])
+        super(DriverRDutyRepTest, self).setUp()
+
+    def test_upd(self): pass
+    def test_upd_nonexist(self): pass
+
+    def test_get_id(self):
+        get_obj = self._rep.get_by_id(self._obj_arr[0].id)
+        self.assertEqual(get_obj, self._obj_arr[0])
+
 
 if __name__ == '__main__':
     ut.main()

@@ -28,6 +28,9 @@ CREATE TABLE IF NOT EXISTS Delivery (
 	Status			VARCHAR(20)		NOT NULL,
 	Description 	TEXT			NOT NULL
 );
+ALTER TABLE Delivery 
+ADD CONSTRAINT check_status
+CHECK (Status='delivered' OR Status='in_transit' OR Status='not_assigned');
 
 
 CREATE TABLE IF NOT EXISTS Trucks (
@@ -72,4 +75,10 @@ CREATE TABLE IF NOT EXISTS DriverDutys (
 	BeginTime		TIME			NOT NULL,
 	EndTime			TIME			NOT NULL,
 	DOW				VARCHAR(7)
+);
+
+CREATE TABLE IF NOT EXISTS LogActions (
+	Actor 		VARCHAR(15)			NOT NULL,
+	ActTime		TIMESTAMP			NOT NULL,
+	Description	TEXT
 );

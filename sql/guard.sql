@@ -18,4 +18,5 @@ GRANT SELECT, INSERT ON PassRecords TO guard;
 GRANT ALL PRIVILEGES ON SEQUENCE passrecords_recordid_seq TO guard;
 GRANT SELECT ON Checkpoints TO guard;
 GRANT SELECT ON Trucks TO guard;
+GRANT INSERT ON LogActions TO guard;
 

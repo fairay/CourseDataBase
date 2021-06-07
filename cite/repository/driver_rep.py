@@ -1,3 +1,4 @@
+"""
 from psycopg2.extras import RealDictCursor
 
 from repository.repository import *
@@ -70,7 +71,7 @@ class PWDriverDutyRep(DriverDutyRepository):
             )
 
         # TODO: refactor to stored function call
-        print(storedf_call(self._con, 'ddutyinf', begin_date))
+        # print(storedf_call(self._con, 'ddutyinf', begin_date))
 
         if login is not None:
             where_exp &= DriverDutysModel.login == login
@@ -84,3 +85,6 @@ class PWDriverDutyRep(DriverDutyRepository):
         res = self._model.select().where(DriverDutysModel.dutyid == check_id)
         acc_arr = request_to_objects(res, DriverDuty)
         return acc_arr[0] if len(acc_arr) else None
+
+"""
+

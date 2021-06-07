@@ -131,3 +131,32 @@ class DriverDutysModel(BaseModel):
 
     class Meta:
         table_name = 'driverdutys'
+
+
+class DutyRulesModel(BaseModel):
+    ruleid = AutoField(column_name='ruleid', primary_key=True)
+    begindate = DateField(column_name='begindate', null=False)
+    enddate = DateField(column_name='enddate', null=True)
+    begintime = TimeField(column_name='begintime', null=False)
+    endtime = TimeField(column_name='endtime', null=False)
+    dow = CharField(column_name='dow', max_length=7, null=False)
+
+    class Meta:
+        table_name = 'dutyrules'
+
+
+class GuardRDutyModel(BaseModel):
+    dutyid = AutoField(column_name='dutyid', primary_key=True)
+    checkpointid = ForeignKeyField(CheckpointsModel, column_name='checkpointid', null=False)
+    login = ForeignKeyField(AccountsModel, column_name='login', null=False)
+    ruleid = ForeignKeyField(DutyRulesModel, column_name='ruleid', null=False)
+
+
+class DriverRDutyModel(BaseModel):
+    dutyid = AutoField(column_name='dutyid', primary_key=True)
+    platenumber = ForeignKeyField(TrucksModel, column_name='platenumber', null=False)
+    login = ForeignKeyField(AccountsModel, column_name='login', null=False)
+    ruleid = ForeignKeyField(DutyRulesModel, column_name='ruleid', null=False)
+
+    class Meta:
+        table_name = 'driverduty'

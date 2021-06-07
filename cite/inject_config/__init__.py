@@ -38,9 +38,12 @@ def inject_config_rep(binder):
     binder.bind(TrucksRepository, PWTrucksRep)
     binder.bind(CheckpointsRepository, PWCheckpointsRep)
     binder.bind(DeliveryRepository, PWDeliveryRep)
-    binder.bind(DriverDutyRepository, PWDriverDutyRep)
+    # binder.bind(DriverDutyRepository, PWDriverDutyRep)
     binder.bind(GuardDutyRepository, PWGuardDutyRep)
     binder.bind(PassRecordsRepository, PWPassRecordsRep)
+
+    #
+    binder.bind(DriverRDutyRepository, PWDriverRDutyRep)
 
 
 def inject_config(binder):
