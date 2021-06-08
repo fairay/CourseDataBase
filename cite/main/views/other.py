@@ -111,6 +111,8 @@ def delivery_page(request: ReqClass, orderid: int):
 
     proc = bm.DeliveryProc(request.session['user']['perstype'])
     order = proc.delivery_info(orderid)
+    if request.session['user']['perstype'] == 'admin':
+        driver_arr = bm.AccountProc(request.session['user']['perstype']).get_all('driver')
     return render(request, 'other/delivery_page.html', locals())
 
 

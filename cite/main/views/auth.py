@@ -33,7 +33,6 @@ def authorize_user(request: ReqClass, login_: str, password_: str):
         return HttpResponseRedirect(reverse('users:profile'))
 
 
-
 def verify(request: ReqClass):
     return authorize_user(request, request.POST['login'], request.POST['password'])
 

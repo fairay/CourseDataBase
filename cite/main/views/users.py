@@ -65,7 +65,8 @@ def approve_user(request: ReqClass, login: str):
     else:
         request.session['info_msg'] = 'Аккаунт ' + ' успешно подтверждён'
 
-    return get_unverified(request)
+    return HttpResponseRedirect(reverse('users:unverified'))
+    # return get_unverified(request)
 
 
 def del_user(request: ReqClass, login: str):
@@ -79,7 +80,8 @@ def del_user(request: ReqClass, login: str):
     except exc.CreateObjExc as ex:
         request.session['warning_msg'] = 'Ошибка операции: ' + str(ex)
 
-    return get_unverified(request)
+    return HttpResponseRedirect(reverse('users:unverified'))
+    # return get_unverified(request)
 
 
 def get_unverified(request: ReqClass):

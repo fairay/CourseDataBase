@@ -243,10 +243,13 @@ td + .href-row:hover {
     width: 200px;
 }
 .short-w {
-    width: 70px;
+    /* width: 10%; */
+    width: 8vw;
+    /* width: 70px; */
 }
 .medi-w {
-    width: 100px;
+    /* width: 100px; */
+    width: 12%;
 }
 .no-pad {
     padding-top: 0px !important;

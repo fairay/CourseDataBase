@@ -8,6 +8,6 @@ urlpatterns = [
     path('profile/<str:login>', view_log(users.profile), name='profile'),
     path('users/all/', view_log(users.get_all), name='all'),
     path('users/unverified/', view_log(users.get_unverified), name='unverified'),
-    path('users/unverified/<str:login>', view_log(users.approve_user), name='unverified'),
+    path('users/approve/<str:login>', view_log(users.approve_user), name='unverified'),
     path('users/delete/<str:login>', view_log(users.del_user), name='del_user'),
 ]

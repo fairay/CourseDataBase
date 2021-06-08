@@ -16,7 +16,7 @@
             </tr>
 
             {% for obj in del_arr %}
-            <tr class="href-row" onclick="window.location='{% url 'other:delivery_page' obj.orderid %}';">
+            <tr class="href-row order-{{obj.status}}" onclick="window.location='{% url 'other:delivery_page' obj.orderid %}';">
                 <td class="short-w" >{{obj.orderid}}</td>
                 <td>{{obj.rus_status}}</td>
                 {% if obj.login %}
@@ -65,6 +65,19 @@
 
         function hidePopUp() {
             document.getElementById("pop-up-div").style.display = "none";
+        }
+
+        window.onload = function () {
+            var el_arr;
+            var status_arr = ['not_assigned', 'in_transit'] // 'delivered'
+            var border_style = "3px solid #45a29e";
+
+            for (var stat of status_arr) {
+                el_arr = document.getElementsByClassName('order-' + stat);
+                if (el_arr.length) {
+                    el_arr[el_arr.length - 1].style.borderBottom = border_style;   
+                }
+            }
         }
     </script>
 
