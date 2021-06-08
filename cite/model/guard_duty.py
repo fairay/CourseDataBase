@@ -53,12 +53,7 @@ class GuardDutyProc(BaseDutyProc):
 
     def get_current(self, login: str = None):
         rep_: GuardDutyRepository = inject.instance(GuardDutyRepository)(self._con)
-        duty_arr = []
-        now_date = datetime.now().date()
-        for obj in rep_.get_by_time(now_date, now_date, login):
-            if self._is_active(obj, datetime.now()):
-                duty_arr.append(obj)
-
+        duty_arr = rep_.get_current(login)
         return duty_arr
 
     def get_all(self, login: str = None):

@@ -27,8 +27,8 @@ class BaseDutyProc(BaseProc):
             raise exc.WrongFormatExc()
         init_dict['dow'] = self._dow_db(init_dict['dow'])
 
-        init_dict['begindate'] = datetime.strptime(init_dict['begindate'], '%Y-%m-%d')
-        init_dict['enddate'] = datetime.strptime(init_dict['enddate'], '%Y-%m-%d')
+        init_dict['begindate'] = datetime.strptime(init_dict['begindate'], '%Y-%m-%d').date()
+        init_dict['enddate'] = datetime.strptime(init_dict['enddate'], '%Y-%m-%d').date()
 
         if 'no_end' in init_dict.keys():
             init_dict['enddate'] = None

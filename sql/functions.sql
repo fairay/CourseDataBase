@@ -1,49 +1,36 @@
---
--- GUARDS
---
-CREATE OR REPLACE FUNCTION GDutyRange(BeginD DATE, EndD DATE)
-RETURNS TABLE (LIKE GuardDutys)
+CREATE OR REPLACE FUNCTION DutyByRange(BeginD DATE, EndD DATE)
+RETURNS TABLE (LIKE DutyRules)
 AS
 $$
 BEGIN
 	RETURN QUERY (
 		SELECT *
-		FROM GuardDutys 
+		FROM DutyRules 
 		WHERE (
-			((EndDate IS NULL) AND (BeginDate <= EndD)) OR 
-		    (NOT (EndDate IS NULL) AND 
-			   (
-			   (BeginDate BETWEEN BeginD AND EndD) OR
-			   (EndDate BETWEEN BeginD AND EndD) OR
-			   (BeginD BETWEEN BeginDate AND EndDate)
+			((EndD IS NULL) AND  -- Диапазон от
+			(
+				(EndDate IS NULL) OR 
+				(EndDate >= BeginD)
+			))  OR
+			((EndD IS NOT NULL) AND -- Диапазон от и до
+			(
+				((EndDate IS NULL) AND (BeginDate <= EndD)) OR 
+				(NOT (EndDate IS NULL) AND 
+				   (
+				   (BeginDate BETWEEN BeginD AND EndD) OR
+				   (EndDate BETWEEN BeginD AND EndD) OR
+				   (BeginD BETWEEN BeginDate AND EndDate)
+					)
 				)
-			)
+			))
 		)
 	);
 END;
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION GDutyInf(BeginD DATE)
-RETURNS TABLE (LIKE GuardDutys)
-AS
-$$
-BEGIN
-	RETURN QUERY (
-		SELECT *
-		FROM GuardDutys 
-		WHERE (
-			(EndDate IS NULL) OR 
-			(EndDate >= BeginD)
-		)
-	);
-END;
-$$
-LANGUAGE plpgsql;
-
-
-CREATE OR REPLACE FUNCTION GDutyNow()
-RETURNS TABLE (LIKE GuardDutys)
+CREATE OR REPLACE FUNCTION DutyAtMoment(Moment TIMESTAMP)
+RETURNS TABLE (LIKE DutyRules)
 AS
 $$
 DECLARE
@@ -52,11 +39,11 @@ DECLARE
 	NowDow TEXT;
 BEGIN
 	SELECT *
-	FROM CAST(NOW() AS DATE)
+	FROM CAST(Moment AS DATE)
 	INTO NowDate;
 	
 	SELECT *
-	FROM CAST(NOW() AS TIME)
+	FROM CAST(Moment AS TIME)
 	INTO NowTime;
 	
 	SELECT CAST(Date_Part - 1 AS TEXT)
@@ -65,7 +52,7 @@ BEGIN
 	
 	RETURN QUERY (
 		SELECT *
-		FROM GDutyRange(NowDate, NowDate) 
+		FROM DutyByRange(NowDate, NowDate) 
 		WHERE (
 			(POSITION(NowDow in Dow) != 0) AND
 			(NowTime BETWEEN BeginTime AND EndTime)
@@ -75,87 +62,106 @@ END;
 $$
 LANGUAGE plpgsql;
 
---
--- DRIVERS
---
-CREATE OR REPLACE FUNCTION DDutyRange(BeginD DATE, EndD DATE)
-RETURNS TABLE (LIKE DriverDutys)
+
+
+CREATE OR REPLACE FUNCTION CurrentDuty()
+RETURNS TABLE (LIKE DutyRules)
 AS
 $$
 BEGIN
 	RETURN QUERY (
 		SELECT *
-		FROM DriverDutys 
+		FROM DutyAtMoment(CAST(NOW() AS TIMESTAMP) ) 
+	);
+END;
+$$
+LANGUAGE plpgsql;
+
+SELECT * FROM CurrentDuty();
+
+-------------------------------------------------------------------
+-- 								GUARDS							 --
+-------------------------------------------------------------------
+CREATE TYPE GDutyJoin AS
+(
+	DutyID 			INT,
+	CheckpointID	INT,
+	Login			TEXT,
+	
+	RuleID			INT,
+	BeginDate		DATE,
+	EndDate			DATE,
+	BeginTime		TIME,
+	EndTime			TIME,
+	DOW				VARCHAR(7)
+);
+
+CREATE OR REPLACE FUNCTION CurrentGDuty(QLogin TEXT, CheckID INT)
+RETURNS SETOF GDutyJoin AS
+$$
+BEGIN
+	RETURN QUERY (
+		SELECT DutyID, CheckpointID, Login, t1.RuleID, 
+				BeginDate, EndDate, BeginTime, EndTime, DOW
+		FROM GuardDuty JOIN CurrentDuty() AS "t1" ON GuardDuty.RuleID = t1.RuleID
 		WHERE (
-			((EndDate IS NULL) AND (BeginDate <= EndD)) OR 
-		    (NOT (EndDate IS NULL) AND 
-			   (
-			   (BeginDate BETWEEN BeginD AND EndD) OR
-			   (EndDate BETWEEN BeginD AND EndD) OR
-			   (BeginD BETWEEN BeginDate AND EndDate)
-				)
-			)
+			((QLogin IS NULL) OR (QLogin = Login)) AND
+			((CheckID IS NULL) OR (CheckID = CheckpointID))
 		)
 	);
 END;
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION DDutyInf(BeginD DATE)
-RETURNS TABLE (LIKE DriverDutys)
-AS
+CREATE OR REPLACE FUNCTION GetGDuty(BeginD DATE, EndD DATE, QLogin TEXT, CheckID INT)
+RETURNS SETOF GDutyJoin AS
 $$
 BEGIN
 	RETURN QUERY (
-		SELECT *
-		FROM DriverDutys 
+		SELECT DutyID, CheckpointID, Login, t1.RuleID, 
+				BeginDate, EndDate, BeginTime, EndTime, DOW
+		FROM GuardDuty JOIN DutyByRange(BeginD, EndD) AS "t1" ON GuardDuty.RuleID = t1.RuleID
 		WHERE (
-			(EndDate IS NULL) OR 
-			(EndDate >= BeginD)
+			((QLogin IS NULL) OR (QLogin = Login)) AND
+			((CheckID IS NULL) OR (CheckID = CheckpointID))
 		)
 	);
 END;
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION DDutyNow()
-RETURNS TABLE (LIKE DriverDutys)
-AS
+
+SELECT * FROM CurrentGDuty(NULL, NULL);
+SELECT * FROM GetGDuty(CAST(NOW() AS DATE), NULL, NULL, NULL);
+
+-------------------------------------------------------------------
+-- 								DRIVERS							 --
+-------------------------------------------------------------------
+CREATE TYPE DDutyJoin AS
+(
+	DutyID 			INT,
+	PlateNumber		TEXT,
+	Login			TEXT,
+	
+	RuleID			INT,
+	BeginDate		DATE,
+	EndDate			DATE,
+	BeginTime		TIME,
+	EndTime			TIME,
+	DOW				VARCHAR(7)
+);
+
+CREATE OR REPLACE FUNCTION CurrentDDuty()
+RETURNS SETOF DDutyJoin AS
 $$
-DECLARE
-	NowDate	DATE;
-	NowTime TIME;
-	NowDow TEXT;
 BEGIN
-	SELECT *
-	FROM CAST(NOW() AS DATE)
-	INTO NowDate;
-	
-	SELECT *
-	FROM CAST(NOW() AS TIME)
-	INTO NowTime;
-	
-	SELECT CAST(Date_Part - 1 AS TEXT)
-	FROM EXTRACT(isodow FROM NowDate)
-	INTO NowDow;
-	
 	RETURN QUERY (
-		SELECT *
-		FROM DDutyRange(NowDate, NowDate) 
-		WHERE (
-			(POSITION(NowDow in Dow) != 0) AND
-			(NowTime BETWEEN BeginTime AND EndTime)
-			)
+		SELECT DutyID, PlateNumber, Login, t1.RuleID, 
+				BeginDate, EndDate, BeginTime, EndTime, DOW
+		FROM DriverDuty JOIN CurrentDuty() AS "t1" ON DriverDuty.RuleID = t1.RuleID
 	);
 END;
 $$
 LANGUAGE plpgsql;
 
-SELECT * 
-FROM DDutyRange('2021-06-10', '2021-06-12');
-
-SELECT * 
-FROM DDutyInf('2021-06-11');
-
-SELECT *
-FROM DDutyNow();
+SELECT * FROM CurrentDDuty();

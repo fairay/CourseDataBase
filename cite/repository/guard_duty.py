@@ -2,6 +2,7 @@ from repository.repository import *
 from objects.guard_duty import GuardDuty
 from repository.pw_rep import *
 from errors import *
+from datetime import *
 
 
 class GuardDutyRepository(Repository):
@@ -9,8 +10,9 @@ class GuardDutyRepository(Repository):
     def update(self, old_obj: GuardDuty, new_obj: GuardDuty): raise NotImplementedError
     def delete(self, obj: GuardDuty): raise NotImplementedError
     def get_all(self) -> [GuardDuty]: raise NotImplementedError
-    def get_by_time(self, begin_date, end_date=None, login=None, check_id=None) -> [GuardDuty]: raise NotImplementedError
+    def get_by_time(self, begin_date: date, end_date: date = None, login: str = None, check_id: int = None) -> [GuardDuty]: raise NotImplementedError
     def get_by_id(self, id_: int) -> GuardDuty: raise NotImplementedError
+    def get_current(self, login: str = None, check_id: int = None) -> [GuardDuty]: raise NotImplementedError
 
 
 class PWGuardDutyRep(GuardDutyRepository):
@@ -70,29 +72,10 @@ class PWGuardDutyRep(GuardDutyRepository):
             .join(DutyRulesModel, on=(GuardDutyModel.ruleid == DutyRulesModel.ruleid))
         return request_to_objects(res, GuardDuty)
 
-    def get_by_time(self, begin_date, end_date=None, login=None, check_id=None) -> [GuardDuty]:
-        if end_date is None:
-            where_exp = DutyRulesModel.enddate.is_null() | (DutyRulesModel.enddate >= begin_date)
-        else:
-            where_exp = DutyRulesModel.enddate.is_null() & (DutyRulesModel.begindate <= end_date)
-            where_exp |= ~DutyRulesModel.enddate.is_null() & (
-                    DutyRulesModel.begindate.between(begin_date, end_date) |
-                    DutyRulesModel.enddate.between(begin_date, end_date) |
-                    ((DutyRulesModel.begindate <= end_date) & (end_date <= DutyRulesModel.enddate))
-            )
-
-        # TODO: refactor to stored function call
-        # print(storedf_call(self._con, 'ddutyinf', begin_date))
-
-        if login is not None:
-            where_exp &= GuardDutyModel.login == login
-        if check_id is not None:
-            where_exp &= GuardDutyModel.checkpointid == check_id
-
-        res = self._model.select(GuardDutyModel, DutyRulesModel) \
-            .join(DutyRulesModel, on=(GuardDutyModel.ruleid == DutyRulesModel.ruleid))\
-            .switch(self._model).where(where_exp)
-        return request_to_objects(res, GuardDuty)
+    def get_by_time(self, begin_date: date, end_date: date = None,
+                    login: str = None, check_id: int = None) -> [GuardDuty]:
+        res = storedf_call(self._con, 'GetGDuty', begin_date, end_date, login, check_id)
+        return dicts_to_objects(res, GuardDuty)
 
     def get_by_id(self, check_id: int) -> GuardDuty:
         res = self._model.select(GuardDutyModel, DutyRulesModel) \
@@ -101,3 +84,7 @@ class PWGuardDutyRep(GuardDutyRepository):
             .where(GuardDutyModel.dutyid == check_id)
         acc_arr = request_to_objects(res, GuardDuty)
         return acc_arr[0] if len(acc_arr) else None
+
+    def get_current(self, login: str = None, check_id: int = None) -> [GuardDuty]:
+        res = storedf_call(self._con, 'CurrentGDuty', login, check_id)
+        return dicts_to_objects(res, GuardDuty)
