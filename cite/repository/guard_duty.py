@@ -12,7 +12,7 @@ class GuardDutyRepository(Repository):
     def get_all(self) -> [GuardDuty]: raise NotImplementedError
     def get_by_time(self, begin_date: date, end_date: date = None, login: str = None, check_id: int = None) -> [GuardDuty]: raise NotImplementedError
     def get_by_id(self, id_: int) -> GuardDuty: raise NotImplementedError
-    def get_current(self, login: str = None, check_id: int = None) -> [GuardDuty]: raise NotImplementedError
+    def get_current(self, login: str = None, check_id: int = None, moment: datetime = None) -> [GuardDuty]: raise NotImplementedError
 
 
 class PWGuardDutyRep(GuardDutyRepository):
@@ -85,6 +85,10 @@ class PWGuardDutyRep(GuardDutyRepository):
         acc_arr = request_to_objects(res, GuardDuty)
         return acc_arr[0] if len(acc_arr) else None
 
-    def get_current(self, login: str = None, check_id: int = None) -> [GuardDuty]:
-        res = storedf_call(self._con, 'CurrentGDuty', login, check_id)
+    def get_current(self, login: str = None, check_id: int = None,
+                    moment: datetime = None) -> [GuardDuty]:
+        if moment is None:
+            res = storedf_call(self._con, 'CurrentGDuty', login, check_id)
+        else:
+            res = storedf_call(self._con, 'MomentGDuty', moment, login, check_id)
         return dicts_to_objects(res, GuardDuty)

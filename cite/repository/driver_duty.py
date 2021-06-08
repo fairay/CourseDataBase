@@ -2,6 +2,7 @@ from repository.repository import *
 from objects.driver_duty import DriverDuty
 from repository.pw_rep import *
 from errors import *
+from datetime import *
 
 
 class DriverDutyRepository(Repository):
@@ -9,8 +10,9 @@ class DriverDutyRepository(Repository):
     def update(self, old_obj: DriverDuty, new_obj: DriverDuty): raise NotImplementedError
     def delete(self, obj: DriverDuty): raise NotImplementedError
     def get_all(self) -> [DriverDuty]: raise NotImplementedError
-    def get_by_time(self, begin_date, end_date=None, login=None, platenumber=None) -> [DriverDuty]: raise NotImplementedError
+    def get_by_time(self, begin_date: date, end_date: date = None, login: str = None, platenumber: str = None) -> [DriverDuty]: raise NotImplementedError
     def get_by_id(self, id_: int) -> DriverDuty: raise NotImplementedError
+    def get_current(self, login: str = None, platenumber: str = None, moment: datetime = None) -> [DriverDuty]: raise NotImplementedError
 
 
 class PWDriverDutyRep(DriverDutyRepository):
@@ -70,29 +72,10 @@ class PWDriverDutyRep(DriverDutyRepository):
             .join(DutyRulesModel, on=(DriverDutyModel.ruleid == DutyRulesModel.ruleid))
         return request_to_objects(res, DriverDuty)
 
-    def get_by_time(self, begin_date, end_date=None, login=None, platenumber=None) -> [DriverDuty]:
-        if end_date is None:
-            where_exp = DutyRulesModel.enddate.is_null() | (DutyRulesModel.enddate >= begin_date)
-        else:
-            where_exp = DutyRulesModel.enddate.is_null() & (DutyRulesModel.begindate <= end_date)
-            where_exp |= ~DutyRulesModel.enddate.is_null() & (
-                    DutyRulesModel.begindate.between(begin_date, end_date) |
-                    DutyRulesModel.enddate.between(begin_date, end_date) |
-                    ((DutyRulesModel.begindate <= end_date) & (end_date <= DutyRulesModel.enddate))
-            )
-
-        # TODO: refactor to stored function call
-        # print(storedf_call(self._con, 'ddutyinf', begin_date))
-
-        if login is not None:
-            where_exp &= DriverDutyModel.login == login
-        if platenumber is not None:
-            where_exp &= DriverDutyModel.platenumber == platenumber
-
-        res = self._model.select(DriverDutyModel, DutyRulesModel) \
-            .join(DutyRulesModel, on=(DriverDutyModel.ruleid == DutyRulesModel.ruleid))\
-            .switch(self._model).where(where_exp)
-        return request_to_objects(res, DriverDuty)
+    def get_by_time(self, begin_date: date, end_date: date = None,
+                    login: str = None, platenumber: str = None) -> [DriverDuty]:
+        res = storedf_call(self._con, 'GetDDuty', begin_date, end_date, login, platenumber)
+        return dicts_to_objects(res, DriverDuty)
 
     def get_by_id(self, check_id: int) -> DriverDuty:
         res = self._model.select(DriverDutyModel, DutyRulesModel) \
@@ -101,3 +84,11 @@ class PWDriverDutyRep(DriverDutyRepository):
             .where(DriverDutyModel.dutyid == check_id)
         acc_arr = request_to_objects(res, DriverDuty)
         return acc_arr[0] if len(acc_arr) else None
+
+    def get_current(self, login: str = None, platenumber: str = None,
+                    moment: datetime = None) -> [DriverDuty]:
+        if moment is None:
+            res = storedf_call(self._con, 'CurrentDDuty', login, platenumber)
+        else:
+            res = storedf_call(self._con, 'MomentDDuty', moment, login, platenumber)
+        return dicts_to_objects(res, DriverDuty)
