@@ -10,7 +10,7 @@ CREATE ROLE driver WITH
 	CONNECTION LIMIT -1
 	PASSWORD 'driver';
 
-GRANT ALL PRIVILEGES ON Passrecords TO driver;
+GRANT SELECT, INSERT ON Passrecords TO driver;
 GRANT SELECT ON Accounts TO driver;
 GRANT SELECT ON Person TO driver;
 GRANT SELECT, UPDATE ON Delivery TO driver;
