@@ -11,6 +11,7 @@ class NullValExc(RepositoryExc): pass
 
 class AccountExc(BaseException): pass
 class NotAuthorisedExc(AccountExc): pass
+class WrongPasswordExc(AccountExc): pass
 class NotAllowedExc(AccountExc): pass
 class UnverifiedExc(AccountExc): pass
 class VerifiedExc(AccountExc): pass
@@ -21,7 +22,7 @@ class UnknownRoleExc(AccountExc): pass
 class CreateObjExc(BaseException):
     _msg = ''
 
-    def __init__(self, msg = ''):
+    def __init__(self, msg=''):
         self._msg = msg
 
     def __str__(self):

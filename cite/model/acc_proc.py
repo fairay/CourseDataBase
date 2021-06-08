@@ -57,13 +57,12 @@ class AccountProc(BaseProc):
         acc = acc_rep.get_by_login(login)
 
         if acc is None:
-            return None  # TODO: raise not auth
+            raise exc.NotAuthorisedExc()
         elif AccountProc._check_password(acc, password):
             return acc
         else:
-            return None  # TODO: raise wrong login/password
+            raise exc.WrongPasswordExc()
 
-    # TODO: validation with create
     def create(self, **init_dict):
         if not {'login', 'password', 'perstype'}.issubset(init_dict.keys()):
             raise exc.LackArgExc()

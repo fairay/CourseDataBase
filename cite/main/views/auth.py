@@ -18,31 +18,24 @@ def logout(request: ReqClass):
 
 def authorize_user(request: ReqClass, login_: str, password_: str):
     proc = bm.AccountProc('admin')
-    acc = proc.login(login_, password_)
 
-    if acc is not None:
+    try:
+        acc = proc.login(login_, password_)
+    except exc.NotAuthorisedExc as e:
+        request.session['warning_msg'] = 'Аккаунт не зарегистрирован'
+        return HttpResponseRedirect(reverse('auth:login'))
+    except exc.WrongPasswordExc as e:
+        request.session['warning_msg'] = 'Авторизационные данные неверны, попробуйте снова'
+        return HttpResponseRedirect(reverse('auth:login'))
+    else:
         request.session['user'] = proc.get_cookie(acc.login)
         request.session['info_msg'] = 'Добро пожаловать!'
         return HttpResponseRedirect(reverse('users:profile'))
-    else:
-        request.session['warning_msg'] = 'Авторизационные данные неверны, попробуйте снова'
-        return HttpResponseRedirect(reverse('auth:login'))
+
 
 
 def verify(request: ReqClass):
     return authorize_user(request, request.POST['login'], request.POST['password'])
-
-    """
-    acc = bm.AccountProc.login(request.POST['login'], request.POST['password'])
-
-    if acc is not None:
-        request.session['user'] = bm.AccountProc.get_cookie(acc)
-        request.session['info_msg'] = 'Добро пожаловать!'
-        return HttpResponseRedirect(reverse('users:profile'))
-    else:
-        request.session['warning_msg'] = 'Авторизационные данные неверны, попробуйте снова'
-        return HttpResponseRedirect(reverse('auth:login'))
-    """
 
 
 def signup(request: ReqClass):

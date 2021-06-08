@@ -16,7 +16,6 @@ class PWPersonRep(PersonRepository):
     _con = None
     _model = None
 
-    # TODO: remove inject.instance(AbstractConnection)
     def __init__(self, con):
         super().__init__(con)
         self._con = con
