@@ -11,7 +11,7 @@
 \end{itemize}
 
 \subsection{СУБД и ORM}
-Наиболее популярными реляционными СУБД являются Oracle, MySQL и PostgreSQL\cite{dbm_source}. Их сравнение\cite{dbm_source2} можно свести в таблицу \hyperref[dms_table]{3.1}
+Наиболее популярными реляционными СУБД являются Oracle, MySQL и PostgreSQL\cite{dbm_source}. Их сравнение\cite{dbm_source2} можно свести в таблицу \ref{dms_table2}
 
 \begin{center}
 \begin{longtable}[h]{| p{2.4cm} | p{6.6cm} | p{6.6cm} |}
@@ -59,7 +59,7 @@
 В качестве ORM (технология объектно-реляционного преобразования) был выбран peewee\cite{peewee_doc}, так как она является простой в освоении и использовании, а также позволяет легко подменять СУБД.
 
 \subsection{Web-фреймворк}
-В качестве web-фреймворка был выбран Django, по следующим причинам.
+В качестве web-фреймворка был выбран Django\cite{django_doc}, по следующим причинам.
 \begin{itemize}
 	\item Django использует шаблон проектирования MVC.
 	\item Лёгкая масштабируемость.
@@ -71,162 +71,179 @@
 \newpage
 \section{UML-диаграммы компонентов приложения}
 \subsection{Компонент доступа к данным}
-В данной работе компонент доступа к данным реализован с использованием паттерна проектирования Repository. UML диаграмма компонента изображена представленна на рисунке \hyperref[rep_pic]{3.1}  
+В данной работе компонент доступа к данным реализован с использованием паттерна проектирования Repository. UML диаграмма компонента изображена представленна на рисунке \ref{rep_pic} 
 
-\begin{figure}[h!] \label{rep_pic}
+\begin{figure}[h!] 
 	\begin{center}
 %		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.4, angle=0]{uml/repsoitory.pdf}}
 		\caption{UML-диаграмма компонента доступа к данным}
+		\label{rep_pic}
 	\end{center}
 \end{figure}
 
 \newpage
 \subsection{Компонент бизнес-логики}
-В соответствии с подходом MVC был создан компонент бизнес-логики, выполняющий основную обработку данных, UML диаграмма которого представленна на рисунке \hyperref[model_pic]{3.2}  
+В соответствии с подходом MVC был создан компонент бизнес-логики, выполняющий основную обработку данных, UML диаграмма которого представленна на рисунке \ref{model_pic}
 
-\begin{figure}[h!] \label{model_pic}
+\begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.5, angle=0]{uml/business_models.pdf}}
 		\caption{UML-диаграмма компонента бизнес-логики}
+		\label{model_pic}
 	\end{center}
 \end{figure}
 
 \newpage
 \subsection{Компонент представления}
-Также создан компонент представления, выполняющий отображение web-страниц в ответ на запросы пользователя, UML диаграмма которого представленна на рисунке \hyperref[view_pic]{3.3}. Помимо этого был реализован технический компонент представления, отображающий информацию в символьном виде, для возможности тестирования компонента бизнес-логики.
+Также создан компонент представления, выполняющий отображение web-страниц в ответ на запросы пользователя, UML диаграмма которого представленна на рисунке \ref{view_pic}. Помимо этого был реализован технический компонент представления, отображающий информацию в символьном виде, для возможности тестирования компонента бизнес-логики.
 
-\begin{figure}[h!] \label{view_pic}
+\begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.5, angle=0]{uml/webGUI.pdf}}
 		\caption{UML-диаграмма компонента web-представления}
+		\label{view_pic}
 	\end{center}
 \end{figure}
 
 \newpage
 \subsection{Диаграмма приложения}
-Все перечисленные компоненты можно объединить в одну UML-диаграмму всего приложения на рисунке \hyperref[alluml_pic]{3.4}
+Все перечисленные компоненты можно объединить в одну UML-диаграмму всего приложения на рисунке \ref{alluml_pic}
 
-\begin{figure}[h!] \label{alluml_pic}
+\begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.36, angle=-90]{uml/components.pdf}}
 		\caption{UML-диаграмма компонента web-представления}
+		\label{alluml_pic}
 	\end{center}
 \end{figure}
 
 
 \section{Интерфейс приложения}
-Для авторизованного пользователя в заголовке каждой страницы содержится панель навигации, предоставляющая возможность перейти на все страницы, функционально соответствующие его роли. Данная панель изображена на примере администратора на рисунке \hyperref[navbar_sc]{3.5}. Некоторые пункты меню являются выпадающими, их можно открыть наведением мыши. Также в левом углу панели присутствует элемент информационного или ошибочного сообщения.
+Для авторизованного пользователя в заголовке каждой страницы содержится панель навигации, предоставляющая возможность перейти на все страницы, функционально соответствующие его роли. Данная панель изображена на примере администратора на рисунке \ref{navbar_sc}. Некоторые пункты меню являются выпадающими, их можно открыть наведением мыши. Также в левом углу панели присутствует элемент информационного или ошибочного сообщения.
 
-На рисунках \hyperref[navbar_sc]{3.5}-\hyperref[trucks_sc]{3.11} приведена демонстрация ключевых страниц для роли администратора. На рисунках \hyperref[pick_delivery_sc]{3.12}, \hyperref[driver_profile_sc]{3.13} и \hyperref[guard_duty_sc]{3.14}, \hyperref[guard_duty_sc]{3.15} приведены страницы, уникальные для ролей водителя и охранника соотвественно.
+На рисунках \ref{navbar_sc}-\ref{trucks_sc} приведена демонстрация ключевых страниц для роли администратора. На рисунках \ref{pick_delivery_sc}, \ref{driver_profile_sc} и \ref{guard_duty_sc}, \ref{pass_guard_sc} приведены страницы, уникальные для ролей водителя и охранника соотвественно.
 
-\begin{figure}[h!] \label{navbar_sc}
+\begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.45, angle=0]{sc/admin_profile}}
 		\caption{Страница профиля администратора}
+		\label{navbar_sc}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h!] \label{all_profiles_sc}
+\begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.43, angle=0]{sc/all_profiles}}
 		\caption{Страница просмотра всех сотрудников}
+		\label{all_profiles_sc}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h!] \label{unver_sc}
+\begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.43, angle=0]{sc/unver}}
 		\caption{Страница просмотра заявок регистрации}
+		\label{unver_sc}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h!] \label{all_delivery_sc}
+\begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.43, angle=0]{sc/all_delivery}}
 		\caption{Страница просмотра и создания заказов}
+		\label{all_delivery_sc}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h!] \label{all_pass_sc}
+\begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.43, angle=0]{sc/all_pass}}
 		\caption{Страница просмотра и регистрации записей о проездах}
+		\label{all_pass_sc}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h!] \label{driver_duty_sc}
+\begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.43, angle=0]{sc/driver_duty}}
 		\caption{Страница просмотра и назначения дежурств водителей}
+		\label{driver_duty_sc}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h!] \label{trucks_sc}
+\begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.43, angle=0]{sc/trucks}}
 		\caption{Страница просмотра и регистрации машин}
+		\label{trucks_sc}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h!] \label{pick_delivery_sc}
+\begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.4, angle=0]{sc/pick_delivery}}
 		\caption{Страница просмотра и выбора заказа (для роли водителя)}
+		\label{pick_delivery_sc}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h!] \label{driver_profile_sc}
+\begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.4, angle=0]{sc/driver_profile}}
 		\caption{Личная страница (для роли водителя)}
+		\label{driver_profile_sc}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h!] \label{guard_duty_sc}
+\begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.4, angle=0]{sc/guard_duty}}
 		\caption{Страница просмотра дежурств (для роли охранника)}
+		\label{guard_duty_sc}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h!] \label{pass_guard_sc}
+\begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.4, angle=0]{sc/pass_guard}}
 		\caption{Страница просмотра и добавления записей проездов (для роли охранника)}
+		\label{pass_guard_sc}
 	\end{center}
 \end{figure}
 
 \newpage
-Для неавторизованного пользователя доступны страницы входа в аккаунт и регистрации (рисунок \hyperref[login_sc]{3.16} и \hyperref[signup_sc]{3.17}) 
+Для неавторизованного пользователя доступны страницы входа в аккаунт и регистрации (рисунок \ref{login_sc} и \ref{signup_sc}) 
 
-\begin{figure}[h!] \label{login_sc}
+\begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.38, angle=0]{sc/login}}
 		\caption{Страница авторизации}
+		\label{login_sc}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h!] \label{signup_sc}
+\begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.38, angle=0]{sc/signup}}
 		\caption{Страница регистрации}
+		\label{signup_sc}
 	\end{center}
 \end{figure}
 
