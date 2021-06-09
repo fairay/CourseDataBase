@@ -78,6 +78,7 @@ input:invalid {
     border-spacing: 0;
     width: 100%;
     border: 1px solid #ddd;
+    margin-bottom: 45px;
 }
 .list-table th {
     text-align: left;
