@@ -10,7 +10,6 @@ CREATE ROLE unverif WITH
 	CONNECTION LIMIT -1
 	PASSWORD 'unverif';
 
-GRANT ALL PRIVILEGES ON Passrecords TO unverif;
 GRANT SELECT ON Accounts TO unverif;
 GRANT SELECT ON Person TO unverif;
 GRANT INSERT ON LogActions TO unverif;

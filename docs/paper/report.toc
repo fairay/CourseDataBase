@@ -27,8 +27,10 @@
 \contentsline {subsection}{\numberline {3.2.4}Диаграмма приложения}{27}{subsection.3.2.4}%
 \contentsline {section}{\numberline {3.3}Реализация базы данных}{28}{section.3.3}%
 \contentsline {subsection}{\numberline {3.3.1}Создание таблиц}{28}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Реализация триггеров}{28}{subsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.3}}{28}{subsection.3.3.3}%
-\contentsline {section}{\numberline {3.4}Интерфейс приложения}{28}{section.3.4}%
-\contentsline {chapter}{Заключение}{36}{chapter*.38}%
-\contentsline {chapter}{Список литературы}{37}{chapter*.38}%
+\contentsline {subsection}{\numberline {3.3.2}Ролевая модель}{29}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Триггеры}{31}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Функции}{32}{subsection.3.3.4}%
+\contentsline {section}{\numberline {3.4}Интерфейс приложения}{33}{section.3.4}%
+\contentsline {chapter}{Заключение}{41}{chapter*.38}%
+\contentsline {chapter}{Список литературы}{42}{chapter*.38}%
+\contentsline {chapter}{Приложение А. Код хранимых функций}{44}{chapter*.40}%

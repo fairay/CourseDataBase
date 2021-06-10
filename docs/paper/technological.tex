@@ -123,23 +123,191 @@
 
 \section{Реализация базы данных}
 \subsection{Создание таблиц}
-\subsection{Реализация триггеров}
+В соответствии с ранее спроектированной моделью базы данных, были созданы 10 таблиц. Для примера в листинге \ref{lst:create_duty} приведён код генерации таблиц, связанных с дежурствами: DutyRules, GuardDuty и DriverDuty.
+
+\begin{lstlisting}[caption = {Создание таблиц дежурств}, label=lst:create_duty]
+CREATE TABLE IF NOT EXISTS DutyRules (
+	RuleID		SERIAL		PRIMARY KEY,
+	BeginDate	DATE		NOT NULL,
+	EndDate		DATE,
+	BeginTime	TIME		NOT NULL,
+	EndTime		TIME		NOT NULL,
+	DOW			VARCHAR(7)	NOT NULL
+);
+ALTER TABLE DutyRules ADD CONSTRAINT check_duty_dates
+CHECK (BeginDate <= EndDate);
+ALTER TABLE DutyRules ADD CONSTRAINT check_duty_times
+CHECK (BeginTime < EndTime);
+ALTER TABLE DutyRules ADD CONSTRAINT check_dow
+CHECK (DOW SIMILAR TO '[0|1|2|3|4|5|6]{1,7}');
+
+CREATE TABLE IF NOT EXISTS GuardDuty (
+	DutyID 		 SERIAL	PRIMARY KEY,
+	CheckpointID INT	REFERENCES Checkpoints(CheckpointID) NOT NULL,
+	Login		 TEXT	REFERENCES Person(Login) NOT NULL,
+	RuleID		 INT	REFERENCES DutyRules(RuleID) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS DriverDuty (
+	DutyID 		SERIAL	PRIMARY KEY,
+	PlateNumber	TEXT	REFERENCES Trucks(PlateNumber) NOT NULL,
+	Login		TEXT	REFERENCES Person(Login) NOT NULL,
+	RuleID		INT		REFERENCES DutyRules(RuleID) NOT NULL
+);
+\end{lstlisting}
+
+В таблице DutyRules в качестве первичного ключа (сокр. ПК) указан атрибут RuleID. Созданы ограничения в значениях дат начала и завершения расписания дежурства и времени начала и завершения смены. Также реализованно ограничение содержимого атрибута DOW: в данной строке могут храниться только цифры от 0 до 6, соответствующие дням недели, в количестве от одной до семи.
+
+В таблицах GuardDuty и DriverDuty в качестве ПК выступает атрибут DutyID. Таже общим для двух таблиц является наличие внешних ключей Login и RuleID, ссылающихся на одноимённые поля в таблицах Person и DutyRules соотвественно. Для GuardDuty также существует внешний ключ CheckpointID, ссылающийся на таблицу Checkpoints, для DriverDuty дополнительный внешний ключ это PlateNumber, связанный с таблицей Trucks. Все внешние ключи содержат ограничение NOT NULL, так как они являются обязательными в данных сущностях.
+
 \subsection{Ролевая модель}
+Для создания прав доступа выделенных ролей к различным данным была реализована ролевая модель на уровне базы данных. Выделено следующие четыре роли:
+\begin{itemize}
+	\item admin - роль администратора;
+	\item guard - роль охранника;
+	\item driver - роль водителя;
+	\item unverif - роль неподтверждённого сотрудника.
+\end{itemize}
 
+Код создания описанных ролей приведён в листингах \ref{lst:admin_role}--\ref{lst:unverif_role}
+
+\begin{lstlisting}[caption = {Релизация роли admin}, label=lst:admin_role]
+CREATE ROLE admin WITH
+	LOGIN
+	SUPERUSER
+	PASSWORD 'admin';
+\end{lstlisting}
+
+\begin{lstlisting}[caption = {Релизация роли guard}, label=lst:guard_role]
+CREATE ROLE guard WITH
+	LOGIN
+	PASSWORD 'guard';
+
+GRANT SELECT, INSERT ON Passrecords TO guard;
+GRANT SELECT ON Accounts TO guard;
+GRANT SELECT ON Person TO guard;
+GRANT SELECT ON GuardDutys TO guard;
+GRANT SELECT, INSERT ON PassRecords TO guard;
+GRANT ALL PRIVILEGES ON SEQUENCE passrecords_recordid_seq TO guard;
+GRANT SELECT ON Checkpoints TO guard;
+GRANT SELECT ON Trucks TO guard;
+GRANT INSERT ON LogActions TO guard;
+
+GRANT SELECT ON GuardDuty TO guard;
+GRANT SELECT ON DutyRules TO guard;
+\end{lstlisting}
+
+\begin{lstlisting}[caption = {Релизация роли driver}, label=lst:driver_role]
+CREATE ROLE driver WITH
+	LOGIN
+	PASSWORD 'driver';
+
+GRANT SELECT, INSERT ON Passrecords TO driver;
+GRANT SELECT ON Accounts TO driver;
+GRANT SELECT ON Person TO driver;
+GRANT SELECT, UPDATE ON Delivery TO driver;
+GRANT SELECT ON DriverDutys TO driver;
+GRANT INSERT ON LogActions TO driver;
+
+GRANT SELECT ON DriverDuty TO driver;
+GRANT SELECT ON DutyRules TO driver;
+\end{lstlisting}
+
+\begin{lstlisting}[caption = {Релизация роли unverif}, label=lst:unverif_role]
+CREATE ROLE unverif WITH
+	LOGIN
+	PASSWORD 'unverif';
+
+GRANT SELECT ON Accounts TO unverif;
+GRANT SELECT ON Person TO unverif;
+GRANT INSERT ON LogActions TO unverif;
+\end{lstlisting}
+
+
+\subsection{Триггеры}
+В базе данных реализованы триггеры соответствующие спроектированным схемам.
+
+На листинге \ref{lst:pass_trig} приведена реализация триггера LogPassRecordIns, осуществляющего логирование информации добавления записи о проезде.
+\begin{lstlisting}[caption = {Релизация триггера LogPassRecordIns}, label=lst:pass_trig]
+CREATE OR REPLACE FUNCTION LogPassRecordIns()
+RETURNS TRIGGER AS $$ BEGIN
+	INSERT INTO LogActions VALUES 
+		(current_user, NOW(), 'Created pass record №' || NEW.RecordID);
+	RETURN NULL;
+END; $$ LANGUAGE plpgsql;
+
+CREATE TRIGGER LogPassRecordIns BEFORE INSERT
+ON PassRecords FOR EACH ROW
+	EXECUTE PROCEDURE LogPassRecordIns();
+\end{lstlisting}
+
+На листинге \ref{lst:deli_trig} приведена реализация триггера LogDeliveryUpd, осуществляющего логирование информации о добавлении заказа.
+\begin{lstlisting}[caption = {Релизация триггера LogDeliveryUpd}, label=lst:deli_trig]
+CREATE OR REPLACE FUNCTION LogDeliveryUpd()
+RETURNS TRIGGER AS $$ BEGIN
+	IF NEW.Status = 'delivered' THEN 
+		INSERT INTO LogActions VALUES 
+		(current_user, NOW(), 'Set delivery №' || NEW.OrderID || ' status = delivered');
+	ELSE
+		INSERT INTO LogActions VALUES 
+		(current_user, NOW(), 'Assigned delivery №' || NEW.OrderID || ' to ' || NEW.Login);
+	END IF;
+RETURN NULL;
+END; $$ LANGUAGE plpgsql;
+
+CREATE TRIGGER LogDeliveryUpd BEFORE UPDATE
+ON Delivery FOR EACH ROW
+	EXECUTE PROCEDURE LogDeliveryUpd();
+\end{lstlisting}
+
+На листинге \ref{lst:acc_trig} приведена реализация триггера BanActiveAccDel, осуществляющего запрет удаления подтверждённых сотрудников.
+\begin{lstlisting}[caption = {Релизация триггера BanActiveAccDel}, label=lst:acc_trig]
+CREATE OR REPLACE FUNCTION BanActiveAccDel()
+RETURNS TRIGGER AS $$ BEGIN
+	IF (current_user = 'admin') AND (OLD.PersType NOT LIKE '~%') 
+	THEN
+		RAISE EXCEPTION 'cannot delete active user';
+	END IF;
+	RETURN OLD;
+END; $$ LANGUAGE plpgsql;
+
+CREATE TRIGGER BanActiveAccDel BEFORE DELETE
+ON Accounts FOR EACH ROW
+	EXECUTE PROCEDURE BanActiveAccDel();
+\end{lstlisting}
+
+\subsection{Функции}
+В работе программы особую сложность представляет работа с расписаниями дежурств, а также с самими дежурствами водителей. Пояснение реализованных функций для каждой таблицы приведено дальше. Все листинге расположены в приложении А, стр. \pageref{attachmentA}.
+\begin{itemize}
+	\item Таблица DutyRules. Требуется осуществлять выборку дежурств в определённом диапазоне дат, нахождение активных дежурств в определённый момент времени, в том числе и в текущий. Код функций приведён в листинге \ref{lst:duty_rules_f}.
+	\item Таблицы DriverRules и GuardRules. Для дежурств требуется осуществлять поиск по логину и номеру КПП в случае охранника или номеру машины в случае водителя. Также требуется учитывать диапазон дат, в котором осуществляется поиск или определённый момент времени. Код описанных функций приведён в листингах \ref{lst:driver_duty_f} и \ref{lst:guard_duty_f} для таблиц DriverRules и GuardRules соотвественно.
+\end{itemize}
+
+\newpage
 \section{Интерфейс приложения}
-Для авторизованного пользователя в заголовке каждой страницы содержится панель навигации, предоставляющая возможность перейти на все страницы, функционально соответствующие его роли. Данная панель изображена на примере администратора на рисунке \ref{navbar_sc}. Некоторые пункты меню являются выпадающими, их можно открыть наведением мыши. Также в левом углу панели присутствует элемент информационного или ошибочного сообщения.
+Для авторизованного пользователя в заголовке каждой страницы содержится панель навигации, предоставляющая возможность перейти на все страницы, функционально соответствующие его роли. Данная панель изображена на примере администратора на рисунке \ref{sc:navbar}. Некоторые пункты меню являются выпадающими, их можно открыть наведением мыши. Также в левом углу панели присутствует элемент информационного или ошибочного сообщения.
 
-На рисунках \ref{navbar_sc}-\ref{trucks_sc} приведена демонстрация ключевых страниц для роли администратора. На рисунках \ref{pick_delivery_sc}, \ref{driver_profile_sc} и \ref{guard_duty_sc}, \ref{pass_guard_sc} приведены страницы, уникальные для ролей водителя и охранника соотвественно.
+На рисунке \ref{sc:navbar} изображена страница профиля сотрудника, на котором он может посмотреть всю свою личную информацию. Просматривать свою страницу может пользователь с любой ролью. Для водителя на странице профиля также отображается история его заказов (на рисунке \ref{sc:driver_profile}).
 
 \begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.45, angle=0]{sc/admin_profile}}
 		\caption{Страница профиля администратора}
-		\label{navbar_sc}
+		\label{sc:navbar}
 	\end{center}
 \end{figure}
 
+\begin{figure}[h!] 
+	\begin{center}
+		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
+		{\includegraphics[scale=0.45, angle=0]{sc/driver_profile}}
+		\caption{История заказов (для профиля водителя)}
+		\label{sc:driver_profile}
+	\end{center}
+\end{figure}
+
+На рисунке представлена страница просмотра профилей всех с
 \begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
@@ -203,14 +371,7 @@
 	\end{center}
 \end{figure}
 
-\begin{figure}[h!] 
-	\begin{center}
-		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
-		{\includegraphics[scale=0.4, angle=0]{sc/driver_profile}}
-		\caption{Личная страница (для роли водителя)}
-		\label{driver_profile_sc}
-	\end{center}
-\end{figure}
+
 
 \begin{figure}[h!] 
 	\begin{center}

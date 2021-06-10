@@ -10,7 +10,7 @@ CREATE ROLE guard WITH
 	CONNECTION LIMIT -1
 	PASSWORD 'guard';
 
-GRANT ALL PRIVILEGES ON Passrecords TO guard;
+GRANT SELECT, INSERT ON Passrecords TO guard;
 GRANT SELECT ON Accounts TO guard;
 GRANT SELECT ON Person TO guard;
 GRANT SELECT ON GuardDutys TO guard;

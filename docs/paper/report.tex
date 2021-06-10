@@ -49,10 +49,10 @@
 % Настройка листингов
 \usepackage{listings}
 \lstset{
-	language = c++,
+	language = sql,
 	extendedchars=\true,
 	keepspaces=true,
-	basicstyle=\small\sffamily,
+	basicstyle=\scriptsize\sffamily,
 	showstringspaces=\false,
 	numbers=left,
 	stepnumber=1,
@@ -110,6 +110,7 @@
 	\addcontentsline{toc}{chapter}{Заключение}
 	\input{conclusion.tex}
 	\newpage
+
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\addcontentsline{toc}{chapter}{Список литературы}
@@ -137,4 +138,11 @@
 		 
  		\bibitem{django_doc} Документация Web-фреймворка Django [Электронный ресурс]. Режим доступа: https://docs.djangoproject.com/en/3.2/, свободный (дата обращения: 01.05.2021).
 	\end{thebibliography}
+	\newpage
+
+	\chapter*{Приложение А. Код хранимых функций}
+	\addcontentsline{toc}{chapter}{Приложение А. Код хранимых функций}
+	\setcounter{chapter}{4}
+	\setcounter{lstlisting}{0}
+	\input{attachmentA.tex}
 \end{document}
