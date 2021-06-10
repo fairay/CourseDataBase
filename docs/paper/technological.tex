@@ -43,6 +43,7 @@
 	&	+ поддержка современности функционала	& - высокие системные требования \\ 
 	\hline
 	
+	
 	MySQL	&	+ прост в установке и использовании	& -	проблемы с надёжностью	\\ 
 	&	+ производительность	& - не полная поддержка SQL \\ 
 	&	+ широкий базовый функционал & \\
@@ -307,111 +308,72 @@ ON Accounts FOR EACH ROW
 	\end{center}
 \end{figure}
 
-На рисунке представлена страница просмотра профилей всех с
+На рисунке \ref{sc:all_profiles} представлена страница просмотра всех сотрудников. С помощью клика на ряд таблицы можно перейти на страницу конкретного сотрудника, описанная выше. Данный функционал доступен только для администратора.
 \begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
-		{\includegraphics[scale=0.43, angle=0]{sc/all_profiles}}
+		{\includegraphics[scale=0.45, angle=0]{sc/all_profiles}}
 		\caption{Страница просмотра всех сотрудников}
-		\label{all_profiles_sc}
+		\label{sc:all_profiles}
 	\end{center}
 \end{figure}
 
+На рисунке \ref{sc:unver} представленна страница заявок на регистрацию. Заявки можно принять или отклонить кликом на соотв. кнопки. Данная страница также доступна только администратору. 
 \begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.43, angle=0]{sc/unver}}
 		\caption{Страница просмотра заявок регистрации}
-		\label{unver_sc}
+		\label{sc:unver}
 	\end{center}
 \end{figure}
 
+На рисунке \ref{sc:all_delivery} изображена страница просмотра всех заказов. По клику на строку заказа можно перейти на страницу подробной информации о заказе. Просмотр этой страницы доступен для водителей и администраторов. Для последних также существует возможность создать заказ в всплывающем окне.
 \begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.43, angle=0]{sc/all_delivery}}
 		\caption{Страница просмотра и создания заказов}
-		\label{all_delivery_sc}
+		\label{sc:all_delivery}
 	\end{center}
 \end{figure}
+
+Вышеупомянутая страница подробной информации о заказе приведена на рисунке \ref{sc:pick_delivery}. Страница доступна для водителей и администраторов. Обе роли могут поручить заказ водителю и завершить заказ. Администратор назначает водителя указанием его логина в всплывающем окне. Водитель способен назначить заказ только себе нажатием кнопки <<Выбрать заказ>>.
+\begin{figure}[h!] 
+	\begin{center}
+		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
+		{\includegraphics[scale=0.45, angle=0]{sc/pick_delivery}}
+		\caption{Страница просмотра и выбора заказа (для роли водителя)}
+		\label{sc:pick_delivery}
+	\end{center}
+\end{figure}
+
+На рисунке \ref{sc:all_pass} изображена страница всех записей проездов. Для администратора на данной странице выводятся все записи в обратном хронологическом порядке и окно для добавления новой записи. Для охранника на данной странице видны записи о проезде в пределах его текущего дежурства (т.е. через определённое КПП в ограниченный временной диапазон). Охранник также может добавить запись о проезде, но в отличие от администратора ему не нужно указывать номер КПП.
 
 \begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
-		{\includegraphics[scale=0.43, angle=0]{sc/all_pass}}
+		{\includegraphics[scale=0.45, angle=0]{sc/all_pass}}
 		\caption{Страница просмотра и регистрации записей о проездах}
-		\label{all_pass_sc}
+		\label{sc:all_pass}
 	\end{center}
 \end{figure}
 
+На следующем рисунке \ref{sc:driver_duty} представленна страница дежурств водителей. Доступ к ней имеют все подтверждённые сотрудники (охранники могут просматривать аналогичную страницу для их роли). Администратору выводятся все дежурства, отдельно отмечаются те, которые идут в данный момент. Также он может назначить новое дежурство в всплывающем окне. Для этого нужно указать логин сотрудника, номер КПП или машины (в зависимости от роли) и время его дежурства (задаётся диапазоном дат, времени и днями недели).  
+
+Водители и охранники на этой странице могут видеть все свои дежурства и информацию о ближайшем из них.
 \begin{figure}[h!] 
 	\begin{center}
 		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
 		{\includegraphics[scale=0.43, angle=0]{sc/driver_duty}}
 		\caption{Страница просмотра и назначения дежурств водителей}
-		\label{driver_duty_sc}
+		\label{sc:driver_duty}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h!] 
-	\begin{center}
-		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
-		{\includegraphics[scale=0.43, angle=0]{sc/trucks}}
-		\caption{Страница просмотра и регистрации машин}
-		\label{trucks_sc}
-	\end{center}
-\end{figure}
+Также администратору доступны страницы просмотра и регистрации машин и КПП. На них представлен полный список данных объектов и всплывающее окно с формой добавления нового объекта.
 
-\begin{figure}[h!] 
-	\begin{center}
-		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
-		{\includegraphics[scale=0.4, angle=0]{sc/pick_delivery}}
-		\caption{Страница просмотра и выбора заказа (для роли водителя)}
-		\label{pick_delivery_sc}
-	\end{center}
-\end{figure}
-
-
-
-\begin{figure}[h!] 
-	\begin{center}
-		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
-		{\includegraphics[scale=0.4, angle=0]{sc/guard_duty}}
-		\caption{Страница просмотра дежурств (для роли охранника)}
-		\label{guard_duty_sc}
-	\end{center}
-\end{figure}
-
-\begin{figure}[h!] 
-	\begin{center}
-		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
-		{\includegraphics[scale=0.4, angle=0]{sc/pass_guard}}
-		\caption{Страница просмотра и добавления записей проездов (для роли охранника)}
-		\label{pass_guard_sc}
-	\end{center}
-\end{figure}
-
-\newpage
-Для неавторизованного пользователя доступны страницы входа в аккаунт и регистрации (рисунок \ref{login_sc} и \ref{signup_sc}) 
-
-\begin{figure}[h!] 
-	\begin{center}
-		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
-		{\includegraphics[scale=0.38, angle=0]{sc/login}}
-		\caption{Страница авторизации}
-		\label{login_sc}
-	\end{center}
-\end{figure}
-
-\begin{figure}[h!] 
-	\begin{center}
-		%		{\includegraphics[height=14cm, width = 14cm]{uml/repsoitory.pdf}}
-		{\includegraphics[scale=0.38, angle=0]{sc/signup}}
-		\caption{Страница регистрации}
-		\label{signup_sc}
-	\end{center}
-\end{figure}
-
+Для неавторизованного пользователя доступны страницы входа в аккаунт и регистрации.
 
 \section*{Вывод}
 Результатом технологической части стал выбор средств программной реализации, реализация и описание структуры базы данных и приложения, визуальная демонстрация интерфейса приложения.

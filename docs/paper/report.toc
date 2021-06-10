@@ -31,6 +31,6 @@
 \contentsline {subsection}{\numberline {3.3.3}Триггеры}{31}{subsection.3.3.3}%
 \contentsline {subsection}{\numberline {3.3.4}Функции}{32}{subsection.3.3.4}%
 \contentsline {section}{\numberline {3.4}Интерфейс приложения}{33}{section.3.4}%
-\contentsline {chapter}{Заключение}{41}{chapter*.38}%
-\contentsline {chapter}{Список литературы}{42}{chapter*.38}%
-\contentsline {chapter}{Приложение А. Код хранимых функций}{44}{chapter*.40}%
+\contentsline {chapter}{Заключение}{39}{chapter*.33}%
+\contentsline {chapter}{Список литературы}{40}{chapter*.33}%
+\contentsline {chapter}{Приложение А. Код хранимых функций}{42}{chapter*.35}%
